@@ -37,6 +37,8 @@ export type Analysis = {
   dayChangePct: number | null
   maxDayDropPct: number | null
   maxDayDropDate: string | null
+  dropAgeTradingDays: number | null
+  dropWhenLabel: string | null
   weekDrawdownPct: number | null
   bounceTarget: number | null
   bounceUpsidePct: number | null

@@ -22,7 +22,11 @@ export type RawSniper = {
   dayChangePct: number | null
   maxDayDropPct: number | null
   maxDayDropDate: string | null
+  dropAgeTradingDays: number | null
+  dropWhenLabel: string | null
   weekDrawdownPct: number | null
+  weekHighDate: string | null
+  stillDown: boolean
   recentHigh: number | null
   bounceTarget: number | null
   bounceUpsidePct: number | null
@@ -66,6 +70,8 @@ export type Analysis = {
   dayChangePct: number | null
   maxDayDropPct: number | null
   maxDayDropDate: string | null
+  dropAgeTradingDays: number | null
+  dropWhenLabel: string | null
   weekDrawdownPct: number | null
   bounceTarget: number | null
   bounceUpsidePct: number | null
@@ -128,8 +134,22 @@ function isLargeCap(marketCap: number | null, currency: string, symbol: string):
   return marketCap >= 8_000_000_000 // USD
 }
 
+function formatSvDate(d: Date): string {
+  return d.toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' })
+}
+
+function tradingSessionsAgo(closes: { date: Date }[], dropDate: Date): number {
+  let n = 0
+  for (let i = closes.length - 1; i >= 0; i--) {
+    if (closes[i].date.getTime() <= dropDate.getTime() + 12 * 3600000) break
+    n++
+  }
+  return n
+}
+
 export async function fetchSniper(yf: any, symbol: string): Promise<RawSniper> {
-  const period1 = new Date(Date.now() - 21 * 86400000)
+  // Only need ~2 weeks of bars; signal window is last 5 sessions.
+  const period1 = new Date(Date.now() - 18 * 86400000)
   const [quote, chart, summary] = await Promise.all([
     yf.quote(symbol),
     yf.chart(symbol, { period1, interval: '1d' }),
@@ -150,11 +170,14 @@ export async function fetchSniper(yf: any, symbol: string): Promise<RawSniper> {
   try {
     const q = name.replace(/\s+(ord|plc|ab|inc|corp|group).*$/i, '').slice(0, 40)
     const search = await yf.search(q || symbol)
-    news = (search.news || []).slice(0, 4).map((n: any) => ({
-      title: String(n.title || ''),
-      publisher: String(n.publisher || 'Yahoo'),
-      link: n.link ? String(n.link) : undefined,
-    })).filter((n: NewsItem) => n.title)
+    news = (search.news || [])
+      .slice(0, 4)
+      .map((n: any) => ({
+        title: String(n.title || ''),
+        publisher: String(n.publisher || 'Yahoo'),
+        link: n.link ? String(n.link) : undefined,
+      }))
+      .filter((n: NewsItem) => n.title)
   } catch {
     news = []
   }
@@ -166,27 +189,57 @@ export async function fetchSniper(yf: any, symbol: string): Promise<RawSniper> {
       close: Number(c.close),
     }))
 
+  // Only measure day-to-day drops inside the last 5 trading sessions.
+  const LOOKBACK = 5
+  const start = Math.max(1, closes.length - LOOKBACK)
   let maxDayDropPct: number | null = null
   let maxDayDropDate: string | null = null
-  for (let i = 1; i < closes.length; i++) {
+  let maxDayDropDateObj: Date | null = null
+  for (let i = start; i < closes.length; i++) {
     const prev = closes[i - 1].close
     const cur = closes[i].close
     if (prev <= 0) continue
     const d = ((cur - prev) / prev) * 100
     if (maxDayDropPct == null || d < maxDayDropPct) {
       maxDayDropPct = d
+      maxDayDropDateObj = closes[i].date
       maxDayDropDate = closes[i].date.toISOString()
     }
   }
 
-  const window = closes.slice(-6)
+  const dropAgeTradingDays =
+    maxDayDropDateObj != null ? tradingSessionsAgo(closes, maxDayDropDateObj) : null
+
+  let dropWhenLabel: string | null = null
+  if (maxDayDropDateObj != null && maxDayDropPct != null) {
+    const age = dropAgeTradingDays ?? 0
+    const when =
+      age === 0
+        ? 'i dag'
+        : age === 1
+          ? 'i går'
+          : `för ${age} handelsdagar sedan`
+    dropWhenLabel = `${maxDayDropPct.toFixed(1).replace('.', ',')} % ${formatSvDate(maxDayDropDateObj)} (${when})`
+  }
+
+  const window = closes.slice(-LOOKBACK)
   const last = window[window.length - 1]?.close ?? quote.regularMarketPrice ?? null
-  const recentHigh =
-    window.length > 0 ? Math.max(...window.map((c: { close: number }) => c.close)) : null
+  let recentHigh: number | null = null
+  let weekHighDate: string | null = null
+  for (const c of window) {
+    if (recentHigh == null || c.close > recentHigh) {
+      recentHigh = c.close
+      weekHighDate = c.date.toISOString()
+    }
+  }
+
   const weekDrawdownPct =
     last != null && recentHigh != null && recentHigh > 0
       ? ((last - recentHigh) / recentHigh) * 100
       : null
+
+  // Still "down" = has not recovered most of the move (still ≥4% under recent high).
+  const stillDown = weekDrawdownPct != null && weekDrawdownPct <= -4
 
   const bounceTarget = recentHigh
   const bounceUpsidePct =
@@ -210,9 +263,7 @@ export async function fetchSniper(yf: any, symbol: string): Promise<RawSniper> {
   const profitMargin = raw(fd.profitMargins)
   const pe = quote.trailingPE ?? raw(sd.trailingPE)
   const qualityOk =
-    isLargeCap(marketCap, currency, symbol) &&
-    (profitMargin == null || profitMargin > -0.05) &&
-    (pe == null || pe > 0 || pe < 0) // allow missing PE
+    isLargeCap(marketCap, currency, symbol) && (profitMargin == null || profitMargin > -0.05)
 
   return {
     symbol,
@@ -230,7 +281,11 @@ export async function fetchSniper(yf: any, symbol: string): Promise<RawSniper> {
     dayChangePct: quote.regularMarketChangePercent ?? null,
     maxDayDropPct,
     maxDayDropDate,
+    dropAgeTradingDays,
+    dropWhenLabel,
     weekDrawdownPct,
+    weekHighDate,
+    stillDown,
     recentHigh,
     bounceTarget,
     bounceUpsidePct,
@@ -334,39 +389,49 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
   const day = m.dayChangePct
   const maxDrop = m.maxDayDropPct
   const week = m.weekDrawdownPct
+  const age = m.dropAgeTradingDays
+  const fresh = age != null && age <= 3
   const sharp =
-    (day != null && day <= -4.5) ||
-    (maxDrop != null && maxDrop <= -5) ||
-    (week != null && week <= -5.5)
+    fresh &&
+    ((maxDrop != null && maxDrop <= -5.5) || (day != null && day <= -5 && age === 0))
 
   {
     let pts = 0
     const worst = Math.min(day ?? 0, maxDrop ?? 0, week ?? 0)
-    let note = `${worst.toFixed(1)}%`
-    if (worst <= -10) {
+    let note = m.dropWhenLabel || `${worst.toFixed(1)}%`
+    if (!fresh) {
+      pts = 0
+      note = m.dropWhenLabel
+        ? `${m.dropWhenLabel} · för gammal (>3 handelsdagar)`
+        : 'Ingen färsk nedgång'
+    } else if (worst <= -10) {
       pts = 30
       note += ' · kraftig'
-      reasons.push(`Nedgång ${worst.toFixed(1)}%`)
+      reasons.push(m.dropWhenLabel || `Nedgång ${worst.toFixed(1)}%`)
     } else if (worst <= -7) {
       pts = 24
       note += ' · tydlig'
-      reasons.push(`Nedgång ${worst.toFixed(1)}%`)
-    } else if (worst <= -5) {
-      pts = 18
-      note += ' · måttlig'
-      reasons.push(`Nedgång ${worst.toFixed(1)}%`)
-    } else if (worst <= -3.5) {
-      pts = 8
-      note += ' · begränsad'
+      reasons.push(m.dropWhenLabel || `Nedgång ${worst.toFixed(1)}%`)
+    } else if (worst <= -5.5) {
+      pts = 16
+      note += ' · på gränsen'
+      reasons.push(m.dropWhenLabel || `Nedgång ${worst.toFixed(1)}%`)
     } else {
       pts = 0
-      note += ' · ingen signal'
+      note += ' · under tröskel'
+    }
+    if (!m.stillDown) {
+      pts = Math.min(pts, 4)
+      note += ' · har återhämtats'
+      risks.push('Kursen har redan återhämtat merparten av fallet')
     }
     breakdown.push({ key: 'dip', label: 'Nedgång', points: pts, max: 30, note })
   }
 
   {
-    const pts = explain.strength === 3 ? 25 : explain.strength === 2 ? 16 : explain.strength === 1 ? 6 : 0
+    let strength = explain.strength
+    if (strength === 2 && (age == null || age > 1)) strength = 1
+    const pts = strength === 3 ? 25 : strength === 2 ? 14 : strength === 1 ? 4 : 0
     breakdown.push({
       key: 'why',
       label: 'Orsak',
@@ -374,8 +439,8 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
       max: 25,
       note: explain.reason.slice(0, 140),
     })
-    if (pts >= 16) reasons.push('Identifierad orsak')
-    if (pts === 0 && sharp) risks.push('Orsak saknas — avvakta')
+    if (pts >= 14) reasons.push('Identifierad orsak')
+    if (pts < 14 && sharp) risks.push('Svag eller saknad orsak')
   }
 
   {
@@ -401,17 +466,18 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
     const up = m.bounceUpsidePct
     let pts = 0
     let note = up == null ? 'Saknas' : `${up.toFixed(1)}% till återhämtningsnivå`
-    if (up != null && up >= 5) {
+    if (m.stillDown && up != null && up >= 5.5) {
       pts = 20
-      note += ' · ≥5%'
+      note += ' · ≥5,5%'
       catalysts.push(
         `Återhämtning till ${m.bounceTarget?.toFixed(2)} ${m.currency} ≈ ${up.toFixed(1)}%`,
       )
-    } else if (up != null && up >= 3) {
-      pts = 10
+    } else if (m.stillDown && up != null && up >= 4) {
+      pts = 8
       note += ' · begränsad'
     } else {
-      pts = 2
+      pts = 0
+      note += ' · otillräcklig'
     }
     breakdown.push({ key: 'bounce', label: 'Återhämtningspotential', points: pts, max: 20, note })
   }
@@ -422,18 +488,21 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
 
   let setup: Setup = 'none'
   let setupLabel = '—'
-  if (!m.qualityOk && !sharp) {
-    setup = 'none'
-    setupLabel = '—'
-  } else if (sharp && explain.strength >= 2 && scorePct >= 55 && (m.bounceUpsidePct ?? 0) >= 4.5) {
+  const reasonOk =
+    explain.strength >= 3 || (explain.strength >= 2 && age != null && age <= 1)
+  if (
+    sharp &&
+    m.stillDown &&
+    m.qualityOk &&
+    reasonOk &&
+    scorePct >= 62 &&
+    (m.bounceUpsidePct ?? 0) >= 5.5
+  ) {
     setup = 'sniper'
     setupLabel = 'Köpläge'
-  } else if (sharp && m.qualityOk) {
+  } else if (sharp && m.stillDown && m.qualityOk) {
     setup = 'watch'
     setupLabel = 'Bevakning'
-  } else {
-    setup = 'none'
-    setupLabel = '—'
   }
 
   if (setup === 'sniper') {
@@ -442,18 +511,19 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
 
   const fairValue = m.bounceTarget
   const fairValueMethod =
-    'Återhämtningsnivå = högsta stängning senaste 5–6 dagar (Yahoo). Analytikermål är separat och avser längre horisont.'
+    'Återhämtningsnivå = högsta stängning senaste 5 handelsdagar (Yahoo). Analytikermål avser längre horisont.'
 
   const targetStr =
     m.bounceTarget != null ? `${m.bounceTarget.toFixed(2)} ${m.currency}` : '—'
   const upStr = m.bounceUpsidePct != null ? `${m.bounceUpsidePct.toFixed(1)}%` : '—'
+  const when = m.dropWhenLabel ? `Nedgång ${m.dropWhenLabel}. ` : ''
 
   const thesis =
     setup === 'sniper'
-      ? `${m.name}: ${explain.reason} Återhämtningsnivå ${targetStr} motsvarar ca ${upStr} från nuvarande kurs.`
+      ? `${m.name}: ${when}${explain.reason} Återhämtningsnivå ${targetStr} ≈ ${upStr}.`
       : setup === 'watch'
-        ? `${m.name}: Nedgång noterad, men kriterierna för köpläge är inte uppfyllda (orsak, storlek eller återhämtningspotential).`
-        : `${m.name}: Inget köpläge enligt gällande kriterier.`
+        ? `${m.name}: ${when}Uppfyller inte alla krav för köpläge.`
+        : `${m.name}: Inget aktuellt köpläge.`
 
   return {
     symbol: m.symbol,
@@ -484,6 +554,8 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
     dayChangePct: m.dayChangePct,
     maxDayDropPct: m.maxDayDropPct,
     maxDayDropDate: m.maxDayDropDate,
+    dropAgeTradingDays: m.dropAgeTradingDays,
+    dropWhenLabel: m.dropWhenLabel,
     weekDrawdownPct: m.weekDrawdownPct,
     bounceTarget: m.bounceTarget,
     bounceUpsidePct: m.bounceUpsidePct != null ? Math.round(m.bounceUpsidePct * 10) / 10 : null,
@@ -500,7 +572,13 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
     catalysts: catalysts.slice(0, 4),
     risks: risks.slice(0, 5),
     breakdown,
-    dataQuality: Math.min(100, 40 + (m.news.length > 0 ? 15 : 0) + (m.exDividendDate || m.earningsDate ? 20 : 0) + (m.maxDayDropPct != null ? 25 : 0)),
+    dataQuality: Math.min(
+      100,
+      40 +
+        (m.news.length > 0 ? 15 : 0) +
+        (m.exDividendDate || m.earningsDate ? 20 : 0) +
+        (m.maxDayDropPct != null ? 25 : 0),
+    ),
     verdict: setup === 'sniper' ? 'undervalued' : setup === 'watch' ? 'fair' : 'unknown',
     verdictLabel: setupLabel,
   }
@@ -555,7 +633,11 @@ function empty(symbol: string, error: string): Analysis {
     dayChangePct: null,
     maxDayDropPct: null,
     maxDayDropDate: null,
+    dropAgeTradingDays: null,
+    dropWhenLabel: null,
     weekDrawdownPct: null,
+    weekHighDate: null,
+    stillDown: false,
     recentHigh: null,
     bounceTarget: null,
     bounceUpsidePct: null,
@@ -595,10 +677,14 @@ export async function analyzeSymbols(
     }
   })
 
-  const rank = (s: Setup) => (s === 'sniper' ? 3 : s === 'watch' ? 2 : s === 'none' ? 1 : 0)
   return out.sort((a, b) => {
+    const rank = (s: Setup) => (s === 'sniper' ? 3 : s === 'watch' ? 2 : s === 'none' ? 1 : 0)
     const d = rank(b.setup) - rank(a.setup)
     if (d !== 0) return d
+    // Prefer fresher drops when ranking köplägen
+    const ageA = a.dropAgeTradingDays ?? 99
+    const ageB = b.dropAgeTradingDays ?? 99
+    if (ageA !== ageB) return ageA - ageB
     return (a.maxDayDropPct ?? 0) - (b.maxDayDropPct ?? 0)
   })
 }

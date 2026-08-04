@@ -2,10 +2,12 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { scanSymbols, type Analysis } from '../api/client'
 import { resolveWatchlist } from '../data/watchlists'
 
-const BATCH = 6
-const PAUSE_BETWEEN_BATCH_MS = 1500
-const CYCLE_PAUSE_MS = 12000
-const STORAGE_KEY = 'vs-sniper-v3'
+const BATCH = 8
+const PAUSE_BETWEEN_BATCH_MS = 2500
+/** Full refresh at most a few times per day — not continuous flicker. */
+const CYCLE_PAUSE_MS = 6 * 60 * 60 * 1000
+const MAX_SNIPER = 3
+const STORAGE_KEY = 'vs-sniper-v4'
 
 export type ScannerStatus = {
   running: boolean
@@ -16,6 +18,7 @@ export type ScannerStatus = {
   cycle: number
   lastError: string | null
   lastUpdate: string | null
+  nextUpdateAt: string | null
 }
 
 function loadCache(): Analysis[] {
@@ -40,16 +43,43 @@ function saveCache(results: Analysis[]) {
   }
 }
 
+function finalize(results: Analysis[]): Analysis[] {
+  const rank = (s: Analysis['setup']) =>
+    s === 'sniper' ? 3 : s === 'watch' ? 2 : s === 'none' ? 1 : 0
+  const sorted = [...results].sort((a, b) => {
+    const d = rank(b.setup) - rank(a.setup)
+    if (d !== 0) return d
+    const ageA = a.dropAgeTradingDays ?? 99
+    const ageB = b.dropAgeTradingDays ?? 99
+    if (ageA !== ageB) return ageA - ageB
+    return (a.maxDayDropPct ?? 0) - (b.maxDayDropPct ?? 0)
+  })
+
+  // Hard cap: never more than a handful of köplägen.
+  let sniperLeft = MAX_SNIPER
+  return sorted.map((a) => {
+    if (a.setup !== 'sniper') return a
+    if (sniperLeft <= 0) {
+      return {
+        ...a,
+        setup: 'watch' as const,
+        setupLabel: 'Bevakning',
+        rating: 'watch' as const,
+        ratingLabel: 'Bevakning',
+        suggestedAmount: 0,
+        suggestedShares: 0,
+        positionPct: 0,
+      }
+    }
+    sniperLeft -= 1
+    return a
+  })
+}
+
 function mergeResults(prev: Analysis[], incoming: Analysis[]): Analysis[] {
   const map = new Map(prev.map((a) => [a.symbol, a]))
   for (const a of incoming) map.set(a.symbol, a)
-  const rank = (s: Analysis['setup']) =>
-    s === 'sniper' ? 3 : s === 'watch' ? 2 : s === 'none' ? 1 : 0
-  return [...map.values()].sort((a, b) => {
-    const d = rank(b.setup) - rank(a.setup)
-    if (d !== 0) return d
-    return (a.maxDayDropPct ?? 0) - (b.maxDayDropPct ?? 0)
-  })
+  return finalize([...map.values()])
 }
 
 export function useLiveScanner(portfolio: number, risk: number) {
@@ -66,6 +96,7 @@ export function useLiveScanner(portfolio: number, risk: number) {
     cycle: 0,
     lastError: null,
     lastUpdate: null,
+    nextUpdateAt: null,
   })
 
   const runningRef = useRef(true)
@@ -96,12 +127,13 @@ export function useLiveScanner(portfolio: number, risk: number) {
       while (abortRef.current === runId) {
         if (!runningRef.current) {
           setStatus((s) => ({ ...s, phase: 'idle', currentSymbols: [] }))
-          await sleep(500)
+          await sleep(1000)
           continue
         }
 
         cycle += 1
         let done = 0
+        const buffer: Analysis[] = []
         setStatus((s) => ({
           ...s,
           phase: 'scanning',
@@ -109,13 +141,14 @@ export function useLiveScanner(portfolio: number, risk: number) {
           doneInCycle: 0,
           totalInCycle: symbols.length,
           lastError: null,
+          nextUpdateAt: null,
         }))
 
         for (let i = 0; i < symbols.length; i += BATCH) {
           if (abortRef.current !== runId) return
           while (!runningRef.current && abortRef.current === runId) {
             setStatus((s) => ({ ...s, phase: 'idle', currentSymbols: [] }))
-            await sleep(400)
+            await sleep(800)
           }
           if (abortRef.current !== runId) return
 
@@ -131,16 +164,11 @@ export function useLiveScanner(portfolio: number, risk: number) {
           try {
             const data = await scanSymbols(batch, portfolioRef.current, riskRef.current)
             if (abortRef.current !== runId) return
-            setResults((prev) => {
-              const next = mergeResults(prev, data.results)
-              saveCache(next)
-              return next
-            })
+            buffer.push(...data.results)
             done += batch.length
             setStatus((s) => ({
               ...s,
               doneInCycle: done,
-              lastUpdate: data.fetchedAt,
               lastError: null,
             }))
           } catch (e) {
@@ -149,18 +177,29 @@ export function useLiveScanner(portfolio: number, risk: number) {
               phase: 'error',
               lastError: e instanceof Error ? e.message : 'Scanfel',
             }))
-            await sleep(5000)
+            await sleep(8000)
           }
 
           await sleep(PAUSE_BETWEEN_BATCH_MS)
         }
 
         if (abortRef.current !== runId) return
+
+        // Publish once per full pass — list does not flicker mid-scan.
+        setResults((prev) => {
+          const next = mergeResults(prev, buffer)
+          saveCache(next)
+          return next
+        })
+
+        const nextAt = new Date(Date.now() + CYCLE_PAUSE_MS).toISOString()
         setStatus((s) => ({
           ...s,
           phase: 'cycle-pause',
           currentSymbols: [],
           doneInCycle: symbols.length,
+          lastUpdate: new Date().toISOString(),
+          nextUpdateAt: nextAt,
         }))
         await sleep(CYCLE_PAUSE_MS)
       }

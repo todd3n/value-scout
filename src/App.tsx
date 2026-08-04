@@ -54,7 +54,7 @@ function DetailPanel({ a, onClose }: { a: Analysis; onClose: () => void }) {
 
       <div className="detail-rating">
         <span className={`chip chip-${a.setup}`}>{a.setupLabel}</span>
-        <span className="chip chip-muted">Tillförlitlighet {a.conviction}</span>
+        {a.dropWhenLabel && <span className="chip chip-muted">{a.dropWhenLabel}</span>}
       </div>
 
       <div className="detail-kpis">
@@ -69,8 +69,8 @@ function DetailPanel({ a, onClose }: { a: Analysis; onClose: () => void }) {
           </strong>
         </div>
         <div>
-          <span>Största endagsfall</span>
-          <strong className="neg">{fmtNum(a.maxDayDropPct, 1)}%</strong>
+          <span>Nedgång (när)</span>
+          <strong className="neg">{a.dropWhenLabel || '—'}</strong>
         </div>
         <div>
           <span>Återhämtningsnivå</span>
@@ -89,7 +89,7 @@ function DetailPanel({ a, onClose }: { a: Analysis; onClose: () => void }) {
       </div>
 
       <section className="detail-block highlight">
-        <h3>Orsak till rörelsen</h3>
+        <h3>Orsak</h3>
         <p>{a.dropReason}</p>
         <p className="fine">{a.dropReasonSource}</p>
       </section>
@@ -221,13 +221,20 @@ export default function App() {
 
   const liveLabel =
     status.phase === 'scanning'
-      ? status.currentSymbols.join(', ')
+      ? `Genomgång ${pct}%`
       : status.phase === 'cycle-pause'
-        ? 'Väntar till nästa runda'
+        ? status.nextUpdateAt
+          ? `Nästa ${new Date(status.nextUpdateAt).toLocaleString('sv-SE', {
+              hour: '2-digit',
+              minute: '2-digit',
+              day: 'numeric',
+              month: 'short',
+            })}`
+          : 'Väntar'
         : status.phase === 'error'
           ? status.lastError || 'Fel'
           : status.running
-            ? 'Aktiv'
+            ? 'Redo'
             : 'Stoppad'
 
   return (
@@ -244,7 +251,15 @@ export default function App() {
         <div className="live-pill" data-phase={status.phase}>
           <span className="pulse" aria-hidden />
           <div>
-            <strong>{status.running ? 'Aktiv' : 'Stoppad'}</strong>
+            <strong>
+              {status.phase === 'scanning'
+                ? 'Genomgång'
+                : status.phase === 'cycle-pause'
+                  ? 'Klar'
+                  : status.running
+                    ? 'Aktiv'
+                    : 'Stoppad'}
+            </strong>
             <span>{liveLabel}</span>
           </div>
         </div>
@@ -260,18 +275,17 @@ export default function App() {
           </div>
           <div>
             <span>Urval</span>
-            <strong>
-              {universeSize}
-              <small>
-                {' '}
-                US {counts.usa} · UK {counts.uk} · SE {counts.se}
-              </small>
-            </strong>
+            <strong>{universeSize}</strong>
           </div>
           <div>
-            <span>Analyserade</span>
+            <span>Senast</span>
             <strong>
-              {results.length}/{universeSize}
+              {status.lastUpdate
+                ? new Date(status.lastUpdate).toLocaleTimeString('sv-SE', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })
+                : '—'}
             </strong>
           </div>
         </div>
@@ -282,15 +296,18 @@ export default function App() {
       </header>
 
       <div className="progress-track" aria-hidden>
-        <div className="progress-fill" style={{ width: `${pct}%` }} />
+        <div
+          className="progress-fill"
+          style={{ width: status.phase === 'scanning' ? `${pct}%` : status.phase === 'cycle-pause' ? '100%' : '0%' }}
+        />
       </div>
 
       <div className="workspace">
         <aside className="sidebar">
           <p className="side-label">Kriterier</p>
           <p className="rule-box">
-            Large caps med nedgång om ca 5–10 %, dokumenterad orsak (utdelning, rapport eller
-            nyhet) och återhämtningspotential om minst 5 %. Signalerna är ovanliga.
+            Endast nedgångar senaste <strong>3 handelsdagarna</strong>, fortfarande nere, med
+            dokumenterad orsak. Max <strong>3 köplägen</strong>. Uppdatering ca var 6:e timme.
           </p>
 
           <p className="side-label">Portfölj</p>
@@ -363,42 +380,41 @@ export default function App() {
 
           <div className="side-foot">
             <p>
-              Runda {status.cycle || '—'} · {pct}%
-            </p>
-            <p>
-              {status.lastUpdate
-                ? `Uppdaterad ${new Date(status.lastUpdate).toLocaleTimeString('sv-SE')}`
-                : 'Hämtar data…'}
+              {status.phase === 'scanning'
+                ? `Analyserar ${status.doneInCycle}/${status.totalInCycle}`
+                : status.nextUpdateAt
+                  ? `Nästa genomgång ${new Date(status.nextUpdateAt).toLocaleString('sv-SE')}`
+                  : '—'}
             </p>
             <p className="disclaimer">
-              Kurs- och bolagsdata från Yahoo Finance. Återhämtningsnivå beräknas lokalt. Ingen
-              investeringsrådgivning.
+              Yahoo Finance. Nedgång older än 3 handelsdagar räknas inte. Ingen rådgivning.
             </p>
           </div>
         </aside>
 
         <main className="main">
           <div className="main-head">
-            <h1>
-              {tab === 'sniper' ? 'Köplägen' : tab === 'watch' ? 'Bevakning' : 'Alla bolag'}
-            </h1>
-            <p>
-              {universeSize} bolag · USA, Storbritannien och Sverige · löpande uppdatering
-            </p>
+            <div>
+              <h1>
+                {tab === 'sniper' ? 'Köplägen' : tab === 'watch' ? 'Bevakning' : 'Alla bolag'}
+              </h1>
+              <p>
+                {tab === 'sniper'
+                  ? 'Färska nedgångar med datum och orsak. Tom lista är normalt.'
+                  : `${universeSize} bolag · US ${counts.usa} · UK ${counts.uk} · SE ${counts.se}`}
+              </p>
+            </div>
           </div>
 
           {filtered.length === 0 ? (
             <div className="empty">
               <p>
                 {tab === 'sniper'
-                  ? results.length === 0
-                    ? 'Analys pågår. Resultat visas när data finns.'
-                    : 'Inga köplägen för tillfället.'
-                  : 'Inga poster i listan.'}
+                  ? status.phase === 'scanning' && results.length === 0
+                    ? 'Första genomgången pågår. Listan publiceras när den är klar.'
+                    : 'Inga köplägen just nu.'
+                  : 'Inga poster.'}
               </p>
-              {status.currentSymbols.length > 0 && (
-                <p className="scanning-now">{status.currentSymbols.join(' · ')}</p>
-              )}
             </div>
           ) : (
             <div className="table-wrap">
@@ -408,10 +424,9 @@ export default function App() {
                     <th>Bolag</th>
                     <th>Mkt</th>
                     <th>Status</th>
-                    <th>Nedgång</th>
+                    <th>När / nedgång</th>
                     <th>Uppsida</th>
                     <th>Orsak</th>
-                    <th>Källa</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -429,18 +444,13 @@ export default function App() {
                       <td>
                         <span className={`chip chip-${a.setup}`}>{a.setupLabel}</span>
                       </td>
-                      <td className="neg">
-                        {fmtNum(
-                          Math.min(a.dayChangePct ?? 0, a.maxDayDropPct ?? 0, a.weekDrawdownPct ?? 0),
-                          1,
-                        )}
-                        %
+                      <td className="when">
+                        {a.dropWhenLabel || '—'}
                       </td>
                       <td className="pos">
                         {a.bounceUpsidePct != null ? `+${fmtNum(a.bounceUpsidePct, 1)}%` : '—'}
                       </td>
                       <td className="why">{a.dropReason}</td>
-                      <td className="src">{a.dropReasonSource}</td>
                     </tr>
                   ))}
                 </tbody>
