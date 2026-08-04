@@ -537,10 +537,34 @@
   padding: 0.75rem 0.8rem;
 }
 
-.news {
+.sourced-list {
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
+}
+
+.sourced-list li {
+  padding: 0.45rem 0;
+  border-bottom: 1px solid #eef1f4;
+}
+
+.sourced-list span {
+  display: block;
+  font-size: 0.86rem;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.sourced-list em {
+  display: block;
+  margin-top: 0.15rem;
+  font-style: normal;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+.sourced-list.risks span {
+  color: var(--danger);
 }
 
 .news li {

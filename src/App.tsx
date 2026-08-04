@@ -113,9 +113,42 @@ function DetailPanel({ a, onClose }: { a: Analysis; onClose: () => void }) {
       </div>
 
       <section className="detail-block highlight">
-        <h3>Orsak</h3>
-        <p>{a.dropReason}</p>
+        <h3>Varför eventuellt köpläge</h3>
+        {(a.buyReasons?.length ?? 0) > 0 ? (
+          <ul className="sourced-list">
+            {a.buyReasons.map((r) => (
+              <li key={r.text + r.source}>
+                <span>{r.text}</span>
+                <em>{r.source}</em>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>{a.dropReason}</p>
+        )}
         <p className="fine">{a.dropReasonSource}</p>
+      </section>
+
+      <section className="detail-block">
+        <h3>Risker</h3>
+        {(a.riskItems?.length ?? 0) > 0 ? (
+          <ul className="sourced-list risks">
+            {a.riskItems.map((r) => (
+              <li key={r.text + r.source}>
+                <span>{r.text}</span>
+                <em>{r.source}</em>
+              </li>
+            ))}
+          </ul>
+        ) : a.risks.length > 0 ? (
+          <ul className="risks">
+            {a.risks.map((r) => (
+              <li key={r}>{r}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>Inga särskilda riskflaggor just nu.</p>
+        )}
       </section>
 
       <section className="detail-block">
@@ -123,7 +156,30 @@ function DetailPanel({ a, onClose }: { a: Analysis; onClose: () => void }) {
         <p>{a.thesis}</p>
       </section>
 
-      {a.news.length > 0 && (
+      {(a.researchHits?.length ?? 0) > 0 && (
+        <section className="detail-block">
+          <h3>Källor i media</h3>
+          <ul className="news">
+            {a.researchHits.slice(0, 6).map((n) => (
+              <li key={n.title + n.source}>
+                {n.url ? (
+                  <a href={n.url} target="_blank" rel="noreferrer">
+                    {n.title}
+                  </a>
+                ) : (
+                  n.title
+                )}
+                <span>
+                  {n.source}
+                  {n.kind !== 'context' ? ` · ${n.kind === 'risk' ? 'risk' : 'katalysator'}` : ''}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {a.news.length > 0 && !(a.researchHits?.length > 0) && (
         <section className="detail-block">
           <h3>Nyheter</h3>
           <ul className="news">
@@ -138,17 +194,6 @@ function DetailPanel({ a, onClose }: { a: Analysis; onClose: () => void }) {
                 )}
                 <span>{n.publisher}</span>
               </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {a.risks.length > 0 && (
-        <section className="detail-block">
-          <h3>Risker</h3>
-          <ul className="risks">
-            {a.risks.map((r) => (
-              <li key={r}>{r}</li>
             ))}
           </ul>
         </section>
@@ -331,8 +376,9 @@ export default function App() {
           <p className="side-label">Kriterier</p>
           <p className="rule-box">
             Endast nedgångar senaste <strong>3 handelsdagarna</strong>, fortfarande nere, med
-            dokumenterad orsak. Max <strong>3 köplägen</strong>. Kurser och grafer uppdateras
-            löpande.
+            dokumenterad orsak från kalender och nyheter (Google News, Yahoo, valfritt Finnhub).
+            Max <strong>3 köplägen</strong>. Varje setup visar varför och vilka risker som finns,
+            med källa.
           </p>
 
           <p className="side-label">Portfölj</p>
@@ -412,7 +458,7 @@ export default function App() {
                   : '—'}
             </p>
             <p className="disclaimer">
-              Yahoo Finance. Nedgång äldre än 3 handelsdagar räknas inte. Ingen rådgivning.
+              Kurs: Yahoo. Orsak/risk: Google News, nyckeltal (+ Finnhub om nyckel). Ingen rådgivning.
             </p>
           </div>
         </aside>

@@ -1,3 +1,5 @@
+import { gatherResearch, type ResearchBundle } from './research.ts'
+
 export type NewsItem = { title: string; publisher: string; link?: string }
 
 export type DataSource = {
@@ -98,6 +100,15 @@ export type Analysis = {
   verdictLabel: string
   chart: { date: string; close: number }[]
   yahooUrl: string
+  buyReasons: { text: string; source: string }[]
+  riskItems: { text: string; source: string }[]
+  researchHits: {
+    title: string
+    source: string
+    url?: string
+    publishedAt?: string
+    kind: 'catalyst' | 'risk' | 'context'
+  }[]
   error?: string
 }
 
@@ -314,7 +325,10 @@ export async function fetchSniper(yf: any, symbol: string): Promise<RawSniper> {
   }
 }
 
-function explainDrop(m: RawSniper): { reason: string; source: string; strength: number } {
+function explainDrop(
+  m: RawSniper,
+  research?: ResearchBundle | null,
+): { reason: string; source: string; strength: number } {
   const exAgo = daysSince(m.exDividendDate)
   const earnIn = daysFromNow(m.earningsDate)
   const earnAgo = daysSince(m.earningsDate)
@@ -340,6 +354,31 @@ function explainDrop(m: RawSniper): { reason: string; source: string; strength: 
       strength: 1,
     }
   }
+
+  const riskHit = research?.hits.find((h) => h.kind === 'risk')
+  const catHit = research?.hits.find((h) => h.kind === 'catalyst')
+  const ctxHit = research?.hits.find((h) => h.kind === 'context')
+  if (riskHit) {
+    return {
+      reason: riskHit.title,
+      source: riskHit.source,
+      strength: 2,
+    }
+  }
+  if (catHit) {
+    return {
+      reason: catHit.title,
+      source: catHit.source,
+      strength: 2,
+    }
+  }
+  if (ctxHit) {
+    return {
+      reason: ctxHit.title,
+      source: ctxHit.source,
+      strength: 2,
+    }
+  }
   if (m.news[0]) {
     return {
       reason: `${m.news[0].title} (${m.news[0].publisher})`,
@@ -349,8 +388,8 @@ function explainDrop(m: RawSniper): { reason: string; source: string; strength: 
   }
   if ((m.maxDayDropPct ?? 0) <= -5 || (m.weekDrawdownPct ?? 0) <= -5) {
     return {
-      reason: 'Nedgång utan identifierad kalenderhändelse. Orsak ej verifierad.',
-      source: 'Yahoo Finance, kursdata',
+      reason: 'Nedgång utan identifierad nyhets- eller kalenderhändelse. Orsak ej verifierad.',
+      source: 'Kursdata',
       strength: 0,
     }
   }
@@ -361,7 +400,10 @@ function explainDrop(m: RawSniper): { reason: string; source: string; strength: 
   }
 }
 
-export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 'suggestedShares' | 'positionPct'> {
+export function scoreSniper(
+  m: RawSniper,
+  research: ResearchBundle | null = null,
+): Omit<Analysis, 'suggestedAmount' | 'suggestedShares' | 'positionPct'> {
   const sources: DataSource[] = [
     {
       field: 'Senaste kurs',
@@ -371,7 +413,7 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
     {
       field: 'Nedgång',
       source: 'Yahoo Finance',
-      detail: 'Dagliga stängningskurser, ca 15 handelsdagar',
+      detail: 'Dagliga stängningskurser',
     },
     {
       field: 'Utdelning och rapport',
@@ -379,9 +421,9 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
       detail: 'Bolagskalender',
     },
     {
-      field: 'Nyheter',
-      source: 'Yahoo Finance',
-      detail: 'Senaste rubriker',
+      field: 'Nyheter / orsak',
+      source: 'Google News + Yahoo (+ Finnhub om nyckel finns)',
+      detail: 'Rubriker klassade som katalysator, risk eller kontext',
     },
     {
       field: 'Analytikermål',
@@ -391,16 +433,23 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
     {
       field: 'Återhämtningsnivå',
       source: 'Beräknad',
-      detail: 'Senaste 5–6 dagars högsta stängning',
+      detail: 'Senaste 5 handelsdagars högsta stängning',
     },
   ]
 
-  const explain = explainDrop(m)
+  const explain = explainDrop(m, research)
   const breakdown: Analysis['breakdown'] = []
   const reasons: string[] = []
   const catalysts: string[] = []
   const risks: string[] = []
 
+  if (research) {
+    for (const r of research.buyReasons.slice(0, 4)) reasons.push(r.text)
+    for (const r of research.risks.slice(0, 5)) risks.push(r.text)
+    for (const h of research.hits.filter((x) => x.kind === 'catalyst').slice(0, 2)) {
+      catalysts.push(h.title)
+    }
+  }
   const day = m.dayChangePct
   const maxDrop = m.maxDayDropPct
   const week = m.weekDrawdownPct
@@ -521,7 +570,9 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
   }
 
   if (setup === 'sniper') {
-    risks.push('Kortsiktig återhämtning är inte garanterad')
+    const hasGeneric =
+      research?.risks.some((r) => /återhämtning är inte garanterad/i.test(r.text)) ?? false
+    if (!hasGeneric) risks.push('Kortsiktig återhämtning är inte garanterad')
   }
 
   const fairValue = m.bounceTarget
@@ -535,10 +586,20 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
 
   const thesis =
     setup === 'sniper'
-      ? `${m.name}: ${when}${explain.reason} Återhämtningsnivå ${targetStr} ≈ ${upStr}.`
+      ? `${m.name}: ${when}${research?.summaryWhy || explain.reason} Återhämtningsnivå ${targetStr} ≈ ${upStr}. Risker: ${research?.summaryRisk || risks[0] || 'se lista'}.`
       : setup === 'watch'
-        ? `${m.name}: ${when}Uppfyller inte alla krav för köpläge.`
+        ? `${m.name}: ${when}${research?.summaryWhy || 'Uppfyller inte alla krav för köpläge.'} Risker: ${research?.summaryRisk || risks[0] || '—'}.`
         : `${m.name}: Inget aktuellt köpläge.`
+
+  const buyReasons = research?.buyReasons ?? []
+  const modelRisks = risks.map((t) => ({ text: t, source: 'Modell' }))
+  const researchRisks = research?.risks ?? []
+  const seenRisk = new Set(researchRisks.map((r) => r.text.toLowerCase().slice(0, 60)))
+  const riskItems = [
+    ...researchRisks,
+    ...modelRisks.filter((r) => !seenRisk.has(r.text.toLowerCase().slice(0, 60))),
+  ].slice(0, 8)
+  const researchHits = research?.hits ?? []
 
   return {
     symbol: m.symbol,
@@ -585,19 +646,23 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
     thesis,
     reasons: reasons.slice(0, 5),
     catalysts: catalysts.slice(0, 4),
-    risks: risks.slice(0, 5),
+    risks: riskItems.map((r) => r.text).slice(0, 6),
     breakdown,
     dataQuality: Math.min(
       100,
-      40 +
-        (m.news.length > 0 ? 15 : 0) +
-        (m.exDividendDate || m.earningsDate ? 20 : 0) +
-        (m.maxDayDropPct != null ? 25 : 0),
+      35 +
+        (researchHits.length > 0 ? 20 : m.news.length > 0 ? 10 : 0) +
+        (m.exDividendDate || m.earningsDate ? 15 : 0) +
+        (m.maxDayDropPct != null ? 20 : 0) +
+        (buyReasons.length > 0 ? 10 : 0),
     ),
     verdict: setup === 'sniper' ? 'undervalued' : setup === 'watch' ? 'fair' : 'unknown',
     verdictLabel: setupLabel,
     chart: m.chart,
     yahooUrl: m.yahooUrl,
+    buyReasons,
+    riskItems,
+    researchHits,
   }
 }
 
@@ -686,10 +751,36 @@ export async function analyzeSymbols(
   riskPct: number,
 ): Promise<Analysis[]> {
   const unique = [...new Set(symbols.map((s) => s.trim()).filter(Boolean))].slice(0, 40)
-  const out = await mapPool(unique, 3, async (symbol) => {
+  const out = await mapPool(unique, 2, async (symbol) => {
     try {
       const rawM = await fetchSniper(yf, symbol)
-      const scored = scoreSniper(rawM)
+      const worthDeep =
+        rawM.stillDown &&
+        ((rawM.maxDayDropPct ?? 0) <= -4 ||
+          (rawM.dayChangePct ?? 0) <= -3.5 ||
+          (rawM.weekDrawdownPct ?? 0) <= -4)
+
+      const research = await gatherResearch(
+        {
+          name: rawM.name,
+          symbol: rawM.symbol,
+          dropWhenLabel: rawM.dropWhenLabel,
+          stillDown: rawM.stillDown,
+          maxDayDropPct: rawM.maxDayDropPct,
+          bounceUpsidePct: rawM.bounceUpsidePct,
+          dayChangePct: rawM.dayChangePct,
+          pe: rawM.pe,
+          debtToEquity: rawM.debtToEquity,
+          profitMargin: rawM.profitMargin,
+          beta: rawM.beta,
+          exDividendDate: rawM.exDividendDate,
+          earningsDate: rawM.earningsDate,
+          yahooNews: rawM.news,
+        },
+        { deep: worthDeep },
+      ).catch(() => null)
+
+      const scored = scoreSniper(rawM, research)
       return { ...scored, ...positionSize(scored, portfolio, riskPct) }
     } catch (e) {
       return empty(symbol, e instanceof Error ? e.message : 'Fel')
@@ -700,7 +791,6 @@ export async function analyzeSymbols(
     const rank = (s: Setup) => (s === 'sniper' ? 3 : s === 'watch' ? 2 : s === 'none' ? 1 : 0)
     const d = rank(b.setup) - rank(a.setup)
     if (d !== 0) return d
-    // Prefer fresher drops when ranking köplägen
     const ageA = a.dropAgeTradingDays ?? 99
     const ageB = b.dropAgeTradingDays ?? 99
     if (ageA !== ageB) return ageA - ageB

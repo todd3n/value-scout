@@ -65,6 +65,15 @@ export type Analysis = {
   verdictLabel: string
   chart: ChartPoint[]
   yahooUrl: string
+  buyReasons: { text: string; source: string }[]
+  riskItems: { text: string; source: string }[]
+  researchHits: {
+    title: string
+    source: string
+    url?: string
+    publishedAt?: string
+    kind: 'catalyst' | 'risk' | 'context'
+  }[]
   error?: string
 }
 
