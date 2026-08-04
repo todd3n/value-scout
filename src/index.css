@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;700&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+:root {
+  --ink: #14201b;
+  --muted: #5c6b63;
+  --line: #d8ddd9;
+  --bg: #faf8f4;
+  --display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans: 'Source Sans 3', 'Segoe UI', sans-serif;
+
+  font: 17px/1.45 var(--sans);
+  color: var(--ink);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+#root {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+  min-height: 100svh;
+}
+
+a {
+  color: inherit;
+}
+
+@media (max-width: 480px) {
+  :root {
+    font-size: 16px;
+  }
+}
