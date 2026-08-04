@@ -387,7 +387,7 @@ export default function App() {
                   : '—'}
             </p>
             <p className="disclaimer">
-              Yahoo Finance. Nedgång older än 3 handelsdagar räknas inte. Ingen rådgivning.
+              Yahoo Finance. Nedgång äldre än 3 handelsdagar räknas inte. Ingen rådgivning.
             </p>
           </div>
         </aside>
