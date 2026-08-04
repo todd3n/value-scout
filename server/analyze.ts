@@ -37,6 +37,8 @@ export type RawSniper = {
   earningsDate: string | null
   news: NewsItem[]
   qualityOk: boolean
+  chart: { date: string; close: number }[]
+  yahooUrl: string
 }
 
 export type Setup = 'sniper' | 'watch' | 'none' | 'error'
@@ -94,6 +96,8 @@ export type Analysis = {
   dataQuality: number
   verdict: 'undervalued' | 'fair' | 'overvalued' | 'unknown'
   verdictLabel: string
+  chart: { date: string; close: number }[]
+  yahooUrl: string
   error?: string
 }
 
@@ -147,10 +151,14 @@ function tradingSessionsAgo(closes: { date: Date }[], dropDate: Date): number {
   return n
 }
 
+function yahooQuoteUrl(symbol: string): string {
+  return `https://finance.yahoo.com/quote/${encodeURIComponent(symbol)}`
+}
+
 export async function fetchSniper(yf: any, symbol: string): Promise<RawSniper> {
-  // Only need ~2 weeks of bars; signal window is last 5 sessions.
-  const period1 = new Date(Date.now() - 18 * 86400000)
-  const [quote, chart, summary] = await Promise.all([
+  // ~1 month of bars for the chart; signal window stays last 5 sessions.
+  const period1 = new Date(Date.now() - 40 * 86400000)
+  const [quote, chartRes, summary] = await Promise.all([
     yf.quote(symbol),
     yf.chart(symbol, { period1, interval: '1d' }),
     yf.quoteSummary(symbol, {
@@ -182,7 +190,7 @@ export async function fetchSniper(yf: any, symbol: string): Promise<RawSniper> {
     news = []
   }
 
-  const closes = (chart.quotes || [])
+  const closes = (chartRes.quotes || [])
     .filter((c: any) => c && c.close != null && c.date)
     .map((c: any) => ({
       date: new Date(c.date),
@@ -265,6 +273,11 @@ export async function fetchSniper(yf: any, symbol: string): Promise<RawSniper> {
   const qualityOk =
     isLargeCap(marketCap, currency, symbol) && (profitMargin == null || profitMargin > -0.05)
 
+  const chart = closes.slice(-30).map((c: { date: Date; close: number }) => ({
+    date: c.date.toISOString(),
+    close: c.close,
+  }))
+
   return {
     symbol,
     name,
@@ -296,6 +309,8 @@ export async function fetchSniper(yf: any, symbol: string): Promise<RawSniper> {
     earningsDate: asIso(cal.earnings?.earningsDate?.[0]),
     news,
     qualityOk,
+    chart,
+    yahooUrl: yahooQuoteUrl(symbol),
   }
 }
 
@@ -581,6 +596,8 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
     ),
     verdict: setup === 'sniper' ? 'undervalued' : setup === 'watch' ? 'fair' : 'unknown',
     verdictLabel: setupLabel,
+    chart: m.chart,
+    yahooUrl: m.yahooUrl,
   }
 }
 
@@ -648,6 +665,8 @@ function empty(symbol: string, error: string): Analysis {
     earningsDate: null,
     news: [],
     qualityOk: false,
+    chart: [],
+    yahooUrl: yahooQuoteUrl(symbol),
   })
   return {
     ...base,

@@ -8,6 +8,8 @@ export type DataSource = {
 
 export type Setup = 'sniper' | 'watch' | 'none' | 'error'
 
+export type ChartPoint = { date: string; close: number }
+
 export type Analysis = {
   symbol: string
   name: string
@@ -61,7 +63,13 @@ export type Analysis = {
   dataQuality: number
   verdict: 'undervalued' | 'fair' | 'overvalued' | 'unknown'
   verdictLabel: string
+  chart: ChartPoint[]
+  yahooUrl: string
   error?: string
+}
+
+export function yahooUrlFor(symbol: string): string {
+  return `https://finance.yahoo.com/quote/${encodeURIComponent(symbol)}`
 }
 
 export async function scanSymbols(

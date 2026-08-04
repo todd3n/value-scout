@@ -2,12 +2,12 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { scanSymbols, type Analysis } from '../api/client'
 import { resolveWatchlist } from '../data/watchlists'
 
-const BATCH = 8
-const PAUSE_BETWEEN_BATCH_MS = 2500
-/** Full refresh at most a few times per day — not continuous flicker. */
-const CYCLE_PAUSE_MS = 6 * 60 * 60 * 1000
+const BATCH = 6
+const PAUSE_BETWEEN_BATCH_MS = 1200
+/** Keep scanning — short pause between full passes so values stay fresh. */
+const CYCLE_PAUSE_MS = 90_000
 const MAX_SNIPER = 3
-const STORAGE_KEY = 'vs-sniper-v4'
+const STORAGE_KEY = 'vs-sniper-v5'
 
 export type ScannerStatus = {
   running: boolean
@@ -55,7 +55,6 @@ function finalize(results: Analysis[]): Analysis[] {
     return (a.maxDayDropPct ?? 0) - (b.maxDayDropPct ?? 0)
   })
 
-  // Hard cap: never more than a handful of köplägen.
   let sniperLeft = MAX_SNIPER
   return sorted.map((a) => {
     if (a.setup !== 'sniper') return a
@@ -127,13 +126,12 @@ export function useLiveScanner(portfolio: number, risk: number) {
       while (abortRef.current === runId) {
         if (!runningRef.current) {
           setStatus((s) => ({ ...s, phase: 'idle', currentSymbols: [] }))
-          await sleep(1000)
+          await sleep(800)
           continue
         }
 
         cycle += 1
         let done = 0
-        const buffer: Analysis[] = []
         setStatus((s) => ({
           ...s,
           phase: 'scanning',
@@ -148,7 +146,7 @@ export function useLiveScanner(portfolio: number, risk: number) {
           if (abortRef.current !== runId) return
           while (!runningRef.current && abortRef.current === runId) {
             setStatus((s) => ({ ...s, phase: 'idle', currentSymbols: [] }))
-            await sleep(800)
+            await sleep(500)
           }
           if (abortRef.current !== runId) return
 
@@ -164,11 +162,17 @@ export function useLiveScanner(portfolio: number, risk: number) {
           try {
             const data = await scanSymbols(batch, portfolioRef.current, riskRef.current)
             if (abortRef.current !== runId) return
-            buffer.push(...data.results)
+            // Live-merge so kurs/graf uppdateras löpande under genomgången.
+            setResults((prev) => {
+              const next = mergeResults(prev, data.results)
+              saveCache(next)
+              return next
+            })
             done += batch.length
             setStatus((s) => ({
               ...s,
               doneInCycle: done,
+              lastUpdate: data.fetchedAt,
               lastError: null,
             }))
           } catch (e) {
@@ -177,28 +181,19 @@ export function useLiveScanner(portfolio: number, risk: number) {
               phase: 'error',
               lastError: e instanceof Error ? e.message : 'Scanfel',
             }))
-            await sleep(8000)
+            await sleep(5000)
           }
 
           await sleep(PAUSE_BETWEEN_BATCH_MS)
         }
 
         if (abortRef.current !== runId) return
-
-        // Publish once per full pass — list does not flicker mid-scan.
-        setResults((prev) => {
-          const next = mergeResults(prev, buffer)
-          saveCache(next)
-          return next
-        })
-
         const nextAt = new Date(Date.now() + CYCLE_PAUSE_MS).toISOString()
         setStatus((s) => ({
           ...s,
           phase: 'cycle-pause',
           currentSymbols: [],
           doneInCycle: symbols.length,
-          lastUpdate: new Date().toISOString(),
           nextUpdateAt: nextAt,
         }))
         await sleep(CYCLE_PAUSE_MS)

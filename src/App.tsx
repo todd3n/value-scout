@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import type { Analysis } from './api/client'
+import { yahooUrlFor } from './api/client'
 import { useLiveScanner } from './hooks/useLiveScanner'
+import { PriceChart } from './components/PriceChart'
 import { WATCHLISTS } from './data/watchlists'
 import './App.css'
 
@@ -46,6 +48,15 @@ function DetailPanel({ a, onClose }: { a: Analysis; onClose: () => void }) {
           </p>
           <h2>{a.name}</h2>
           <p className="detail-sub">{[a.sector, a.industry].filter(Boolean).join(' · ') || '—'}</p>
+          <a
+            className="yahoo-link"
+            href={a.yahooUrl || yahooUrlFor(a.symbol)}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Öppna på Yahoo Finance
+          </a>
         </div>
         <button type="button" className="icon-btn" onClick={onClose} aria-label="Stäng">
           ×
@@ -56,6 +67,19 @@ function DetailPanel({ a, onClose }: { a: Analysis; onClose: () => void }) {
         <span className={`chip chip-${a.setup}`}>{a.setupLabel}</span>
         {a.dropWhenLabel && <span className="chip chip-muted">{a.dropWhenLabel}</span>}
       </div>
+
+      <section className="detail-block chart-block">
+        <h3>Kurs · 30 handelsdagar</h3>
+        <PriceChart
+          points={a.chart || []}
+          dropDate={a.maxDayDropDate}
+          bounceTarget={a.bounceTarget}
+          currency={a.currency}
+        />
+        {a.bounceTarget != null && (
+          <p className="fine">Streckad linje = återhämtningsnivå. Punkt = noterad nedgångsdag.</p>
+        )}
+      </section>
 
       <div className="detail-kpis">
         <div>
@@ -307,7 +331,8 @@ export default function App() {
           <p className="side-label">Kriterier</p>
           <p className="rule-box">
             Endast nedgångar senaste <strong>3 handelsdagarna</strong>, fortfarande nere, med
-            dokumenterad orsak. Max <strong>3 köplägen</strong>. Uppdatering ca var 6:e timme.
+            dokumenterad orsak. Max <strong>3 köplägen</strong>. Kurser och grafer uppdateras
+            löpande.
           </p>
 
           <p className="side-label">Portfölj</p>
@@ -424,9 +449,11 @@ export default function App() {
                     <th>Bolag</th>
                     <th>Mkt</th>
                     <th>Status</th>
+                    <th>Kurs</th>
                     <th>När / nedgång</th>
                     <th>Uppsida</th>
                     <th>Orsak</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -444,13 +471,38 @@ export default function App() {
                       <td>
                         <span className={`chip chip-${a.setup}`}>{a.setupLabel}</span>
                       </td>
-                      <td className="when">
-                        {a.dropWhenLabel || '—'}
+                      <td className="price-cell">
+                        {fmtPrice(a.price, a.currency)}
+                        <span
+                          className={
+                            (a.dayChangePct ?? 0) < 0
+                              ? 'neg'
+                              : (a.dayChangePct ?? 0) > 0
+                                ? 'pos'
+                                : ''
+                          }
+                        >
+                          {a.dayChangePct != null
+                            ? `${a.dayChangePct > 0 ? '+' : ''}${fmtNum(a.dayChangePct, 2)}%`
+                            : ''}
+                        </span>
                       </td>
+                      <td className="when">{a.dropWhenLabel || '—'}</td>
                       <td className="pos">
                         {a.bounceUpsidePct != null ? `+${fmtNum(a.bounceUpsidePct, 1)}%` : '—'}
                       </td>
                       <td className="why">{a.dropReason}</td>
+                      <td>
+                        <a
+                          className="row-yahoo"
+                          href={a.yahooUrl || yahooUrlFor(a.symbol)}
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          Yahoo
+                        </a>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

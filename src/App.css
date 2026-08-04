@@ -408,6 +408,67 @@
   text-overflow: ellipsis;
 }
 
+.yahoo-link {
+  display: inline-block;
+  margin-top: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #1a5a6e;
+  text-decoration: none;
+}
+
+.yahoo-link:hover {
+  text-decoration: underline;
+}
+
+.row-yahoo {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #1a5a6e;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.row-yahoo:hover {
+  text-decoration: underline;
+}
+
+.price-cell {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.price-cell span {
+  display: block;
+  font-size: 0.72rem;
+}
+
+.chart-block {
+  margin-top: 0.85rem;
+}
+
+.chart {
+  background: #f7f9fb;
+  border: 1px solid var(--line);
+  padding: 0.5rem 0.55rem 0.35rem;
+}
+
+.chart-empty {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.chart-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  margin-top: 0.15rem;
+}
+
 .grid td.when {
   font-family: var(--mono);
   font-size: 0.78rem;
