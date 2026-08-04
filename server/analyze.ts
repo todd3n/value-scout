@@ -251,42 +251,41 @@ function explainDrop(m: RawSniper): { reason: string; source: string; strength: 
 
   if (exAgo != null && exAgo >= -1 && exAgo <= 7) {
     return {
-      reason: `Ex-dividend senaste ${Math.max(0, Math.round(exAgo))} dag(ar) — kursen justeras oftast ner ungefär motsvarande utdelningen (mekanisk, inte bolagskris).`,
-      source: 'Yahoo Finance → calendarEvents.exDividendDate',
+      reason: `Ex-dividend för ${Math.max(0, Math.round(exAgo))} handelsdag(ar) sedan. Kursjustering kopplad till utdelning.`,
+      source: 'Yahoo Finance, kalender (ex-dividend)',
       strength: 3,
     }
   }
   if (earnAgo != null && earnAgo >= 0 && earnAgo <= 5) {
     return {
-      reason: `Rapport nyligen (${Math.round(earnAgo)} dag sedan). Marknaden omprisar efter earnings — sniper-case om reaktionen ser överdriven ut mot kvalitetsbolag.`,
-      source: 'Yahoo Finance → calendarEvents.earnings',
+      reason: `Delårsrapport publicerad för ${Math.round(earnAgo)} dag(ar) sedan. Prissättning efter rapport.`,
+      source: 'Yahoo Finance, kalender (earnings)',
       strength: 3,
     }
   }
   if (earnIn != null && earnIn >= -1 && earnIn <= 3) {
     return {
-      reason: `Earnings inom ${Math.ceil(Math.max(earnIn, 0))} dag(ar). Volatilitet kring rapport — högre risk, ej klassisk sniper utan tydlig överreaktion.`,
-      source: 'Yahoo Finance → calendarEvents.earnings',
+      reason: `Rapport väntas inom ${Math.ceil(Math.max(earnIn, 0))} dag(ar). Förhöjd volatilitet.`,
+      source: 'Yahoo Finance, kalender (earnings)',
       strength: 1,
     }
   }
   if (m.news[0]) {
     return {
-      reason: `Nyhetsdriven rörelse: “${m.news[0].title}” (${m.news[0].publisher}).`,
-      source: 'Yahoo Finance search/news',
+      reason: `${m.news[0].title} (${m.news[0].publisher})`,
+      source: 'Yahoo Finance, nyheter',
       strength: 2,
     }
   }
   if ((m.maxDayDropPct ?? 0) <= -5 || (m.weekDrawdownPct ?? 0) <= -5) {
     return {
-      reason:
-        'Skarp kursnedgång utan tydlig kalenderhändelse i Yahoo — kräver manuell check (makro, sektor, orderflöde). Ej automatiskt sniper-läge.',
-      source: 'Yahoo Finance chart (prisdata) — orsak ej bekräftad',
+      reason: 'Nedgång utan identifierad kalenderhändelse. Orsak ej verifierad.',
+      source: 'Yahoo Finance, kursdata',
       strength: 0,
     }
   }
   return {
-    reason: 'Ingen material dip eller förklarande händelse just nu.',
+    reason: 'Ingen relevant nedgång eller händelse.',
     source: '—',
     strength: 0,
   }
@@ -295,34 +294,34 @@ function explainDrop(m: RawSniper): { reason: string; source: string; strength: 
 export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 'suggestedShares' | 'positionPct'> {
   const sources: DataSource[] = [
     {
-      field: 'Pris / dagschange',
-      source: 'Yahoo Finance quote',
-      detail: 'regularMarketPrice, regularMarketChangePercent',
+      field: 'Senaste kurs',
+      source: 'Yahoo Finance',
+      detail: 'Live-/fördröjd börskurs',
     },
     {
-      field: 'Dip / veckodragning',
-      source: 'Yahoo Finance chart (1d)',
-      detail: 'Senaste ~15 handelsdagar: max endagsfall + dragning från 5-dagars stängningshögsta',
+      field: 'Nedgång',
+      source: 'Yahoo Finance',
+      detail: 'Dagliga stängningskurser, ca 15 handelsdagar',
     },
     {
-      field: 'Utdelning / rapport',
-      source: 'Yahoo Finance quoteSummary.calendarEvents',
-      detail: 'exDividendDate, earningsDate',
+      field: 'Utdelning och rapport',
+      source: 'Yahoo Finance',
+      detail: 'Bolagskalender',
     },
     {
-      field: 'Nyheter (varför)',
-      source: 'Yahoo Finance search news',
-      detail: 'Senaste headlines kopplade till bolagsnamn',
+      field: 'Nyheter',
+      source: 'Yahoo Finance',
+      detail: 'Senaste rubriker',
     },
     {
-      field: 'Street-mål (ej sniper-target)',
-      source: 'Yahoo Finance financialData.targetMeanPrice',
-      detail: 'Analytikerkonsensus — långsiktig, INTE veckomål',
+      field: 'Analytikermål',
+      source: 'Yahoo Finance',
+      detail: 'Konsensus målkurs (längre horisont)',
     },
     {
-      field: 'Sniper bounce-mål',
-      source: 'Egen beräkning från Yahoo chart',
-      detail: 'Åter mot senaste 5–6 dagars högsta stängning (mean-reversion), inte DCF',
+      field: 'Återhämtningsnivå',
+      source: 'Beräknad',
+      detail: 'Senaste 5–6 dagars högsta stängning',
     },
   ]
 
@@ -340,83 +339,81 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
     (maxDrop != null && maxDrop <= -5) ||
     (week != null && week <= -5.5)
 
-  // Dip magnitude
   {
     let pts = 0
     const worst = Math.min(day ?? 0, maxDrop ?? 0, week ?? 0)
-    let note = `Värsta signal ${worst.toFixed(1)}%`
+    let note = `${worst.toFixed(1)}%`
     if (worst <= -10) {
       pts = 30
-      note += ' — kraftig dip (5–10%+ zon)'
-      reasons.push(`Kraftig nedgång (${worst.toFixed(1)}%)`)
+      note += ' · kraftig'
+      reasons.push(`Nedgång ${worst.toFixed(1)}%`)
     } else if (worst <= -7) {
       pts = 24
-      note += ' — tydlig sniper-zon'
-      reasons.push(`Tydlig dip (${worst.toFixed(1)}%)`)
+      note += ' · tydlig'
+      reasons.push(`Nedgång ${worst.toFixed(1)}%`)
     } else if (worst <= -5) {
       pts = 18
-      note += ' — intressant'
-      reasons.push(`Dip ca ${worst.toFixed(1)}%`)
+      note += ' · måttlig'
+      reasons.push(`Nedgång ${worst.toFixed(1)}%`)
     } else if (worst <= -3.5) {
       pts = 8
-      note += ' — mild'
+      note += ' · begränsad'
     } else {
       pts = 0
-      note += ' — ingen köpläge-dip'
+      note += ' · ingen signal'
     }
-    breakdown.push({ key: 'dip', label: 'Dip-storlek', points: pts, max: 30, note })
+    breakdown.push({ key: 'dip', label: 'Nedgång', points: pts, max: 30, note })
   }
 
-  // Explainable reason
   {
     const pts = explain.strength === 3 ? 25 : explain.strength === 2 ? 16 : explain.strength === 1 ? 6 : 0
     breakdown.push({
       key: 'why',
-      label: 'Förklarad orsak',
+      label: 'Orsak',
       points: pts,
       max: 25,
       note: explain.reason.slice(0, 140),
     })
-    if (pts >= 16) reasons.push('Orsak identifierad')
-    if (pts === 0 && sharp) risks.push('Dip utan bekräftad orsak — skippa tills du vet varför')
+    if (pts >= 16) reasons.push('Identifierad orsak')
+    if (pts === 0 && sharp) risks.push('Orsak saknas — avvakta')
   }
 
-  // Quality / large stable
   {
     let pts = 0
-    let note = m.qualityOk ? 'Large-cap filter OK' : 'Under large-cap-tröskel / osäker kvalitet'
+    let note = m.qualityOk ? 'Uppfyller storlekskrav' : 'Under storlekskrav'
     if (m.qualityOk) {
       pts = 20
-      reasons.push('Stort / bevakat bolag')
+      reasons.push('Large cap')
     }
     if (m.profitMargin != null && m.profitMargin > 0.08) {
       pts = Math.min(25, pts + 5)
-      note += ' · lönsam'
+      note += ' · positiv marginal'
     }
     if (m.beta != null && m.beta > 1.6) {
       pts = Math.max(0, pts - 5)
-      risks.push('Hög beta — studs kan utebli')
+      risks.push('Hög beta')
       note += ' · hög beta'
     }
-    breakdown.push({ key: 'quality', label: 'Stabilitet / storlek', points: pts, max: 25, note })
+    breakdown.push({ key: 'quality', label: 'Bolagskvalitet', points: pts, max: 25, note })
   }
 
-  // Bounce asymmetry (path to +5%)
   {
     const up = m.bounceUpsidePct
     let pts = 0
-    let note = up == null ? 'Saknas' : `Upside till pre-dip stängning ${up.toFixed(1)}%`
+    let note = up == null ? 'Saknas' : `${up.toFixed(1)}% till återhämtningsnivå`
     if (up != null && up >= 5) {
       pts = 20
-      note += ' — teoretisk veckostuds ≥5% om mean-reversion'
-      catalysts.push(`Mean-reversion mot ${m.bounceTarget?.toFixed(2)} kan ge ~${up.toFixed(1)}%`)
+      note += ' · ≥5%'
+      catalysts.push(
+        `Återhämtning till ${m.bounceTarget?.toFixed(2)} ${m.currency} ≈ ${up.toFixed(1)}%`,
+      )
     } else if (up != null && up >= 3) {
       pts = 10
-      note += ' — begränsad'
+      note += ' · begränsad'
     } else {
       pts = 2
     }
-    breakdown.push({ key: 'bounce', label: 'Vecko-uppsida (bounce)', points: pts, max: 20, note })
+    breakdown.push({ key: 'bounce', label: 'Återhämtningspotential', points: pts, max: 20, note })
   }
 
   const score = breakdown.reduce((s, b) => s + b.points, 0)
@@ -424,35 +421,39 @@ export function scoreSniper(m: RawSniper): Omit<Analysis, 'suggestedAmount' | 's
   const scorePct = maxScore > 0 ? (score / maxScore) * 100 : 0
 
   let setup: Setup = 'none'
-  let setupLabel = 'Inget läge'
+  let setupLabel = '—'
   if (!m.qualityOk && !sharp) {
     setup = 'none'
-    setupLabel = 'Inget läge'
+    setupLabel = '—'
   } else if (sharp && explain.strength >= 2 && scorePct >= 55 && (m.bounceUpsidePct ?? 0) >= 4.5) {
     setup = 'sniper'
-    setupLabel = 'Sniper-läge'
+    setupLabel = 'Köpläge'
   } else if (sharp && m.qualityOk) {
     setup = 'watch'
-    setupLabel = 'Bevaka — ofullständig edge'
+    setupLabel = 'Bevakning'
   } else {
     setup = 'none'
-    setupLabel = 'Inget läge'
+    setupLabel = '—'
   }
 
   if (setup === 'sniper') {
-    risks.push('Ingen garanti för +5% på en vecka — edge är probabilistisk')
+    risks.push('Kortsiktig återhämtning är inte garanterad')
   }
 
   const fairValue = m.bounceTarget
   const fairValueMethod =
-    'Sniper-mål = senaste 5–6 dagars högsta stängning (Yahoo chart). Street-mål från analytiker visas separat och är INTE veckomålet.'
+    'Återhämtningsnivå = högsta stängning senaste 5–6 dagar (Yahoo). Analytikermål är separat och avser längre horisont.'
+
+  const targetStr =
+    m.bounceTarget != null ? `${m.bounceTarget.toFixed(2)} ${m.currency}` : '—'
+  const upStr = m.bounceUpsidePct != null ? `${m.bounceUpsidePct.toFixed(1)}%` : '—'
 
   const thesis =
     setup === 'sniper'
-      ? `${m.name} är ett large-cap-case med skarp nedgång och identifierad orsak. ${explain.reason} Modellen siktar på mean-reversion mot pre-dip (${m.bounceTarget != null ? m.bounceTarget.toFixed(2) : '—'} ${m.currency}), ca ${m.bounceUpsidePct?.toFixed(1) ?? '—'}% — i linje med en vecko-edge runt 5%+ om studsen kommer. Det är sällsynt: de flesta dagar finns inget läge.`
+      ? `${m.name}: ${explain.reason} Återhämtningsnivå ${targetStr} motsvarar ca ${upStr} från nuvarande kurs.`
       : setup === 'watch'
-        ? `${m.name} har rört sig neråt men edge är ofullständig (saknad/svag orsak, för liten bounce, eller lägre score). Bevaka — köp inte blint.`
-        : `${m.name}: inget sniper-läge just nu. Botten scannar kontinuerligt efter 5–10% dippar i stabila bolag med förklaring (utdelning, rapportöverreaktion, tydlig nyhet).`
+        ? `${m.name}: Nedgång noterad, men kriterierna för köpläge är inte uppfyllda (orsak, storlek eller återhämtningspotential).`
+        : `${m.name}: Inget köpläge enligt gällande kriterier.`
 
   return {
     symbol: m.symbol,

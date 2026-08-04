@@ -38,7 +38,7 @@ function marketOf(symbol: string) {
 
 function DetailPanel({ a, onClose }: { a: Analysis; onClose: () => void }) {
   return (
-    <aside className="detail" aria-label="Sniper-analys">
+    <aside className="detail" aria-label="Bolagsdetalj">
       <div className="detail-top">
         <div>
           <p className="detail-kicker">
@@ -54,7 +54,7 @@ function DetailPanel({ a, onClose }: { a: Analysis; onClose: () => void }) {
 
       <div className="detail-rating">
         <span className={`chip chip-${a.setup}`}>{a.setupLabel}</span>
-        <span className="chip chip-muted">Conviction {a.conviction}</span>
+        <span className="chip chip-muted">Tillförlitlighet {a.conviction}</span>
       </div>
 
       <div className="detail-kpis">
@@ -63,45 +63,45 @@ function DetailPanel({ a, onClose }: { a: Analysis; onClose: () => void }) {
           <strong>{fmtPrice(a.price, a.currency)}</strong>
         </div>
         <div>
-          <span>Dag</span>
+          <span>I dag</span>
           <strong className={(a.dayChangePct ?? 0) < 0 ? 'neg' : 'pos'}>
             {a.dayChangePct != null ? `${fmtNum(a.dayChangePct, 2)}%` : '—'}
           </strong>
         </div>
         <div>
-          <span>Max endagsfall</span>
+          <span>Största endagsfall</span>
           <strong className="neg">{fmtNum(a.maxDayDropPct, 1)}%</strong>
         </div>
         <div>
-          <span>Bounce-mål</span>
+          <span>Återhämtningsnivå</span>
           <strong>{fmtPrice(a.bounceTarget, a.currency)}</strong>
         </div>
         <div>
-          <span>Uppsida till bounce</span>
+          <span>Potentiell uppsida</span>
           <strong className="pos">
             {a.bounceUpsidePct != null ? `+${fmtNum(a.bounceUpsidePct, 1)}%` : '—'}
           </strong>
         </div>
         <div>
-          <span>Street-mål (lång)</span>
+          <span>Analytikermål</span>
           <strong>{fmtPrice(a.streetTarget, a.currency)}</strong>
         </div>
       </div>
 
       <section className="detail-block highlight">
-        <h3>Varför dippade den?</h3>
+        <h3>Orsak till rörelsen</h3>
         <p>{a.dropReason}</p>
-        <p className="fine">Källa: {a.dropReasonSource}</p>
+        <p className="fine">{a.dropReasonSource}</p>
       </section>
 
       <section className="detail-block">
-        <h3>Thesis</h3>
+        <h3>Bedömning</h3>
         <p>{a.thesis}</p>
       </section>
 
       {a.news.length > 0 && (
         <section className="detail-block">
-          <h3>Nyheter (Yahoo)</h3>
+          <h3>Nyheter</h3>
           <ul className="news">
             {a.news.map((n) => (
               <li key={n.title}>
@@ -131,13 +131,13 @@ function DetailPanel({ a, onClose }: { a: Analysis; onClose: () => void }) {
       )}
 
       <section className="detail-block">
-        <h3>Varifrån kommer siffrorna?</h3>
+        <h3>Datakällor</h3>
         <ul className="sources">
           {a.sources.map((s) => (
             <li key={s.field}>
               <strong>{s.field}</strong>
               <span>
-                {s.source} — {s.detail}
+                {s.source}. {s.detail}
               </span>
             </li>
           ))}
@@ -147,7 +147,7 @@ function DetailPanel({ a, onClose }: { a: Analysis; onClose: () => void }) {
 
       {a.setup === 'sniper' && (
         <section className="detail-block">
-          <h3>Föreslagen sniper-size</h3>
+          <h3>Föreslagen position</h3>
           <p className="position">
             {fmtMoney(a.suggestedAmount, a.currency === 'GBp' ? 'GBP' : a.currency)} · {a.positionPct}%
             {a.suggestedShares > 0 ? ` · ${a.suggestedShares} st` : ''}
@@ -156,7 +156,7 @@ function DetailPanel({ a, onClose }: { a: Analysis; onClose: () => void }) {
       )}
 
       <section className="detail-block">
-        <h3>Score-detalj</h3>
+        <h3>Modellpoäng</h3>
         <table className="factor-table">
           <tbody>
             {a.breakdown.map((b) => (
@@ -221,14 +221,14 @@ export default function App() {
 
   const liveLabel =
     status.phase === 'scanning'
-      ? `Scannar ${status.currentSymbols.join(', ')}`
+      ? status.currentSymbols.join(', ')
       : status.phase === 'cycle-pause'
-        ? 'Cykel klar — söker vidare snart'
+        ? 'Väntar till nästa runda'
         : status.phase === 'error'
-          ? `Fel: ${status.lastError}`
+          ? status.lastError || 'Fel'
           : status.running
-            ? 'Standby'
-            : 'Pausad'
+            ? 'Aktiv'
+            : 'Stoppad'
 
   return (
     <div className={`shell ${selectedRow ? 'has-detail' : ''}`}>
@@ -237,39 +237,39 @@ export default function App() {
           <span className="mark" aria-hidden />
           <div>
             <strong>Value Scout</strong>
-            <span>Sniper desk · large-cap dips</span>
+            <span>Marknadsbevakning</span>
           </div>
         </div>
 
         <div className="live-pill" data-phase={status.phase}>
           <span className="pulse" aria-hidden />
           <div>
-            <strong>{status.running ? 'LIVE' : 'PAUS'}</strong>
+            <strong>{status.running ? 'Aktiv' : 'Stoppad'}</strong>
             <span>{liveLabel}</span>
           </div>
         </div>
 
         <div className="top-stats">
           <div>
-            <span>Sniper nu</span>
+            <span>Köplägen</span>
             <strong>{counts.sniper}</strong>
           </div>
           <div>
-            <span>Bevaka</span>
+            <span>Bevakning</span>
             <strong>{counts.watch}</strong>
           </div>
           <div>
-            <span>Universe</span>
+            <span>Urval</span>
             <strong>
               {universeSize}
               <small>
                 {' '}
-                ({counts.usa}/{counts.uk}/{counts.se})
+                US {counts.usa} · UK {counts.uk} · SE {counts.se}
               </small>
             </strong>
           </div>
           <div>
-            <span>Täckning</span>
+            <span>Analyserade</span>
             <strong>
               {results.length}/{universeSize}
             </strong>
@@ -277,7 +277,7 @@ export default function App() {
         </div>
 
         <button type="button" className="bar-btn" onClick={() => setRunning(!status.running)}>
-          {status.running ? 'Pausa' : 'Starta'}
+          {status.running ? 'Stoppa' : 'Starta'}
         </button>
       </header>
 
@@ -287,11 +287,10 @@ export default function App() {
 
       <div className="workspace">
         <aside className="sidebar">
-          <p className="side-label">Sniper-regel</p>
+          <p className="side-label">Kriterier</p>
           <p className="rule-box">
-            Stora stabila bolag som tappat ca <strong>5–10%</strong> på kort tid, med{' '}
-            <strong>skriven orsak</strong> (t.ex. ex-div, rapportöverreaktion, nyhet). Mål: möjlig
-            studs ≈ <strong>5%+</strong> på ca en vecka. De flesta dagar: noll lägen.
+            Large caps med nedgång om ca 5–10 %, dokumenterad orsak (utdelning, rapport eller
+            nyhet) och återhämtningspotential om minst 5 %. Signalerna är ovanliga.
           </p>
 
           <p className="side-label">Portfölj</p>
@@ -306,7 +305,7 @@ export default function App() {
             />
           </label>
           <label className="field">
-            Risk per sniper (%)
+            Risk per position (%)
             <input
               type="number"
               min={0.5}
@@ -331,24 +330,24 @@ export default function App() {
             ))}
           </div>
 
-          <p className="side-label">Vy</p>
+          <p className="side-label">Lista</p>
           <nav className="side-nav">
             <button
               type="button"
               className={tab === 'sniper' ? 'on' : ''}
               onClick={() => setTab('sniper')}
             >
-              Sniper-lägen <em>{counts.sniper}</em>
+              Köplägen <em>{counts.sniper}</em>
             </button>
             <button
               type="button"
               className={tab === 'watch' ? 'on' : ''}
               onClick={() => setTab('watch')}
             >
-              Bevaka <em>{counts.watch}</em>
+              Bevakning <em>{counts.watch}</em>
             </button>
             <button type="button" className={tab === 'all' ? 'on' : ''} onClick={() => setTab('all')}>
-              Alla scannade <em>{results.length}</em>
+              Alla <em>{results.length}</em>
             </button>
           </nav>
 
@@ -356,7 +355,7 @@ export default function App() {
             Sök
             <input
               type="search"
-              placeholder="Ticker eller orsak…"
+              placeholder="Bolag eller ticker"
               value={q}
               onChange={(e) => setQ(e.target.value)}
             />
@@ -364,16 +363,16 @@ export default function App() {
 
           <div className="side-foot">
             <p>
-              Cykel {status.cycle || '—'} · {pct}%
+              Runda {status.cycle || '—'} · {pct}%
             </p>
             <p>
               {status.lastUpdate
-                ? `Senast ${new Date(status.lastUpdate).toLocaleTimeString('sv-SE')}`
-                : 'Första batch pågår…'}
+                ? `Uppdaterad ${new Date(status.lastUpdate).toLocaleTimeString('sv-SE')}`
+                : 'Hämtar data…'}
             </p>
             <p className="disclaimer">
-              Data: Yahoo Finance (pris, chart, kalender, nyheter). Bounce-mål = egen beräkning.
-              Ej rådgivning — sällsynta setups.
+              Kurs- och bolagsdata från Yahoo Finance. Återhämtningsnivå beräknas lokalt. Ingen
+              investeringsrådgivning.
             </p>
           </div>
         </aside>
@@ -381,15 +380,10 @@ export default function App() {
         <main className="main">
           <div className="main-head">
             <h1>
-              {tab === 'sniper'
-                ? 'Aktiva sniper-lägen'
-                : tab === 'watch'
-                  ? 'Bevaka (ofullständig edge)'
-                  : 'Hela universe-status'}
+              {tab === 'sniper' ? 'Köplägen' : tab === 'watch' ? 'Bevakning' : 'Alla bolag'}
             </h1>
             <p>
-              Botten går kontinuerligt igenom {universeSize} large/mid-caps (100 USA · 100 UK · 100
-              SE). Visar bara case när dip + orsak + bounce-potential finns.
+              {universeSize} bolag · USA, Storbritannien och Sverige · löpande uppdatering
             </p>
           </div>
 
@@ -398,12 +392,12 @@ export default function App() {
               <p>
                 {tab === 'sniper'
                   ? results.length === 0
-                    ? 'Live-scan startar… sniper-lägen dyker bara upp när något faktiskt dippat med förklaring.'
-                    : 'Inga sniper-lägen just nu — det är normalt. Systemet fortsätter leta.'
-                  : 'Inga rader i denna vy ännu.'}
+                    ? 'Analys pågår. Resultat visas när data finns.'
+                    : 'Inga köplägen för tillfället.'
+                  : 'Inga poster i listan.'}
               </p>
               {status.currentSymbols.length > 0 && (
-                <p className="scanning-now">Nu: {status.currentSymbols.join(' · ')}</p>
+                <p className="scanning-now">{status.currentSymbols.join(' · ')}</p>
               )}
             </div>
           ) : (
@@ -413,10 +407,10 @@ export default function App() {
                   <tr>
                     <th>Bolag</th>
                     <th>Mkt</th>
-                    <th>Läge</th>
-                    <th>Dip</th>
-                    <th>Bounce</th>
-                    <th>Varför</th>
+                    <th>Status</th>
+                    <th>Nedgång</th>
+                    <th>Uppsida</th>
+                    <th>Orsak</th>
                     <th>Källa</th>
                   </tr>
                 </thead>
@@ -446,7 +440,7 @@ export default function App() {
                         {a.bounceUpsidePct != null ? `+${fmtNum(a.bounceUpsidePct, 1)}%` : '—'}
                       </td>
                       <td className="why">{a.dropReason}</td>
-                      <td className="src">{a.dropReasonSource.split('→')[0]?.trim() || '—'}</td>
+                      <td className="src">{a.dropReasonSource}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -5,7 +5,7 @@ import { resolveWatchlist } from '../data/watchlists'
 const BATCH = 6
 const PAUSE_BETWEEN_BATCH_MS = 1500
 const CYCLE_PAUSE_MS = 12000
-const STORAGE_KEY = 'vs-sniper-v2'
+const STORAGE_KEY = 'vs-sniper-v3'
 
 export type ScannerStatus = {
   running: boolean

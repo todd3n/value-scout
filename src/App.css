@@ -25,10 +25,9 @@
 }
 
 .mark {
-  width: 28px;
-  height: 28px;
-  background: linear-gradient(135deg, #0b6e6a 0%, #1a8f88 100%);
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  width: 22px;
+  height: 22px;
+  background: #c9a84c;
   flex-shrink: 0;
 }
 
@@ -58,12 +57,17 @@
 .live-pill strong {
   display: block;
   font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  color: #7dceb8;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9eb0bf;
+}
+
+.live-pill[data-phase='scanning'] strong {
+  color: #a8c5b8;
 }
 
 .live-pill[data-phase='error'] strong {
-  color: #f0a090;
+  color: #d4a090;
 }
 
 .live-pill[data-phase='idle'] strong {
@@ -81,37 +85,25 @@
 }
 
 .pulse {
-  width: 8px;
-  height: 8px;
-  margin-top: 0.35rem;
+  width: 7px;
+  height: 7px;
+  margin-top: 0.4rem;
   border-radius: 50%;
-  background: #2ec4a0;
-  box-shadow: 0 0 0 0 rgba(46, 196, 160, 0.5);
-  animation: pulse 1.6s ease infinite;
+  background: #6a8f82;
   flex-shrink: 0;
+}
+
+.live-pill[data-phase='scanning'] .pulse {
+  background: #2a9b6f;
 }
 
 .live-pill[data-phase='idle'] .pulse,
 .live-pill[data-phase='cycle-pause'] .pulse {
-  background: #c4b07a;
-  animation: none;
+  background: #8a8070;
 }
 
 .live-pill[data-phase='error'] .pulse {
-  background: #e07060;
-  animation: none;
-}
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(46, 196, 160, 0.45);
-  }
-  70% {
-    box-shadow: 0 0 0 8px rgba(46, 196, 160, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(46, 196, 160, 0);
-  }
+  background: #b06050;
 }
 
 .top-stats {
