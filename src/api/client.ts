@@ -43,50 +43,21 @@ export type Analysis = {
   }
 }
 
-const BATCH = 12
-
+/** Single request — continuous scanner sends small batches. */
 export async function scanSymbols(
   symbols: string[],
   portfolio: number,
   risk: number,
-  onProgress?: (done: number, total: number) => void,
 ): Promise<{ results: Analysis[]; fetchedAt: string }> {
-  const unique = [...new Set(symbols.map((s) => s.trim().toUpperCase()).filter(Boolean))]
-  const batches: string[][] = []
-  for (let i = 0; i < unique.length; i += BATCH) {
-    batches.push(unique.slice(i, i + BATCH))
-  }
-
-  const merged: Analysis[] = []
-  let done = 0
-  let fetchedAt = new Date().toISOString()
-
-  for (const batch of batches) {
-    const params = new URLSearchParams({
-      symbols: batch.join(','),
-      portfolio: String(portfolio),
-      risk: String(risk),
-    })
-    const res = await fetch(`/api/scan?${params}`)
-    if (!res.ok) {
-      const err = (await res.json().catch(() => ({}))) as { error?: string }
-      throw new Error(err.error || `HTTP ${res.status}`)
-    }
-    const data = (await res.json()) as { results: Analysis[]; fetchedAt: string }
-    merged.push(...data.results)
-    fetchedAt = data.fetchedAt
-    done += batch.length
-    onProgress?.(done, unique.length)
-  }
-
-  const rank = (r: Analysis['rating']) =>
-    r === 'overweight' ? 3 : r === 'neutral' ? 2 : r === 'underweight' ? 1 : 0
-
-  merged.sort((a, b) => {
-    const d = rank(b.rating) - rank(a.rating)
-    if (d !== 0) return d
-    return b.scorePct - a.scorePct
+  const params = new URLSearchParams({
+    symbols: symbols.join(','),
+    portfolio: String(portfolio),
+    risk: String(risk),
   })
-
-  return { results: merged, fetchedAt }
+  const res = await fetch(`/api/scan?${params}`)
+  if (!res.ok) {
+    const err = (await res.json().catch(() => ({}))) as { error?: string }
+    throw new Error(err.error || `HTTP ${res.status}`)
+  }
+  return res.json()
 }

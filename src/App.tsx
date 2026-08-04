@@ -1,10 +1,25 @@
 import { useMemo, useState } from 'react'
-import { scanSymbols, type Analysis } from './api/client'
-import { resolveWatchlist, type ListKey } from './data/watchlists'
+import type { Analysis } from './api/client'
+import { useLiveScanner } from './hooks/useLiveScanner'
+import { resolveWatchlist } from './data/watchlists'
 import './App.css'
 
-function fmtMoney(n: number, currency = 'SEK') {
-  const c = currency === 'GBp' ? 'GBP' : currency
+type Tab = 'undervalued' | 'all' | 'neutral' | 'underweight'
+type SortKey = 'score' | 'upside' | 'name' | 'pe'
+
+function fmtNum(n: number | null, digits = 1) {
+  if (n == null || !Number.isFinite(n)) return '—'
+  return n.toLocaleString('sv-SE', { maximumFractionDigits: digits })
+}
+
+function fmtPrice(n: number | null, currency: string) {
+  if (n == null) return '—'
+  const c = currency === 'GBp' ? 'p' : currency
+  return `${fmtNum(n, 2)} ${c}`
+}
+
+function fmtMoney(n: number, currency: string) {
+  const c = currency === 'GBp' ? 'GBP' : currency || 'SEK'
   try {
     return new Intl.NumberFormat('sv-SE', {
       style: 'currency',
@@ -16,257 +31,286 @@ function fmtMoney(n: number, currency = 'SEK') {
   }
 }
 
-function fmtNum(n: number | null, digits = 1) {
-  if (n == null || !Number.isFinite(n)) return '—'
-  return n.toLocaleString('sv-SE', { maximumFractionDigits: digits })
+function marketOf(symbol: string) {
+  if (symbol.endsWith('.ST')) return 'SE'
+  if (symbol.endsWith('.L')) return 'UK'
+  return 'US'
 }
 
-function fmtCap(n: number | null, currency: string) {
-  if (n == null) return '—'
-  const abs = Math.abs(n)
-  const c = currency === 'GBp' ? 'GBP' : currency
-  if (abs >= 1e12) return `${(n / 1e12).toFixed(2)} T ${c}`
-  if (abs >= 1e9) return `${(n / 1e9).toFixed(1)} B ${c}`
-  if (abs >= 1e6) return `${(n / 1e6).toFixed(0)} M ${c}`
-  return fmtMoney(n, c)
-}
-
-function ResearchNote({ a }: { a: Analysis }) {
-  const [open, setOpen] = useState(false)
+function DetailPanel({
+  a,
+  onClose,
+}: {
+  a: Analysis
+  onClose: () => void
+}) {
   return (
-    <article className={`note rating-${a.rating}`}>
-      <header className="note-head">
+    <aside className="detail" aria-label="Bolagsanalys">
+      <div className="detail-top">
         <div>
-          <div className="note-title-row">
-            <h3>{a.name}</h3>
-            <span className={`rating-pill rating-${a.rating}`}>{a.ratingLabel}</span>
-          </div>
-          <p className="meta">
-            <code>{a.symbol}</code>
-            {a.sector ? ` · ${a.sector}` : ''}
-            {a.industry ? ` · ${a.industry}` : ''}
-            {' · '}conviction {a.conviction}
-            {' · '}data {a.dataQuality}%
+          <p className="detail-kicker">{a.symbol} · {marketOf(a.symbol)}</p>
+          <h2>{a.name}</h2>
+          <p className="detail-sub">
+            {[a.sector, a.industry].filter(Boolean).join(' · ') || '—'}
           </p>
         </div>
-      </header>
+        <button type="button" className="icon-btn" onClick={onClose} aria-label="Stäng">
+          ×
+        </button>
+      </div>
 
-      {a.error ? (
-        <p className="error-msg">{a.error}</p>
-      ) : (
-        <>
-          <div className="kpi-grid">
-            <div>
-              <span className="label">Kurs</span>
-              <strong>
-                {a.price != null ? `${fmtNum(a.price, 2)} ${a.currency}` : '—'}
-              </strong>
-            </div>
-            <div>
-              <span className="label">Fair value</span>
-              <strong>
-                {a.fairValue != null ? `${fmtNum(a.fairValue, 2)} ${a.currency}` : '—'}
-              </strong>
-            </div>
-            <div>
-              <span className="label">Uppsida / nedsida</span>
-              <strong className={a.upsidePct != null && a.upsidePct > 0 ? 'pos' : a.upsidePct != null && a.upsidePct < 0 ? 'neg' : ''}>
-                {a.upsidePct != null ? `${a.upsidePct > 0 ? '+' : ''}${fmtNum(a.upsidePct, 1)}%` : '—'}
-              </strong>
-            </div>
-            <div>
-              <span className="label">Model score</span>
-              <strong>
-                {fmtNum(a.scorePct, 1)}%
-              </strong>
-            </div>
-            <div>
-              <span className="label">P/E · Fwd</span>
-              <strong>
-                {fmtNum(a.metrics.pe)} · {fmtNum(a.metrics.forwardPe)}
-              </strong>
-            </div>
-            <div>
-              <span className="label">EV/EBITDA · P/B</span>
-              <strong>
-                {fmtNum(a.metrics.evEbitda)} · {fmtNum(a.metrics.pb)}
-              </strong>
-            </div>
-            <div>
-              <span className="label">Market cap</span>
-              <strong>{fmtCap(a.marketCap, a.currency)}</strong>
-            </div>
-            <div>
-              <span className="label">Position (modell)</span>
-              <strong>
-                {fmtMoney(a.suggestedAmount, a.currency === 'SEK' ? 'SEK' : a.currency === 'GBp' ? 'GBP' : a.currency)}
-              </strong>
-              <span className="hint">{a.positionPct}% · {a.suggestedShares} st</span>
-            </div>
-          </div>
+      <div className="detail-rating">
+        <span className={`chip chip-${a.rating}`}>{a.ratingLabel}</span>
+        <span className="chip chip-muted">Conviction {a.conviction}</span>
+        <span className="chip chip-muted">Data {a.dataQuality}%</span>
+      </div>
 
-          {a.thesis && <p className="thesis">{a.thesis}</p>}
+      <div className="detail-kpis">
+        <div>
+          <span>Kurs</span>
+          <strong>{fmtPrice(a.price, a.currency)}</strong>
+        </div>
+        <div>
+          <span>Fair value</span>
+          <strong>{fmtPrice(a.fairValue, a.currency)}</strong>
+        </div>
+        <div>
+          <span>Uppsida</span>
+          <strong className={a.upsidePct && a.upsidePct > 0 ? 'pos' : a.upsidePct && a.upsidePct < 0 ? 'neg' : ''}>
+            {a.upsidePct != null ? `${a.upsidePct > 0 ? '+' : ''}${fmtNum(a.upsidePct, 1)}%` : '—'}
+          </strong>
+        </div>
+        <div>
+          <span>Score</span>
+          <strong>{fmtNum(a.scorePct, 1)}%</strong>
+        </div>
+      </div>
 
-          {(a.catalysts.length > 0 || a.risks.length > 0 || a.reasons.length > 0) && (
-            <div className="callouts">
-              {a.reasons.map((r) => (
-                <span key={r} className="tag good">
-                  {r}
-                </span>
-              ))}
-              {a.catalysts.map((c) => (
-                <span key={c} className="tag catalyst">
-                  {c}
-                </span>
-              ))}
-              {a.risks.map((r) => (
-                <span key={r} className="tag bad">
-                  {r}
-                </span>
-              ))}
-            </div>
-          )}
+      <section className="detail-block">
+        <h3>Varför</h3>
+        <p>{a.thesis || 'Analys pågår eller data saknas.'}</p>
+      </section>
 
-          <button type="button" className="linkish" onClick={() => setOpen((v) => !v)}>
-            {open ? 'Dölj factor-modell' : 'Visa factor-modell & metod'}
-          </button>
-          {open && (
-            <div className="model-detail">
-              {a.fairValueMethod && (
-                <p className="method-line">
-                  <strong>Fair value:</strong> {a.fairValueMethod}
-                </p>
-              )}
-              <ul className="breakdown">
-                {a.breakdown.map((b) => (
-                  <li key={b.key}>
-                    <span>
-                      {b.label}{' '}
-                      <em>
-                        {b.points}/{b.max}
-                      </em>
-                    </span>
-                    <span className="note-text">{b.note}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </>
+      {a.reasons.length > 0 && (
+        <section className="detail-block">
+          <h3>Stödjande faktorer</h3>
+          <ul>
+            {a.reasons.map((r) => (
+              <li key={r}>{r}</li>
+            ))}
+          </ul>
+        </section>
       )}
-    </article>
+
+      {a.catalysts.length > 0 && (
+        <section className="detail-block">
+          <h3>Katalysatorer</h3>
+          <ul>
+            {a.catalysts.map((c) => (
+              <li key={c}>{c}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {a.risks.length > 0 && (
+        <section className="detail-block">
+          <h3>Risker</h3>
+          <ul className="risks">
+            {a.risks.map((r) => (
+              <li key={r}>{r}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <section className="detail-block">
+        <h3>Nyckeltal</h3>
+        <dl className="metrics">
+          <div>
+            <dt>P/E</dt>
+            <dd>{fmtNum(a.metrics.pe)}</dd>
+          </div>
+          <div>
+            <dt>Fwd P/E</dt>
+            <dd>{fmtNum(a.metrics.forwardPe)}</dd>
+          </div>
+          <div>
+            <dt>PEG</dt>
+            <dd>{fmtNum(a.metrics.peg)}</dd>
+          </div>
+          <div>
+            <dt>EV/EBITDA</dt>
+            <dd>{fmtNum(a.metrics.evEbitda)}</dd>
+          </div>
+          <div>
+            <dt>P/B</dt>
+            <dd>{fmtNum(a.metrics.pb)}</dd>
+          </div>
+          <div>
+            <dt>ROE</dt>
+            <dd>{fmtNum(a.metrics.roe != null ? (Math.abs(a.metrics.roe) < 1 ? a.metrics.roe * 100 : a.metrics.roe) : null)}%</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section className="detail-block">
+        <h3>Föreslagen position</h3>
+        <p className="position">
+          {fmtMoney(a.suggestedAmount, a.currency === 'GBp' ? 'GBP' : a.currency)} · {a.positionPct}% av
+          portfölj
+          {a.suggestedShares > 0 ? ` · ${a.suggestedShares} aktier` : ''}
+        </p>
+        {a.fairValueMethod && <p className="fine">{a.fairValueMethod}</p>}
+      </section>
+
+      <section className="detail-block">
+        <h3>Factor-modell</h3>
+        <table className="factor-table">
+          <tbody>
+            {a.breakdown.map((b) => (
+              <tr key={b.key}>
+                <td>
+                  {b.label}
+                  <span>{b.note}</span>
+                </td>
+                <td>
+                  {b.points}/{b.max}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+    </aside>
   )
 }
 
 export default function App() {
-  const [listKey, setListKey] = useState<ListKey>('all')
-  const [custom, setCustom] = useState('')
   const [portfolio, setPortfolio] = useState(500_000)
   const [risk, setRisk] = useState(2)
-  const [loading, setLoading] = useState(false)
-  const [progress, setProgress] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [results, setResults] = useState<Analysis[] | null>(null)
-  const [fetchedAt, setFetchedAt] = useState<string | null>(null)
-  const [filter, setFilter] = useState<'all' | 'overweight' | 'neutral' | 'underweight'>('all')
+  const [tab, setTab] = useState<Tab>('undervalued')
+  const [sort, setSort] = useState<SortKey>('score')
+  const [market, setMarket] = useState<'all' | 'US' | 'UK' | 'SE'>('all')
+  const [selected, setSelected] = useState<string | null>(null)
+  const [q, setQ] = useState('')
 
-  const universe = useMemo(() => resolveWatchlist(listKey), [listKey])
+  const { results, status, setRunning } = useLiveScanner(portfolio, risk)
+  const universeSize = resolveWatchlist('all').length
 
-  const symbols = useMemo(() => {
-    const fromList = universe.map((w) => w.symbol)
-    const extra = custom
-      .split(/[\s,;]+/)
-      .map((s) => s.trim().toUpperCase())
-      .filter(Boolean)
-    return [...new Set([...fromList, ...extra])]
-  }, [universe, custom])
-
-  async function runScan() {
-    setLoading(true)
-    setError(null)
-    setProgress('Initierar research-pipeline…')
-    try {
-      const data = await scanSymbols(symbols, portfolio, risk, (done, total) => {
-        setProgress(`Analyserar ${done}/${total} bolag…`)
-      })
-      setResults(data.results)
-      setFetchedAt(data.fetchedAt)
-      setProgress(null)
-      setFilter('all')
-    } catch (e) {
-      setResults(null)
-      setError(e instanceof Error ? e.message : 'Något gick fel')
-      setProgress(null)
-    } finally {
-      setLoading(false)
+  const filtered = useMemo(() => {
+    let list = results.filter((a) => !a.error)
+    if (market !== 'all') list = list.filter((a) => marketOf(a.symbol) === market)
+    if (tab === 'undervalued') list = list.filter((a) => a.rating === 'overweight')
+    else if (tab === 'neutral') list = list.filter((a) => a.rating === 'neutral')
+    else if (tab === 'underweight') list = list.filter((a) => a.rating === 'underweight')
+    if (q.trim()) {
+      const s = q.trim().toLowerCase()
+      list = list.filter(
+        (a) =>
+          a.symbol.toLowerCase().includes(s) ||
+          a.name.toLowerCase().includes(s) ||
+          (a.sector ?? '').toLowerCase().includes(s),
+      )
     }
-  }
+    const sorted = [...list]
+    sorted.sort((a, b) => {
+      if (sort === 'name') return a.name.localeCompare(b.name, 'sv')
+      if (sort === 'upside') return (b.upsidePct ?? -999) - (a.upsidePct ?? -999)
+      if (sort === 'pe') return (a.metrics.pe ?? 999) - (b.metrics.pe ?? 999)
+      return b.scorePct - a.scorePct
+    })
+    return sorted
+  }, [results, tab, sort, market, q])
 
-  const filtered =
-    results?.filter((r) => (filter === 'all' ? true : r.rating === filter)) ?? []
-  const ow = results?.filter((r) => r.rating === 'overweight').length ?? 0
-  const neu = results?.filter((r) => r.rating === 'neutral').length ?? 0
-  const uw = results?.filter((r) => r.rating === 'underweight').length ?? 0
+  const selectedRow = results.find((a) => a.symbol === selected) ?? null
+  const ow = results.filter((a) => a.rating === 'overweight').length
+  const neu = results.filter((a) => a.rating === 'neutral').length
+  const uw = results.filter((a) => a.rating === 'underweight').length
+  const pct =
+    status.totalInCycle > 0
+      ? Math.round((status.doneInCycle / status.totalInCycle) * 100)
+      : 0
+
+  const liveLabel =
+    status.phase === 'scanning'
+      ? `Analyserar ${status.currentSymbols.join(', ')}`
+      : status.phase === 'cycle-pause'
+        ? 'Cykel klar — nästa runda strax'
+        : status.phase === 'error'
+          ? `Fel: ${status.lastError}`
+          : status.running
+            ? 'Väntar…'
+            : 'Pausad'
 
   return (
-    <div className="app">
-      <header className="hero">
-        <p className="brand">Value Scout</p>
-        <p className="desk">Equity Research Desk · USA · UK · Sverige</p>
-        <h1>Institutionell screening av undervärderade storbolag</h1>
-        <p className="lede">
-          Multi-faktoranalys i stil med sell-side research: Overweight / Neutral / Underweight,
-          fair value, investment thesis och modellbaserad position. Data från Yahoo Finance —
-          inte personlig rådgivning.
-        </p>
-        <div className="hero-cta">
-          <a href="#scan" className="btn primary">
-            Kör full research-scan
-          </a>
-          <a href="#method" className="btn ghost">
-            Metodik
-          </a>
+    <div className={`shell ${selectedRow ? 'has-detail' : ''}`}>
+      <header className="topbar">
+        <div className="brand-block">
+          <span className="mark" aria-hidden />
+          <div>
+            <strong>Value Scout</strong>
+            <span>Equity Research · Live screening</span>
+          </div>
         </div>
+
+        <div className="live-pill" data-phase={status.phase}>
+          <span className="pulse" aria-hidden />
+          <div>
+            <strong>{status.running ? 'LIVE' : 'PAUS'}</strong>
+            <span>{liveLabel}</span>
+          </div>
+        </div>
+
+        <div className="top-stats">
+          <div>
+            <span>Undervärderade</span>
+            <strong>{ow}</strong>
+          </div>
+          <div>
+            <span>Neutral</span>
+            <strong>{neu}</strong>
+          </div>
+          <div>
+            <span>Underweight</span>
+            <strong>{uw}</strong>
+          </div>
+          <div>
+            <span>Täckning</span>
+            <strong>
+              {results.length}/{universeSize}
+            </strong>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          className="bar-btn"
+          onClick={() => setRunning(!status.running)}
+        >
+          {status.running ? 'Pausa' : 'Starta'}
+        </button>
       </header>
 
-      <aside className="disclaimer" role="note">
-        <strong>Disclaimer:</strong> Detta är ett kvantitativt analysverktyg, inte
-        investeringsrådgivning från JPMorgan eller någon bank. Modellen kan ta fel. Gör egen
-        due diligence.
-      </aside>
+      <div className="progress-track" aria-hidden>
+        <div className="progress-fill" style={{ width: `${pct}%` }} />
+      </div>
 
-      <section id="scan" className="panel">
-        <h2>Research universe</h2>
-        <p className="section-lede">
-          OMXS30, stora FTSE 100-namn och amerikanska large caps. Full scan tar några minuter —
-          resultaten rankas efter rating och model score.
-        </p>
-
-        <div className="controls">
-          <label>
-            Marknad
-            <select
-              value={listKey}
-              onChange={(e) => setListKey(e.target.value as ListKey)}
-            >
-              <option value="all">Alla — USA + UK + Sverige ({resolveWatchlist('all').length})</option>
-              <option value="usa">USA large cap ({resolveWatchlist('usa').length})</option>
-              <option value="uk">UK / FTSE ({resolveWatchlist('uk').length})</option>
-              <option value="sweden">Sverige / OMXS30 ({resolveWatchlist('sweden').length})</option>
-            </select>
-          </label>
-          <label>
-            Portfölj (SEK)
+      <div className="workspace">
+        <aside className="sidebar">
+          <p className="side-label">Portfölj</p>
+          <label className="field">
+            Kapital (SEK)
             <input
               type="number"
-              min={1000}
+              min={10000}
               step={10000}
               value={portfolio}
               onChange={(e) => setPortfolio(Number(e.target.value) || 0)}
             />
           </label>
-          <label>
-            Riskbudget (% / namn)
+          <label className="field">
+            Risk per namn (%)
             <input
               type="number"
               min={0.5}
@@ -276,126 +320,159 @@ export default function App() {
               onChange={(e) => setRisk(Number(e.target.value) || 1)}
             />
           </label>
-          <label className="span-2">
-            Egna tickers (Yahoo)
-            <input
-              type="text"
-              placeholder="t.ex. AAPL, SHEL.L, VOLV-B.ST"
-              value={custom}
-              onChange={(e) => setCustom(e.target.value)}
-            />
-          </label>
-        </div>
 
-        <p className="ticker-preview">
-          Universe: <strong>{symbols.length}</strong> tickers
-          {listKey === 'all'
-            ? ' (batchas automatiskt för stabil Yahoo-hämtning)'
-            : ''}
-        </p>
-
-        <button type="button" className="btn primary" disabled={loading} onClick={runScan}>
-          {loading ? progress || 'Kör analys…' : 'Publicera research-scan'}
-        </button>
-        {progress && !error && <p className="progress">{progress}</p>}
-        {error && <p className="error-msg">{error}</p>}
-      </section>
-
-      {results && (
-        <section className="results">
-          <div className="results-head">
-            <div>
-              <h2>Research output</h2>
-              {fetchedAt && (
-                <p className="meta">
-                  As of {new Date(fetchedAt).toLocaleString('sv-SE')} · {results.length} namn
-                </p>
-              )}
-            </div>
-            <div className="summary-pills">
+          <p className="side-label">Marknad</p>
+          <div className="seg">
+            {(['all', 'US', 'UK', 'SE'] as const).map((m) => (
               <button
+                key={m}
                 type="button"
-                className={filter === 'all' ? 'active' : ''}
-                onClick={() => setFilter('all')}
+                className={market === m ? 'on' : ''}
+                onClick={() => setMarket(m)}
               >
-                Alla {results.length}
+                {m === 'all' ? 'Alla' : m}
               </button>
-              <button
-                type="button"
-                className={filter === 'overweight' ? 'active ow' : 'ow'}
-                onClick={() => setFilter('overweight')}
-              >
-                Overweight {ow}
-              </button>
-              <button
-                type="button"
-                className={filter === 'neutral' ? 'active' : ''}
-                onClick={() => setFilter('neutral')}
-              >
-                Neutral {neu}
-              </button>
-              <button
-                type="button"
-                className={filter === 'underweight' ? 'active uw' : 'uw'}
-                onClick={() => setFilter('underweight')}
-              >
-                Underweight {uw}
-              </button>
-            </div>
-          </div>
-
-          {filter === 'overweight' && ow === 0 && (
-            <p className="empty-filter">Inga Overweight i denna scan — prova lägre filter eller annan marknad.</p>
-          )}
-
-          <div className="notes">
-            {filtered.map((a) => (
-              <ResearchNote key={a.symbol} a={a} />
             ))}
           </div>
-        </section>
-      )}
 
-      <section id="method" className="method">
-        <h2>Metodik (factor-modell)</h2>
-        <p>
-          Vi viktar trailing/forward P/E, PEG, EV/EBITDA, P/B, FCF-yield, ROE/marginaler,
-          balansräkning, tillväxt, street-konsensus och 52-veckorsläge. Fair value blendas från
-          analytikermål och normaliserad forward-EPS när data finns. Rating:
-          <strong> Overweight</strong> (undervärderad), <strong>Neutral</strong>,{' '}
-          <strong>Underweight</strong>. Position sizing skalas med conviction och data quality —
-          cap ~10% av portfölj.
-        </p>
-        <p className="section-lede" style={{ marginTop: '1rem' }}>
-          Ramverket speglar hur en disciplined sell-side-analytiker tänker kring risk/reward —
-          men ersätter inte fundamental deep-dive, management-möten eller egen scenarioanalys.
-        </p>
-      </section>
+          <p className="side-label">Vy</p>
+          <nav className="side-nav">
+            <button type="button" className={tab === 'undervalued' ? 'on' : ''} onClick={() => setTab('undervalued')}>
+              Undervärderade <em>{ow}</em>
+            </button>
+            <button type="button" className={tab === 'all' ? 'on' : ''} onClick={() => setTab('all')}>
+              Alla analyserade <em>{results.length}</em>
+            </button>
+            <button type="button" className={tab === 'neutral' ? 'on' : ''} onClick={() => setTab('neutral')}>
+              Neutral <em>{neu}</em>
+            </button>
+            <button type="button" className={tab === 'underweight' ? 'on' : ''} onClick={() => setTab('underweight')}>
+              Underweight <em>{uw}</em>
+            </button>
+          </nav>
 
-      <section className="guide">
-        <h2>Kapitalallokering i praktiken</h2>
-        <ol className="steps">
-          <li>
-            <h3>1. Buffert &amp; ISK</h3>
-            <p>2–3 månaders buffert, därefter ISK hos Avanza/Nordnet. Lång horisont (5–10+ år).</p>
-          </li>
-          <li>
-            <h3>2. Core i index, satellite i stock-picks</h3>
+          <p className="side-label">Sortering</p>
+          <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
+            <option value="score">Model score</option>
+            <option value="upside">Uppsida</option>
+            <option value="pe">Lägst P/E</option>
+            <option value="name">Namn</option>
+          </select>
+
+          <label className="field">
+            Sök
+            <input
+              type="search"
+              placeholder="Ticker, bolag, sektor…"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+            />
+          </label>
+
+          <div className="side-foot">
             <p>
-              Majoriteten i bred global indexfond; Overweight-namn som satelliter med strikt
-              positionsstorlek.
+              Cykel {status.cycle || '—'} · {pct}% denna runda
             </p>
-          </li>
-          <li>
-            <h3>3. DCA &amp; diversifiering</h3>
-            <p>Månadsspara. 10–15 bolag över sektorer om du kör aktier — undvik concentration risk.</p>
-          </li>
-        </ol>
-      </section>
+            <p>
+              {status.lastUpdate
+                ? `Uppdaterad ${new Date(status.lastUpdate).toLocaleTimeString('sv-SE')}`
+                : 'Väntar på första batch…'}
+            </p>
+            <p className="disclaimer">
+              Ej investeringsrådgivning. Kontinuerlig screening via Yahoo Finance.
+            </p>
+          </div>
+        </aside>
 
-      <footer className="footer">
-        <p>Value Scout Research · Yahoo Finance · ej rådgivning · ej affiliated med JPMorgan</p>
-      </footer>
+        <main className="main">
+          <div className="main-head">
+            <h1>
+              {tab === 'undervalued'
+                ? 'Undervärderade bolag'
+                : tab === 'neutral'
+                  ? 'Neutral rating'
+                  : tab === 'underweight'
+                    ? 'Underweight'
+                    : 'Research-universum'}
+            </h1>
+            <p>
+              Systemet scannar USA, UK och Sverige i bakgrunden och uppdaterar listan löpande med
+              rating och motivering.
+            </p>
+          </div>
+
+          {filtered.length === 0 ? (
+            <div className="empty">
+              <p>
+                {results.length === 0
+                  ? 'Live-screening startar… första resultaten dyker upp inom några sekunder.'
+                  : 'Inga bolag matchar filtret just nu. Byt vy eller vänta på nästa batch.'}
+              </p>
+              {status.currentSymbols.length > 0 && (
+                <p className="scanning-now">Nu: {status.currentSymbols.join(' · ')}</p>
+              )}
+            </div>
+          ) : (
+            <div className="table-wrap">
+              <table className="grid">
+                <thead>
+                  <tr>
+                    <th>Bolag</th>
+                    <th>Mkt</th>
+                    <th>Rating</th>
+                    <th>Kurs</th>
+                    <th>Fair value</th>
+                    <th>Uppsida</th>
+                    <th>P/E</th>
+                    <th>Score</th>
+                    <th>Varför (kort)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((a) => (
+                    <tr
+                      key={a.symbol}
+                      className={selected === a.symbol ? 'selected' : ''}
+                      onClick={() => setSelected(a.symbol)}
+                    >
+                      <td>
+                        <strong>{a.name}</strong>
+                        <span>{a.symbol}</span>
+                      </td>
+                      <td>{marketOf(a.symbol)}</td>
+                      <td>
+                        <span className={`chip chip-${a.rating}`}>{a.ratingLabel}</span>
+                      </td>
+                      <td>{fmtPrice(a.price, a.currency)}</td>
+                      <td>{fmtPrice(a.fairValue, a.currency)}</td>
+                      <td className={a.upsidePct && a.upsidePct > 0 ? 'pos' : a.upsidePct && a.upsidePct < 0 ? 'neg' : ''}>
+                        {a.upsidePct != null
+                          ? `${a.upsidePct > 0 ? '+' : ''}${fmtNum(a.upsidePct, 1)}%`
+                          : '—'}
+                      </td>
+                      <td>{fmtNum(a.metrics.pe)}</td>
+                      <td>
+                        <div className="score-cell">
+                          <span>{fmtNum(a.scorePct, 0)}%</span>
+                          <i style={{ width: `${Math.min(100, a.scorePct)}%` }} />
+                        </div>
+                      </td>
+                      <td className="why">
+                        {a.reasons[0] || a.thesis.slice(0, 90) || '—'}
+                        {a.reasons[0] ? '' : a.thesis.length > 90 ? '…' : ''}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </main>
+
+        {selectedRow && (
+          <DetailPanel a={selectedRow} onClose={() => setSelected(null)} />
+        )}
+      </div>
     </div>
   )
 }

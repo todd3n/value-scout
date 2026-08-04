@@ -38,4 +38,9 @@ function yahooApiPlugin(): Plugin {
 
 export default defineConfig({
   plugins: [react(), yahooApiPlugin()],
+  server: {
+    host: true,
+    port: 5173,
+    strictPort: false,
+  },
 })
