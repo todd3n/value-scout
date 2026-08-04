@@ -1,18 +1,17 @@
 import { useMemo, useState } from 'react'
 import type { Analysis } from './api/client'
 import { useLiveScanner } from './hooks/useLiveScanner'
-import { resolveWatchlist } from './data/watchlists'
+import { WATCHLISTS } from './data/watchlists'
 import './App.css'
 
-type Tab = 'undervalued' | 'all' | 'neutral' | 'underweight'
-type SortKey = 'score' | 'upside' | 'name' | 'pe'
+type Tab = 'sniper' | 'watch' | 'all'
 
-function fmtNum(n: number | null, digits = 1) {
+function fmtNum(n: number | null | undefined, digits = 1) {
   if (n == null || !Number.isFinite(n)) return '—'
   return n.toLocaleString('sv-SE', { maximumFractionDigits: digits })
 }
 
-function fmtPrice(n: number | null, currency: string) {
+function fmtPrice(n: number | null | undefined, currency: string) {
   if (n == null) return '—'
   const c = currency === 'GBp' ? 'p' : currency
   return `${fmtNum(n, 2)} ${c}`
@@ -37,22 +36,16 @@ function marketOf(symbol: string) {
   return 'US'
 }
 
-function DetailPanel({
-  a,
-  onClose,
-}: {
-  a: Analysis
-  onClose: () => void
-}) {
+function DetailPanel({ a, onClose }: { a: Analysis; onClose: () => void }) {
   return (
-    <aside className="detail" aria-label="Bolagsanalys">
+    <aside className="detail" aria-label="Sniper-analys">
       <div className="detail-top">
         <div>
-          <p className="detail-kicker">{a.symbol} · {marketOf(a.symbol)}</p>
-          <h2>{a.name}</h2>
-          <p className="detail-sub">
-            {[a.sector, a.industry].filter(Boolean).join(' · ') || '—'}
+          <p className="detail-kicker">
+            {a.symbol} · {marketOf(a.symbol)}
           </p>
+          <h2>{a.name}</h2>
+          <p className="detail-sub">{[a.sector, a.industry].filter(Boolean).join(' · ') || '—'}</p>
         </div>
         <button type="button" className="icon-btn" onClick={onClose} aria-label="Stäng">
           ×
@@ -60,9 +53,8 @@ function DetailPanel({
       </div>
 
       <div className="detail-rating">
-        <span className={`chip chip-${a.rating}`}>{a.ratingLabel}</span>
+        <span className={`chip chip-${a.setup}`}>{a.setupLabel}</span>
         <span className="chip chip-muted">Conviction {a.conviction}</span>
-        <span className="chip chip-muted">Data {a.dataQuality}%</span>
       </div>
 
       <div className="detail-kpis">
@@ -71,43 +63,57 @@ function DetailPanel({
           <strong>{fmtPrice(a.price, a.currency)}</strong>
         </div>
         <div>
-          <span>Fair value</span>
-          <strong>{fmtPrice(a.fairValue, a.currency)}</strong>
-        </div>
-        <div>
-          <span>Uppsida</span>
-          <strong className={a.upsidePct && a.upsidePct > 0 ? 'pos' : a.upsidePct && a.upsidePct < 0 ? 'neg' : ''}>
-            {a.upsidePct != null ? `${a.upsidePct > 0 ? '+' : ''}${fmtNum(a.upsidePct, 1)}%` : '—'}
+          <span>Dag</span>
+          <strong className={(a.dayChangePct ?? 0) < 0 ? 'neg' : 'pos'}>
+            {a.dayChangePct != null ? `${fmtNum(a.dayChangePct, 2)}%` : '—'}
           </strong>
         </div>
         <div>
-          <span>Score</span>
-          <strong>{fmtNum(a.scorePct, 1)}%</strong>
+          <span>Max endagsfall</span>
+          <strong className="neg">{fmtNum(a.maxDayDropPct, 1)}%</strong>
+        </div>
+        <div>
+          <span>Bounce-mål</span>
+          <strong>{fmtPrice(a.bounceTarget, a.currency)}</strong>
+        </div>
+        <div>
+          <span>Uppsida till bounce</span>
+          <strong className="pos">
+            {a.bounceUpsidePct != null ? `+${fmtNum(a.bounceUpsidePct, 1)}%` : '—'}
+          </strong>
+        </div>
+        <div>
+          <span>Street-mål (lång)</span>
+          <strong>{fmtPrice(a.streetTarget, a.currency)}</strong>
         </div>
       </div>
 
-      <section className="detail-block">
-        <h3>Varför</h3>
-        <p>{a.thesis || 'Analys pågår eller data saknas.'}</p>
+      <section className="detail-block highlight">
+        <h3>Varför dippade den?</h3>
+        <p>{a.dropReason}</p>
+        <p className="fine">Källa: {a.dropReasonSource}</p>
       </section>
 
-      {a.reasons.length > 0 && (
-        <section className="detail-block">
-          <h3>Stödjande faktorer</h3>
-          <ul>
-            {a.reasons.map((r) => (
-              <li key={r}>{r}</li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <section className="detail-block">
+        <h3>Thesis</h3>
+        <p>{a.thesis}</p>
+      </section>
 
-      {a.catalysts.length > 0 && (
+      {a.news.length > 0 && (
         <section className="detail-block">
-          <h3>Katalysatorer</h3>
-          <ul>
-            {a.catalysts.map((c) => (
-              <li key={c}>{c}</li>
+          <h3>Nyheter (Yahoo)</h3>
+          <ul className="news">
+            {a.news.map((n) => (
+              <li key={n.title}>
+                {n.link ? (
+                  <a href={n.link} target="_blank" rel="noreferrer">
+                    {n.title}
+                  </a>
+                ) : (
+                  n.title
+                )}
+                <span>{n.publisher}</span>
+              </li>
             ))}
           </ul>
         </section>
@@ -125,47 +131,32 @@ function DetailPanel({
       )}
 
       <section className="detail-block">
-        <h3>Nyckeltal</h3>
-        <dl className="metrics">
-          <div>
-            <dt>P/E</dt>
-            <dd>{fmtNum(a.metrics.pe)}</dd>
-          </div>
-          <div>
-            <dt>Fwd P/E</dt>
-            <dd>{fmtNum(a.metrics.forwardPe)}</dd>
-          </div>
-          <div>
-            <dt>PEG</dt>
-            <dd>{fmtNum(a.metrics.peg)}</dd>
-          </div>
-          <div>
-            <dt>EV/EBITDA</dt>
-            <dd>{fmtNum(a.metrics.evEbitda)}</dd>
-          </div>
-          <div>
-            <dt>P/B</dt>
-            <dd>{fmtNum(a.metrics.pb)}</dd>
-          </div>
-          <div>
-            <dt>ROE</dt>
-            <dd>{fmtNum(a.metrics.roe != null ? (Math.abs(a.metrics.roe) < 1 ? a.metrics.roe * 100 : a.metrics.roe) : null)}%</dd>
-          </div>
-        </dl>
-      </section>
-
-      <section className="detail-block">
-        <h3>Föreslagen position</h3>
-        <p className="position">
-          {fmtMoney(a.suggestedAmount, a.currency === 'GBp' ? 'GBP' : a.currency)} · {a.positionPct}% av
-          portfölj
-          {a.suggestedShares > 0 ? ` · ${a.suggestedShares} aktier` : ''}
-        </p>
+        <h3>Varifrån kommer siffrorna?</h3>
+        <ul className="sources">
+          {a.sources.map((s) => (
+            <li key={s.field}>
+              <strong>{s.field}</strong>
+              <span>
+                {s.source} — {s.detail}
+              </span>
+            </li>
+          ))}
+        </ul>
         {a.fairValueMethod && <p className="fine">{a.fairValueMethod}</p>}
       </section>
 
+      {a.setup === 'sniper' && (
+        <section className="detail-block">
+          <h3>Föreslagen sniper-size</h3>
+          <p className="position">
+            {fmtMoney(a.suggestedAmount, a.currency === 'GBp' ? 'GBP' : a.currency)} · {a.positionPct}%
+            {a.suggestedShares > 0 ? ` · ${a.suggestedShares} st` : ''}
+          </p>
+        </section>
+      )}
+
       <section className="detail-block">
-        <h3>Factor-modell</h3>
+        <h3>Score-detalj</h3>
         <table className="factor-table">
           <tbody>
             {a.breakdown.map((b) => (
@@ -189,58 +180,54 @@ function DetailPanel({
 export default function App() {
   const [portfolio, setPortfolio] = useState(500_000)
   const [risk, setRisk] = useState(2)
-  const [tab, setTab] = useState<Tab>('undervalued')
-  const [sort, setSort] = useState<SortKey>('score')
+  const [tab, setTab] = useState<Tab>('sniper')
   const [market, setMarket] = useState<'all' | 'US' | 'UK' | 'SE'>('all')
   const [selected, setSelected] = useState<string | null>(null)
   const [q, setQ] = useState('')
 
-  const { results, status, setRunning } = useLiveScanner(portfolio, risk)
-  const universeSize = resolveWatchlist('all').length
+  const { results, status, setRunning, universeSize } = useLiveScanner(portfolio, risk)
+
+  const counts = useMemo(
+    () => ({
+      sniper: results.filter((a) => a.setup === 'sniper').length,
+      watch: results.filter((a) => a.setup === 'watch').length,
+      usa: WATCHLISTS.usa.length,
+      uk: WATCHLISTS.uk.length,
+      se: WATCHLISTS.sweden.length,
+    }),
+    [results],
+  )
 
   const filtered = useMemo(() => {
-    let list = results.filter((a) => !a.error)
+    let list = results.filter((a) => a.setup !== 'error')
     if (market !== 'all') list = list.filter((a) => marketOf(a.symbol) === market)
-    if (tab === 'undervalued') list = list.filter((a) => a.rating === 'overweight')
-    else if (tab === 'neutral') list = list.filter((a) => a.rating === 'neutral')
-    else if (tab === 'underweight') list = list.filter((a) => a.rating === 'underweight')
+    if (tab === 'sniper') list = list.filter((a) => a.setup === 'sniper')
+    if (tab === 'watch') list = list.filter((a) => a.setup === 'watch')
     if (q.trim()) {
       const s = q.trim().toLowerCase()
       list = list.filter(
         (a) =>
           a.symbol.toLowerCase().includes(s) ||
           a.name.toLowerCase().includes(s) ||
-          (a.sector ?? '').toLowerCase().includes(s),
+          a.dropReason.toLowerCase().includes(s),
       )
     }
-    const sorted = [...list]
-    sorted.sort((a, b) => {
-      if (sort === 'name') return a.name.localeCompare(b.name, 'sv')
-      if (sort === 'upside') return (b.upsidePct ?? -999) - (a.upsidePct ?? -999)
-      if (sort === 'pe') return (a.metrics.pe ?? 999) - (b.metrics.pe ?? 999)
-      return b.scorePct - a.scorePct
-    })
-    return sorted
-  }, [results, tab, sort, market, q])
+    return list
+  }, [results, tab, market, q])
 
   const selectedRow = results.find((a) => a.symbol === selected) ?? null
-  const ow = results.filter((a) => a.rating === 'overweight').length
-  const neu = results.filter((a) => a.rating === 'neutral').length
-  const uw = results.filter((a) => a.rating === 'underweight').length
   const pct =
-    status.totalInCycle > 0
-      ? Math.round((status.doneInCycle / status.totalInCycle) * 100)
-      : 0
+    status.totalInCycle > 0 ? Math.round((status.doneInCycle / status.totalInCycle) * 100) : 0
 
   const liveLabel =
     status.phase === 'scanning'
-      ? `Analyserar ${status.currentSymbols.join(', ')}`
+      ? `Scannar ${status.currentSymbols.join(', ')}`
       : status.phase === 'cycle-pause'
-        ? 'Cykel klar — nästa runda strax'
+        ? 'Cykel klar — söker vidare snart'
         : status.phase === 'error'
           ? `Fel: ${status.lastError}`
           : status.running
-            ? 'Väntar…'
+            ? 'Standby'
             : 'Pausad'
 
   return (
@@ -250,7 +237,7 @@ export default function App() {
           <span className="mark" aria-hidden />
           <div>
             <strong>Value Scout</strong>
-            <span>Equity Research · Live screening</span>
+            <span>Sniper desk · large-cap dips</span>
           </div>
         </div>
 
@@ -264,16 +251,22 @@ export default function App() {
 
         <div className="top-stats">
           <div>
-            <span>Undervärderade</span>
-            <strong>{ow}</strong>
+            <span>Sniper nu</span>
+            <strong>{counts.sniper}</strong>
           </div>
           <div>
-            <span>Neutral</span>
-            <strong>{neu}</strong>
+            <span>Bevaka</span>
+            <strong>{counts.watch}</strong>
           </div>
           <div>
-            <span>Underweight</span>
-            <strong>{uw}</strong>
+            <span>Universe</span>
+            <strong>
+              {universeSize}
+              <small>
+                {' '}
+                ({counts.usa}/{counts.uk}/{counts.se})
+              </small>
+            </strong>
           </div>
           <div>
             <span>Täckning</span>
@@ -283,11 +276,7 @@ export default function App() {
           </div>
         </div>
 
-        <button
-          type="button"
-          className="bar-btn"
-          onClick={() => setRunning(!status.running)}
-        >
+        <button type="button" className="bar-btn" onClick={() => setRunning(!status.running)}>
           {status.running ? 'Pausa' : 'Starta'}
         </button>
       </header>
@@ -298,6 +287,13 @@ export default function App() {
 
       <div className="workspace">
         <aside className="sidebar">
+          <p className="side-label">Sniper-regel</p>
+          <p className="rule-box">
+            Stora stabila bolag som tappat ca <strong>5–10%</strong> på kort tid, med{' '}
+            <strong>skriven orsak</strong> (t.ex. ex-div, rapportöverreaktion, nyhet). Mål: möjlig
+            studs ≈ <strong>5%+</strong> på ca en vecka. De flesta dagar: noll lägen.
+          </p>
+
           <p className="side-label">Portfölj</p>
           <label className="field">
             Kapital (SEK)
@@ -310,11 +306,11 @@ export default function App() {
             />
           </label>
           <label className="field">
-            Risk per namn (%)
+            Risk per sniper (%)
             <input
               type="number"
               min={0.5}
-              max={5}
+              max={4}
               step={0.5}
               value={risk}
               onChange={(e) => setRisk(Number(e.target.value) || 1)}
@@ -337,33 +333,30 @@ export default function App() {
 
           <p className="side-label">Vy</p>
           <nav className="side-nav">
-            <button type="button" className={tab === 'undervalued' ? 'on' : ''} onClick={() => setTab('undervalued')}>
-              Undervärderade <em>{ow}</em>
+            <button
+              type="button"
+              className={tab === 'sniper' ? 'on' : ''}
+              onClick={() => setTab('sniper')}
+            >
+              Sniper-lägen <em>{counts.sniper}</em>
+            </button>
+            <button
+              type="button"
+              className={tab === 'watch' ? 'on' : ''}
+              onClick={() => setTab('watch')}
+            >
+              Bevaka <em>{counts.watch}</em>
             </button>
             <button type="button" className={tab === 'all' ? 'on' : ''} onClick={() => setTab('all')}>
-              Alla analyserade <em>{results.length}</em>
-            </button>
-            <button type="button" className={tab === 'neutral' ? 'on' : ''} onClick={() => setTab('neutral')}>
-              Neutral <em>{neu}</em>
-            </button>
-            <button type="button" className={tab === 'underweight' ? 'on' : ''} onClick={() => setTab('underweight')}>
-              Underweight <em>{uw}</em>
+              Alla scannade <em>{results.length}</em>
             </button>
           </nav>
-
-          <p className="side-label">Sortering</p>
-          <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)}>
-            <option value="score">Model score</option>
-            <option value="upside">Uppsida</option>
-            <option value="pe">Lägst P/E</option>
-            <option value="name">Namn</option>
-          </select>
 
           <label className="field">
             Sök
             <input
               type="search"
-              placeholder="Ticker, bolag, sektor…"
+              placeholder="Ticker eller orsak…"
               value={q}
               onChange={(e) => setQ(e.target.value)}
             />
@@ -371,15 +364,16 @@ export default function App() {
 
           <div className="side-foot">
             <p>
-              Cykel {status.cycle || '—'} · {pct}% denna runda
+              Cykel {status.cycle || '—'} · {pct}%
             </p>
             <p>
               {status.lastUpdate
-                ? `Uppdaterad ${new Date(status.lastUpdate).toLocaleTimeString('sv-SE')}`
-                : 'Väntar på första batch…'}
+                ? `Senast ${new Date(status.lastUpdate).toLocaleTimeString('sv-SE')}`
+                : 'Första batch pågår…'}
             </p>
             <p className="disclaimer">
-              Ej investeringsrådgivning. Kontinuerlig screening via Yahoo Finance.
+              Data: Yahoo Finance (pris, chart, kalender, nyheter). Bounce-mål = egen beräkning.
+              Ej rådgivning — sällsynta setups.
             </p>
           </div>
         </aside>
@@ -387,26 +381,26 @@ export default function App() {
         <main className="main">
           <div className="main-head">
             <h1>
-              {tab === 'undervalued'
-                ? 'Undervärderade bolag'
-                : tab === 'neutral'
-                  ? 'Neutral rating'
-                  : tab === 'underweight'
-                    ? 'Underweight'
-                    : 'Research-universum'}
+              {tab === 'sniper'
+                ? 'Aktiva sniper-lägen'
+                : tab === 'watch'
+                  ? 'Bevaka (ofullständig edge)'
+                  : 'Hela universe-status'}
             </h1>
             <p>
-              Systemet scannar USA, UK och Sverige i bakgrunden och uppdaterar listan löpande med
-              rating och motivering.
+              Botten går kontinuerligt igenom {universeSize} large/mid-caps (100 USA · 100 UK · 100
+              SE). Visar bara case när dip + orsak + bounce-potential finns.
             </p>
           </div>
 
           {filtered.length === 0 ? (
             <div className="empty">
               <p>
-                {results.length === 0
-                  ? 'Live-screening startar… första resultaten dyker upp inom några sekunder.'
-                  : 'Inga bolag matchar filtret just nu. Byt vy eller vänta på nästa batch.'}
+                {tab === 'sniper'
+                  ? results.length === 0
+                    ? 'Live-scan startar… sniper-lägen dyker bara upp när något faktiskt dippat med förklaring.'
+                    : 'Inga sniper-lägen just nu — det är normalt. Systemet fortsätter leta.'
+                  : 'Inga rader i denna vy ännu.'}
               </p>
               {status.currentSymbols.length > 0 && (
                 <p className="scanning-now">Nu: {status.currentSymbols.join(' · ')}</p>
@@ -419,13 +413,11 @@ export default function App() {
                   <tr>
                     <th>Bolag</th>
                     <th>Mkt</th>
-                    <th>Rating</th>
-                    <th>Kurs</th>
-                    <th>Fair value</th>
-                    <th>Uppsida</th>
-                    <th>P/E</th>
-                    <th>Score</th>
-                    <th>Varför (kort)</th>
+                    <th>Läge</th>
+                    <th>Dip</th>
+                    <th>Bounce</th>
+                    <th>Varför</th>
+                    <th>Källa</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -441,26 +433,20 @@ export default function App() {
                       </td>
                       <td>{marketOf(a.symbol)}</td>
                       <td>
-                        <span className={`chip chip-${a.rating}`}>{a.ratingLabel}</span>
+                        <span className={`chip chip-${a.setup}`}>{a.setupLabel}</span>
                       </td>
-                      <td>{fmtPrice(a.price, a.currency)}</td>
-                      <td>{fmtPrice(a.fairValue, a.currency)}</td>
-                      <td className={a.upsidePct && a.upsidePct > 0 ? 'pos' : a.upsidePct && a.upsidePct < 0 ? 'neg' : ''}>
-                        {a.upsidePct != null
-                          ? `${a.upsidePct > 0 ? '+' : ''}${fmtNum(a.upsidePct, 1)}%`
-                          : '—'}
+                      <td className="neg">
+                        {fmtNum(
+                          Math.min(a.dayChangePct ?? 0, a.maxDayDropPct ?? 0, a.weekDrawdownPct ?? 0),
+                          1,
+                        )}
+                        %
                       </td>
-                      <td>{fmtNum(a.metrics.pe)}</td>
-                      <td>
-                        <div className="score-cell">
-                          <span>{fmtNum(a.scorePct, 0)}%</span>
-                          <i style={{ width: `${Math.min(100, a.scorePct)}%` }} />
-                        </div>
+                      <td className="pos">
+                        {a.bounceUpsidePct != null ? `+${fmtNum(a.bounceUpsidePct, 1)}%` : '—'}
                       </td>
-                      <td className="why">
-                        {a.reasons[0] || a.thesis.slice(0, 90) || '—'}
-                        {a.reasons[0] ? '' : a.thesis.length > 90 ? '…' : ''}
-                      </td>
+                      <td className="why">{a.dropReason}</td>
+                      <td className="src">{a.dropReasonSource.split('→')[0]?.trim() || '—'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -469,9 +455,7 @@ export default function App() {
           )}
         </main>
 
-        {selectedRow && (
-          <DetailPanel a={selectedRow} onClose={() => setSelected(null)} />
-        )}
+        {selectedRow && <DetailPanel a={selectedRow} onClose={() => setSelected(null)} />}
       </div>
     </div>
   )

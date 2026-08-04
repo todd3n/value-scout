@@ -2,10 +2,10 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { scanSymbols, type Analysis } from '../api/client'
 import { resolveWatchlist } from '../data/watchlists'
 
-const BATCH = 8
-const PAUSE_BETWEEN_BATCH_MS = 1200
-const CYCLE_PAUSE_MS = 8000
-const STORAGE_KEY = 'vs-live-cache-v1'
+const BATCH = 6
+const PAUSE_BETWEEN_BATCH_MS = 1500
+const CYCLE_PAUSE_MS = 12000
+const STORAGE_KEY = 'vs-sniper-v2'
 
 export type ScannerStatus = {
   running: boolean
@@ -36,19 +36,19 @@ function saveCache(results: Analysis[]) {
       JSON.stringify({ results, savedAt: new Date().toISOString() }),
     )
   } catch {
-    /* ignore quota */
+    /* ignore */
   }
 }
 
 function mergeResults(prev: Analysis[], incoming: Analysis[]): Analysis[] {
   const map = new Map(prev.map((a) => [a.symbol, a]))
   for (const a of incoming) map.set(a.symbol, a)
-  const rank = (r: Analysis['rating']) =>
-    r === 'overweight' ? 3 : r === 'neutral' ? 2 : r === 'underweight' ? 1 : 0
+  const rank = (s: Analysis['setup']) =>
+    s === 'sniper' ? 3 : s === 'watch' ? 2 : s === 'none' ? 1 : 0
   return [...map.values()].sort((a, b) => {
-    const d = rank(b.rating) - rank(a.rating)
+    const d = rank(b.setup) - rank(a.setup)
     if (d !== 0) return d
-    return b.scorePct - a.scorePct
+    return (a.maxDayDropPct ?? 0) - (b.maxDayDropPct ?? 0)
   })
 }
 
@@ -56,12 +56,13 @@ export function useLiveScanner(portfolio: number, risk: number) {
   const [results, setResults] = useState<Analysis[]>(() =>
     typeof window !== 'undefined' ? loadCache() : [],
   )
+  const universe = resolveWatchlist('all')
   const [status, setStatus] = useState<ScannerStatus>({
     running: true,
     phase: 'idle',
     currentSymbols: [],
     doneInCycle: 0,
-    totalInCycle: resolveWatchlist('all').length,
+    totalInCycle: universe.length,
     cycle: 0,
     lastError: null,
     lastUpdate: null,
@@ -84,7 +85,7 @@ export function useLiveScanner(portfolio: number, risk: number) {
 
   useEffect(() => {
     const runId = ++abortRef.current
-    const universe = resolveWatchlist('all').map((w) => w.symbol)
+    const symbols = resolveWatchlist('all').map((w) => w.symbol)
 
     async function sleep(ms: number) {
       await new Promise((r) => setTimeout(r, ms))
@@ -106,11 +107,11 @@ export function useLiveScanner(portfolio: number, risk: number) {
           phase: 'scanning',
           cycle,
           doneInCycle: 0,
-          totalInCycle: universe.length,
+          totalInCycle: symbols.length,
           lastError: null,
         }))
 
-        for (let i = 0; i < universe.length; i += BATCH) {
+        for (let i = 0; i < symbols.length; i += BATCH) {
           if (abortRef.current !== runId) return
           while (!runningRef.current && abortRef.current === runId) {
             setStatus((s) => ({ ...s, phase: 'idle', currentSymbols: [] }))
@@ -118,7 +119,7 @@ export function useLiveScanner(portfolio: number, risk: number) {
           }
           if (abortRef.current !== runId) return
 
-          const batch = universe.slice(i, i + BATCH)
+          const batch = symbols.slice(i, i + BATCH)
           setStatus((s) => ({
             ...s,
             phase: 'scanning',
@@ -128,11 +129,7 @@ export function useLiveScanner(portfolio: number, risk: number) {
           }))
 
           try {
-            const data = await scanSymbols(
-              batch,
-              portfolioRef.current,
-              riskRef.current,
-            )
+            const data = await scanSymbols(batch, portfolioRef.current, riskRef.current)
             if (abortRef.current !== runId) return
             setResults((prev) => {
               const next = mergeResults(prev, data.results)
@@ -152,7 +149,7 @@ export function useLiveScanner(portfolio: number, risk: number) {
               phase: 'error',
               lastError: e instanceof Error ? e.message : 'Scanfel',
             }))
-            await sleep(4000)
+            await sleep(5000)
           }
 
           await sleep(PAUSE_BETWEEN_BATCH_MS)
@@ -163,7 +160,7 @@ export function useLiveScanner(portfolio: number, risk: number) {
           ...s,
           phase: 'cycle-pause',
           currentSymbols: [],
-          doneInCycle: universe.length,
+          doneInCycle: symbols.length,
         }))
         await sleep(CYCLE_PAUSE_MS)
       }
@@ -175,5 +172,5 @@ export function useLiveScanner(portfolio: number, risk: number) {
     }
   }, [])
 
-  return { results, status, setRunning }
+  return { results, status, setRunning, universeSize: universe.length }
 }
