@@ -594,10 +594,25 @@ export function scoreSniper(
   const buyReasons = research?.buyReasons ?? []
   const modelRisks = risks.map((t) => ({ text: t, source: 'Modell' }))
   const researchRisks = research?.risks ?? []
-  const seenRisk = new Set(researchRisks.map((r) => r.text.toLowerCase().slice(0, 60)))
+  const riskKey = (t: string) =>
+    t
+      .toLowerCase()
+      .replace(/[^a-zåäö0-9\s]/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, 40)
+  const seenRisk = new Set(researchRisks.map((r) => riskKey(r.text)))
   const riskItems = [
     ...researchRisks,
-    ...modelRisks.filter((r) => !seenRisk.has(r.text.toLowerCase().slice(0, 60))),
+    ...modelRisks.filter((r) => {
+      const k = riskKey(r.text)
+      if (seenRisk.has(k)) return false
+      // t.ex. "Hög beta" vs "Hög beta (2.21) — ..."
+      for (const s of seenRisk) {
+        if (s.startsWith(k) || k.startsWith(s)) return false
+      }
+      return true
+    }),
   ].slice(0, 8)
   const researchHits = research?.hits ?? []
 
