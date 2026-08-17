@@ -71,6 +71,21 @@ export function writeLocal<T>(key: string, value: T) {
   localStorage.setItem(key, JSON.stringify(value))
 }
 
+export function mergePaperHistory(remote: { trades: PaperTrade[]; events: TradeEvent[] }, local: { trades: PaperTrade[]; events: TradeEvent[] }) {
+  const merge = <T extends { id: string }>(remoteItems: T[], localItems: T[], timestamp: (item: T) => string | undefined) => {
+    const merged = new Map(remoteItems.map((item) => [item.id, item]))
+    localItems.forEach((item) => {
+      const current = merged.get(item.id)
+      if (!current || new Date(timestamp(item) || 0).getTime() > new Date(timestamp(current) || 0).getTime()) merged.set(item.id, item)
+    })
+    return Array.from(merged.values())
+  }
+  return {
+    trades: merge(remote.trades, local.trades, (trade) => trade.closedAt || trade.openedAt),
+    events: merge(remote.events, local.events, (event) => event.occurredAt),
+  }
+}
+
 export function holdingMetrics(holding: PortfolioHolding, quote?: Analysis) {
   const currentPrice = quote?.price ?? holding.averageCost
   const marketValue = currentPrice * holding.quantity

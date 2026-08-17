@@ -19,7 +19,11 @@
 - [x] Testa hela simulerade köp-/säljflödet utan mäklaranrop
 - [x] Publicera den förfinade paper-tradingversionen
 
-- [ ] Spara paper trades och auditlogg i persistent backendlagring
-- [ ] Läsa tillbaka historik efter sidladdning och omstart
-- [ ] Behålla lokal offline-fallback utan att skapa dubbla händelser
-- [ ] Testa persistent historik och publicera uppdateringen
+- [x] Spara paper trades och auditlogg i persistent backendlagring
+- [x] Läsa tillbaka historik efter sidladdning och omstart
+- [x] Behålla lokal offline-fallback utan att skapa dubbla händelser
+- [x] Testa persistent historik och publicera uppdateringen
+
+- [ ] Lägg till automatiserade tester för load/save paper-history, återläsning och offline-fallback
+- [ ] Verifiera att fjärrhistorik överlever omladdning utan dubbla events
+- [ ] Prioritera nyare persistent data framför stale localStorage vid merge

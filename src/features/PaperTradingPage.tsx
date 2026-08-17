@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { loadPaperHistory, savePaperHistory, type Analysis } from '../api/client'
-import { PAPER_TRADES_KEY, TRADE_EVENTS_KEY, paperTradePnl, readLocal, resolvePaperTrade, writeLocal, type PaperTrade, type TradeEvent } from '../lib/portfolio'
+import { PAPER_TRADES_KEY, TRADE_EVENTS_KEY, mergePaperHistory, paperTradePnl, readLocal, resolvePaperTrade, writeLocal, type PaperTrade, type TradeEvent } from '../lib/portfolio'
 import { marketForSymbol, marketStatus } from '../lib/marketHours'
 
 function money(value: number, currency = 'USD') {
@@ -21,9 +21,9 @@ export function PaperTradingPage({ results }: { results: Analysis[] }) {
       if (remote) {
         const localTrades = readLocal<PaperTrade[]>(PAPER_TRADES_KEY, [])
         const localEvents = readLocal<TradeEvent[]>(TRADE_EVENTS_KEY, [])
-        const mergeById = <T extends { id: string }>(remoteItems: T[], localItems: T[]) => Array.from(new Map([...remoteItems, ...localItems].map((item) => [item.id, item])).values())
-        setTrades(mergeById(remote.trades || [], localTrades))
-        setEvents(mergeById(remote.events || [], localEvents))
+        const merged = mergePaperHistory({ trades: remote.trades || [], events: remote.events || [] }, { trades: localTrades, events: localEvents })
+        setTrades(merged.trades)
+        setEvents(merged.events)
       }
       setHistoryReady(true)
     }).catch(() => setHistoryReady(true))
