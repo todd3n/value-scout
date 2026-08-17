@@ -10,7 +10,7 @@ globalThis.fetch = async (url, options = {}) => {
 }
 
 const { getPaperInstallationId, loadPaperHistory, savePaperHistory } = await import('../src/api/client.ts')
-const { mergePaperHistory } = await import('../src/lib/portfolio.ts')
+const { formatTradeTimestamp, fundQuoteWarning, mergePaperHistory } = await import('../src/lib/portfolio.ts')
 
 const installationId = getPaperInstallationId()
 assert.match(installationId, /^[A-Za-z0-9_-]{16,128}$/)
@@ -24,4 +24,7 @@ const staleLocal = { trades: [{ id: 't1', openedAt: '2026-08-17T09:00:00.000Z', 
 assert.equal(mergePaperHistory(remote, staleLocal).trades[0].status, 'open')
 const newerLocal = { trades: [{ id: 't1', openedAt: '2026-08-17T11:00:00.000Z', status: 'closed' }], events: [] }
 assert.equal(mergePaperHistory(remote, newerLocal).trades[0].status, 'closed')
+assert.match(formatTradeTimestamp('2026-08-17T10:05:00.000Z'), /2026|17\.08|10:05/)
+assert.match(fundQuoteWarning('SE000TEST', false), /Kursdata saknas/)
+assert.equal(fundQuoteWarning('SE000TEST', true), '')
 console.log('paper-history-test: passed for installation id, load/save transport, offline-safe fallback contract, and stale-data merge')

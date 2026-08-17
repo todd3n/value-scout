@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { scanSymbols, type Analysis } from '../api/client'
-import { holdingMetrics, HOLDINGS_KEY, readLocal, writeLocal, type HoldingType, type PortfolioHolding } from '../lib/portfolio'
+import { fundQuoteWarning, holdingMetrics, HOLDINGS_KEY, readLocal, writeLocal, type HoldingType, type PortfolioHolding } from '../lib/portfolio'
 
 const API_BASE = 'https://3000-i41dbe2935xmpsi1wpvd3-9e36b5fa.us2.manus.computer'
 
@@ -60,7 +60,7 @@ export function PortfolioPage({ results }: { results: Analysis[] }) {
       response.results.forEach((quote) => { next[quote.symbol] = quote })
       setQuotes(next)
       const missingFunds = holdings.filter((holding) => holding.type === 'fund' && next[holding.symbol]?.price == null).map((holding) => holding.symbol)
-      if (missingFunds.length) setError(`Kursdata saknas för fondkod: ${missingFunds.join(', ')}. Innehavet sparas, men analysen använder inte en aktuell fondkurs.`)
+      if (missingFunds.length) setError(missingFunds.map((symbol) => fundQuoteWarning(symbol, false)).join(' '))
       const payload = holdings.map((holding) => {
         const metrics = holdingMetrics(holding, next[holding.symbol])
         return { symbol: holding.symbol, type: holding.type, quantity: holding.quantity, averageCost: holding.averageCost, currency: holding.currency, ...metrics }

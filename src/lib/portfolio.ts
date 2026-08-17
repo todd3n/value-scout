@@ -90,6 +90,10 @@ export function formatTradeTimestamp(iso?: string) {
   return iso ? new Date(iso).toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' }) : '—'
 }
 
+export function fundQuoteWarning(symbol: string, hasQuote: boolean) {
+  return hasQuote ? '' : `Kursdata saknas för fondkod: ${symbol}. Innehavet sparas, men analysen använder inte en aktuell fondkurs.`
+}
+
 export function holdingMetrics(holding: PortfolioHolding, quote?: Analysis) {
   const currentPrice = quote?.price ?? holding.averageCost
   const marketValue = currentPrice * holding.quantity
