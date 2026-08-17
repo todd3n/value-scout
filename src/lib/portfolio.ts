@@ -86,6 +86,10 @@ export function mergePaperHistory(remote: { trades: PaperTrade[]; events: TradeE
   }
 }
 
+export function formatTradeTimestamp(iso?: string) {
+  return iso ? new Date(iso).toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' }) : '—'
+}
+
 export function holdingMetrics(holding: PortfolioHolding, quote?: Analysis) {
   const currentPrice = quote?.price ?? holding.averageCost
   const marketValue = currentPrice * holding.quantity

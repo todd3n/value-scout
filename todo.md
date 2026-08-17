@@ -24,6 +24,6 @@
 - [x] Behålla lokal offline-fallback utan att skapa dubbla händelser
 - [x] Testa persistent historik och publicera uppdateringen
 
-- [ ] Lägg till automatiserade tester för load/save paper-history, återläsning och offline-fallback
-- [ ] Verifiera att fjärrhistorik överlever omladdning utan dubbla events
-- [ ] Prioritera nyare persistent data framför stale localStorage vid merge
+- [x] Lägg till automatiserade tester för load/save paper-history, återläsning och offline-fallback
+- [x] Verifiera att fjärrhistorik överlever omladdning utan dubbla events
+- [x] Prioritera nyare persistent data framför stale localStorage vid merge
