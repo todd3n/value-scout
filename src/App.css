@@ -941,3 +941,10 @@
 .compact-empty { min-height:5rem; padding:1rem; }
 .primary-btn:focus-visible, .secondary-btn:focus-visible, .text-btn:focus-visible, .icon-btn:focus-visible { outline:2px solid #c9a84c; outline-offset:2px; }
 @media (max-width:800px) { .order-desk { align-items:stretch; flex-direction:column; } .order-status { min-width:0; } .audit-reason { min-width:220px; } }
+
+.order-id { font-family:var(--mono); font-size:.68rem !important; color:#9eb1bc; white-space:nowrap; }
+.order-status-badge { display:inline-block; padding:.22rem .4rem; border:1px solid rgba(171,195,202,.28); color:#c6d4d6; font-size:.62rem; letter-spacing:.05em; text-transform:uppercase; white-space:nowrap; }
+.order-status-badge.filled { color:#9dd4ba; border-color:rgba(145,216,182,.4); background:rgba(53,139,102,.16); }
+.order-status-badge.closed { color:#b6c7dc; border-color:rgba(146,170,198,.4); background:rgba(62,93,126,.2); }
+.order-status-badge.received { color:#e6d397; border-color:rgba(201,168,76,.4); background:rgba(201,168,76,.12); }
+.order-status-badge.rejected { color:#f0b3a6; border-color:rgba(240,179,166,.4); background:rgba(176,96,80,.16); }

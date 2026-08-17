@@ -14,10 +14,12 @@ export type PortfolioHolding = {
 
 export type PaperTradeStatus = 'open' | 'won' | 'lost' | 'expired' | 'closed'
 export type TradeAction = 'buy' | 'sell'
+export type PaperOrderStatus = 'received' | 'filled' | 'closed' | 'rejected'
 
 export type TradeEvent = {
   id: string
   tradeId: string
+  orderId: string
   action: TradeAction
   symbol: string
   name: string
@@ -27,7 +29,7 @@ export type TradeEvent = {
   currency: string
   reason: string
   source: string
-  status: 'simulated' | 'prepared' | 'blocked'
+  status: PaperOrderStatus
   occurredAt: string
 }
 
@@ -36,6 +38,8 @@ export type PaperTrade = {
   symbol: string
   name: string
   market?: 'USA' | 'UK' | 'Sverige'
+  orderId?: string
+  orderStatus?: PaperOrderStatus
   reason?: string
   entryPrice: number
   targetPrice: number | null
