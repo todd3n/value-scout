@@ -83,25 +83,42 @@ export function yahooUrlFor(symbol: string): string {
 
 const MANUS_API_BASE = 'https://3000-i41dbe2935xmpsi1wpvd3-9e36b5fa.us2.manus.computer'
 
+type ScanResponse = { results: Analysis[]; fetchedAt: string }
+
+async function loadFallback(): Promise<ScanResponse | null> {
+  try {
+    const base = (import.meta as ImportMeta & { env?: { BASE_URL?: string } }).env?.BASE_URL || "/"
+    const normalizedBase = base.endsWith("/") ? base : `${base}/`
+    const fallback = await fetch(`${normalizedBase}data.json`, { signal: AbortSignal.timeout(10000) })
+    if (fallback.ok) return fallback.json() as Promise<ScanResponse>
+  } catch {
+    // The fallback is best effort; preserve the original API failure below.
+  }
+  return null
+}
+
 export async function scanSymbols(
   symbols: string[],
   portfolio: number,
   risk: number,
-): Promise<{ results: Analysis[]; fetchedAt: string }> {
+): Promise<ScanResponse> {
   const params = new URLSearchParams({
     symbols: symbols.join(','),
     portfolio: String(portfolio),
     risk: String(risk),
   })
-  const res = await fetch(`${MANUS_API_BASE}/api/value-scout/scan?${params}`)
-  if (!res.ok) {
-    if (res.status === 404) {
-      const base = import.meta.env.BASE_URL.endsWith("/") ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`
-      const fallback = await fetch(`${base}data.json`)
-      if (fallback.ok) return fallback.json()
-    }
+  try {
+    const res = await fetch(`${MANUS_API_BASE}/api/value-scout/scan?${params}`, {
+      signal: AbortSignal.timeout(60000),
+    })
+    if (res.ok) return res.json() as Promise<ScanResponse>
+    const fallback = await loadFallback()
+    if (fallback) return fallback
     const err = (await res.json().catch(() => ({}))) as { error?: string }
     throw new Error(err.error || `HTTP ${res.status}`)
+  } catch (error) {
+    const fallback = await loadFallback()
+    if (fallback) return fallback
+    throw error instanceof Error ? error : new Error('Scan failed')
   }
-  return res.json()
 }
