@@ -10,6 +10,8 @@ export type Setup = 'sniper' | 'watch' | 'none' | 'error'
 
 export type ChartPoint = { date: string; close: number }
 
+import type { PaperTrade, TradeEvent } from '../lib/portfolio'
+
 export type Analysis = {
   symbol: string
   name: string
@@ -84,6 +86,41 @@ export function yahooUrlFor(symbol: string): string {
 const MANUS_API_BASE = 'https://3000-i41dbe2935xmpsi1wpvd3-9e36b5fa.us2.manus.computer'
 
 type ScanResponse = { results: Analysis[]; fetchedAt: string }
+export type PaperHistory = { trades: PaperTrade[]; events: TradeEvent[]; updatedAt?: string | null }
+
+const PAPER_INSTALLATION_KEY = 'value-scout-installation-v1'
+
+export function getPaperInstallationId(): string {
+  try {
+    const existing = localStorage.getItem(PAPER_INSTALLATION_KEY)
+    if (existing && /^[A-Za-z0-9_-]{16,128}$/.test(existing)) return existing
+    const generated = typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `vs_${Date.now()}_${Math.random().toString(36).slice(2)}`
+    localStorage.setItem(PAPER_INSTALLATION_KEY, generated)
+    return generated
+  } catch {
+    return `vs_${Date.now()}_${Math.random().toString(36).slice(2)}`
+  }
+}
+
+export async function loadPaperHistory(): Promise<PaperHistory | null> {
+  try {
+    const installationId = getPaperInstallationId()
+    const res = await fetch(`${MANUS_API_BASE}/api/value-scout/paper-history?installationId=${encodeURIComponent(installationId)}`, { signal: AbortSignal.timeout(10000) })
+    if (!res.ok) return null
+    return await res.json() as PaperHistory
+  } catch {
+    return null
+  }
+}
+
+export async function savePaperHistory(trades: PaperTrade[], events: TradeEvent[]): Promise<boolean> {
+  try {
+    const res = await fetch(`${MANUS_API_BASE}/api/value-scout/paper-history`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ installationId: getPaperInstallationId(), trades, events }), signal: AbortSignal.timeout(10000) })
+    return res.ok
+  } catch {
+    return false
+  }
+}
 
 async function loadFallback(): Promise<ScanResponse | null> {
   try {

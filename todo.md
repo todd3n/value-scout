@@ -13,8 +13,13 @@
 - [x] Testa responsivitet, loggning och orderförhandsgranskning
 - [x] Publicera UI/UX- och loggversionen
 
-- [ ] Gör simulerade orderstatus realistiska: mottagen, fylld, stängd och avvisad
-- [ ] Logga varje paper-köp och paper-sälj med full ordermetadata och orsak
-- [ ] Visa orderhistorik och P/L som en sammanhängande paper-tradingjournal
-- [ ] Testa hela simulerade köp-/säljflödet utan mäklaranrop
-- [ ] Publicera den förfinade paper-tradingversionen
+- [x] Gör simulerade orderstatus realistiska: mottagen, fylld, stängd och avvisad
+- [x] Logga varje paper-köp och paper-sälj med full ordermetadata och orsak
+- [x] Visa orderhistorik och P/L som en sammanhängande paper-tradingjournal
+- [x] Testa hela simulerade köp-/säljflödet utan mäklaranrop
+- [x] Publicera den förfinade paper-tradingversionen
+
+- [ ] Spara paper trades och auditlogg i persistent backendlagring
+- [ ] Läsa tillbaka historik efter sidladdning och omstart
+- [ ] Behålla lokal offline-fallback utan att skapa dubbla händelser
+- [ ] Testa persistent historik och publicera uppdateringen

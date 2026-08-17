@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import type { Analysis } from '../api/client'
+import { loadPaperHistory, savePaperHistory, type Analysis } from '../api/client'
 import { PAPER_TRADES_KEY, TRADE_EVENTS_KEY, paperTradePnl, readLocal, resolvePaperTrade, writeLocal, type PaperTrade, type TradeEvent } from '../lib/portfolio'
 import { marketForSymbol, marketStatus } from '../lib/marketHours'
 
@@ -10,11 +10,32 @@ function money(value: number, currency = 'USD') {
 export function PaperTradingPage({ results }: { results: Analysis[] }) {
   const [trades, setTrades] = useState<PaperTrade[]>(() => readLocal<PaperTrade[]>(PAPER_TRADES_KEY, []))
   const [events, setEvents] = useState<TradeEvent[]>(() => readLocal<TradeEvent[]>(TRADE_EVENTS_KEY, []))
+  const [historyReady, setHistoryReady] = useState(false)
   const previousTrades = useRef(trades)
   const quotes = useMemo(() => Object.fromEntries(results.map((result) => [result.symbol, result])), [results])
 
-  useEffect(() => { writeLocal(PAPER_TRADES_KEY, trades) }, [trades])
-  useEffect(() => { writeLocal(TRADE_EVENTS_KEY, events) }, [events])
+  useEffect(() => {
+    let cancelled = false
+    loadPaperHistory().then((remote) => {
+      if (cancelled) return
+      if (remote) {
+        const localTrades = readLocal<PaperTrade[]>(PAPER_TRADES_KEY, [])
+        const localEvents = readLocal<TradeEvent[]>(TRADE_EVENTS_KEY, [])
+        const mergeById = <T extends { id: string }>(remoteItems: T[], localItems: T[]) => Array.from(new Map([...remoteItems, ...localItems].map((item) => [item.id, item])).values())
+        setTrades(mergeById(remote.trades || [], localTrades))
+        setEvents(mergeById(remote.events || [], localEvents))
+      }
+      setHistoryReady(true)
+    }).catch(() => setHistoryReady(true))
+    return () => { cancelled = true }
+  }, [])
+  useEffect(() => { if (historyReady) writeLocal(PAPER_TRADES_KEY, trades) }, [trades, historyReady])
+  useEffect(() => { if (historyReady) writeLocal(TRADE_EVENTS_KEY, events) }, [events, historyReady])
+  useEffect(() => {
+    if (!historyReady) return
+    const timer = window.setTimeout(() => { void savePaperHistory(trades, events) }, 250)
+    return () => window.clearTimeout(timer)
+  }, [trades, events, historyReady])
   useEffect(() => {
     const closedNow = trades.filter((trade) => trade.status !== 'open' && previousTrades.current.some((before) => before.id === trade.id && before.status === 'open'))
     if (closedNow.length) setEvents((current) => [...current, ...closedNow.map((trade): TradeEvent => ({ id: `${trade.id}-sell-${trade.closedAt || Date.now()}`, tradeId: trade.id, orderId: `${trade.orderId || trade.id}-SELL`, action: 'sell', symbol: trade.symbol, name: trade.name, market: trade.market || 'USA', quantity: trade.quantity, price: trade.exitPrice ?? trade.entryPrice, currency: trade.currency, reason: trade.status === 'won' ? 'Automatiskt såld eftersom målpriset träffades.' : trade.status === 'lost' ? 'Automatiskt såld eftersom stop-nivån träffades.' : 'Såld manuellt från paper trading.', source: trade.source, status: 'closed', occurredAt: trade.closedAt || new Date().toISOString() }))])
