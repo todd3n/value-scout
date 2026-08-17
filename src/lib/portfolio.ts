@@ -18,6 +18,8 @@ export type PaperTrade = {
   id: string
   symbol: string
   name: string
+  market?: 'USA' | 'UK' | 'Sverige'
+  reason?: string
   entryPrice: number
   targetPrice: number | null
   stopPrice: number | null

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { holdingMetrics, paperTradePnl, readLocal, resolvePaperTrade, writeLocal } from '../src/lib/portfolio.ts'
+import { isMarketOpen, marketForSymbol, marketStatus } from '../src/lib/marketHours.ts'
 
 const holding = { id: 'aapl-1', symbol: 'AAPL', type: 'stock', quantity: 10, averageCost: 100, currency: 'USD', addedAt: '2026-08-17T00:00:00.000Z' }
 const quote = { symbol: 'AAPL', price: 110 }
@@ -19,4 +20,14 @@ const store = new Map()
 globalThis.localStorage = { getItem: (key) => store.get(key) ?? null, setItem: (key, value) => store.set(key, value) }
 writeLocal('holdings', [holding])
 assert.deepEqual(readLocal('holdings', []), [holding])
-console.log('portfolio-test: passed for valuation, P/L, auto-close, and local persistence')
+const openAtUsSession = new Date('2026-08-17T14:00:00.000Z')
+assert.equal(isMarketOpen('USA', openAtUsSession), true)
+assert.equal(isMarketOpen('UK', openAtUsSession), true)
+assert.equal(isMarketOpen('Sverige', openAtUsSession), true)
+assert.equal(isMarketOpen('USA', new Date('2026-08-17T13:00:00.000Z')), false)
+assert.equal(isMarketOpen('USA', new Date('2026-08-15T14:00:00.000Z')), false)
+assert.equal(marketForSymbol('VOLV-B.ST', 'SEK'), 'Sverige')
+assert.equal(marketForSymbol('VOD.L', 'GBP'), 'UK')
+assert.equal(marketForSymbol('AAPL', 'USD'), 'USA')
+assert.match(marketStatus('USA', new Date('2026-08-17T13:00:00.000Z')).hours, /09:30–16:00/)
+console.log('portfolio-test: passed for valuation, P/L, auto-close, persistence, and market hours')
