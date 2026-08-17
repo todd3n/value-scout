@@ -13,6 +13,23 @@ export type PortfolioHolding = {
 }
 
 export type PaperTradeStatus = 'open' | 'won' | 'lost' | 'expired' | 'closed'
+export type TradeAction = 'buy' | 'sell'
+
+export type TradeEvent = {
+  id: string
+  tradeId: string
+  action: TradeAction
+  symbol: string
+  name: string
+  market: 'USA' | 'UK' | 'Sverige'
+  quantity: number
+  price: number
+  currency: string
+  reason: string
+  source: string
+  status: 'simulated' | 'prepared' | 'blocked'
+  occurredAt: string
+}
 
 export type PaperTrade = {
   id: string
@@ -35,6 +52,7 @@ export type PaperTrade = {
 
 export const HOLDINGS_KEY = 'value-scout-holdings-v1'
 export const PAPER_TRADES_KEY = 'value-scout-paper-trades-v1'
+export const TRADE_EVENTS_KEY = 'value-scout-trade-events-v1'
 
 export function readLocal<T>(key: string, fallback: T): T {
   try {
