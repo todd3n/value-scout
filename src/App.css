@@ -917,3 +917,8 @@
 .signal-row small { text-align:right; margin-top:.25rem; }
 .page-disclaimer { max-width:1280px; margin:1rem auto 0; }
 @media (max-width: 800px) { .feature-heading { flex-direction:column; } .feature-badge { white-space:normal; } .feature-grid, .report-columns { grid-template-columns:1fr; } .paper-metrics { grid-template-columns:repeat(2, minmax(0,1fr)); } .page-nav { overflow:auto; } .signal-row { grid-template-columns:1fr auto; } .signal-row .primary-btn { grid-column:1 / -1; width:100%; } }
+
+.secondary-btn { width:100%; margin-top:.45rem; border:1px solid rgba(220,233,228,.35); background:transparent; color:#dce9e4; padding:.62rem .8rem; font:inherit; font-size:.73rem; cursor:pointer; }
+.text-btn { border:0; background:transparent; color:#a7cbbd; font:inherit; font-size:.68rem; cursor:pointer; margin-right:.45rem; }
+.text-btn:hover { color:#fff; text-decoration:underline; }
+.paper-metrics { grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); }

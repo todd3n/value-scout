@@ -59,3 +59,11 @@ export function paperTradePnl(trade: PaperTrade, quote?: Analysis) {
   const current = trade.status === 'open' ? quote?.price ?? trade.entryPrice : trade.exitPrice ?? trade.entryPrice
   return { current, pnl: (current - trade.entryPrice) * trade.quantity, pnlPct: trade.entryPrice ? ((current - trade.entryPrice) / trade.entryPrice) * 100 : 0 }
 }
+
+export function resolvePaperTrade(trade: PaperTrade, quote?: Analysis): PaperTrade {
+  if (trade.status !== 'open' || quote?.price == null) return trade
+  const hitTarget = trade.targetPrice != null && quote.price >= trade.targetPrice
+  const hitStop = trade.stopPrice != null && quote.price <= trade.stopPrice
+  if (!hitTarget && !hitStop) return trade
+  return { ...trade, status: hitTarget ? 'won' : 'lost', exitPrice: quote.price, closedAt: new Date().toISOString() }
+}

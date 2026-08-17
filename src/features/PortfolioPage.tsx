@@ -19,6 +19,7 @@ export function PortfolioPage({ results }: { results: Analysis[] }) {
   const [type, setType] = useState<HoldingType>('stock')
   const [quantity, setQuantity] = useState('')
   const [averageCost, setAverageCost] = useState('')
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [analysis, setAnalysis] = useState<PortfolioAnalysis | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -45,8 +46,8 @@ export function PortfolioPage({ results }: { results: Analysis[] }) {
       setError('Fyll i ticker, antal och genomsnittligt inköpspris.')
       return
     }
-    setHoldings((current) => [...current, { id: `${normalized}-${Date.now()}`, symbol: normalized, type, quantity: qty, averageCost: cost, currency: 'SEK', addedAt: new Date().toISOString() }])
-    setSymbol(''); setQuantity(''); setAverageCost(''); setError('')
+    setHoldings((current) => editingId ? current.map((item) => item.id === editingId ? { ...item, symbol: normalized, type, quantity: qty, averageCost: cost } : item) : [...current, { id: `${normalized}-${Date.now()}`, symbol: normalized, type, quantity: qty, averageCost: cost, currency: 'SEK', addedAt: new Date().toISOString() }])
+    setSymbol(''); setQuantity(''); setAverageCost(''); setEditingId(null); setError('')
   }
 
   async function runAnalysis() {
@@ -76,17 +77,17 @@ export function PortfolioPage({ results }: { results: Analysis[] }) {
     <div className="feature-heading"><div><p className="eyebrow">PORTFOLIO INTELLIGENCE</p><h1>Din portfölj</h1><p>Registrera aktier och fonder. Marknadsvärden hämtas från tillgänglig kursdata och AI:n pekar ut koncentration, risker och frågor att följa upp.</p></div><span className="feature-badge">SIMULERING · INGEN ORDER</span></div>
     <section className="feature-grid">
       <form className="panel form-panel" onSubmit={addHolding}>
-        <p className="side-label">NYTT INNEHAV</p><h2>Lägg till position</h2>
+        <p className="side-label">{editingId ? 'REDIGERA INNEHAV' : 'NYTT INNEHAV'}</p><h2>{editingId ? 'Uppdatera position' : 'Lägg till position'}</h2>
         <label className="field">Ticker eller fondkod<input value={symbol} onChange={(e) => setSymbol(e.target.value)} placeholder="AAPL eller fondkod" /></label>
         <label className="field">Tillgångstyp<select value={type} onChange={(e) => setType(e.target.value as HoldingType)}><option value="stock">Aktie</option><option value="fund">Fond</option></select></label>
         <div className="form-row"><label className="field">Antal<input type="number" min="0" step="any" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="10" /></label><label className="field">Snittpris<input type="number" min="0" step="any" value={averageCost} onChange={(e) => setAverageCost(e.target.value)} placeholder="180" /></label></div>
-        <button className="primary-btn" type="submit">Lägg till innehav</button>
+        <button className="primary-btn" type="submit">{editingId ? 'Spara ändring' : 'Lägg till innehav'}</button>{editingId && <button className="secondary-btn" type="button" onClick={() => { setEditingId(null); setSymbol(''); setQuantity(''); setAverageCost('') }}>Avbryt redigering</button>}
         {error && <p className="error-banner" role="alert">{error}</p>}
         <p className="fine">Användaren ansvarar för att ticker och inköpspris är korrekta. Detta är inte investeringsrådgivning.</p>
       </form>
       <section className="panel summary-panel"><p className="side-label">ÖVERSIKT</p><h2>Portföljens signal</h2><div className="metric-grid"><div><span>Marknadsvärde</span><strong>{money(totalValue)}</strong></div><div><span>Resultat</span><strong className={totalPnl >= 0 ? 'pos' : 'neg'}>{money(totalPnl)}</strong></div><div><span>Avkastning</span><strong className={totalCost && totalPnl >= 0 ? 'pos' : 'neg'}>{totalCost ? pct(totalPnl / totalCost * 100) : '—'}</strong></div><div><span>Största post</span><strong>{largest?.holding.symbol || '—'}</strong></div></div><button className="primary-btn" type="button" onClick={runAnalysis} disabled={loading || holdings.length === 0}>{loading ? 'Analyserar portfölj…' : 'Kör AI-analys'}</button></section>
     </section>
-    <section className="panel"><div className="section-heading"><div><p className="side-label">INNEHAV</p><h2>Registrerade positioner</h2></div><span>{holdings.length} poster</span></div>{holdings.length === 0 ? <div className="empty"><p>Din portfölj är tom. Lägg till första innehavet ovan.</p></div> : <div className="table-wrap"><table className="grid"><thead><tr><th>Ticker</th><th>Typ</th><th>Antal</th><th>Senaste kurs</th><th>Värde</th><th>Resultat</th><th></th></tr></thead><tbody>{rows.map(({ holding, metrics }) => <tr key={holding.id}><td><strong>{holding.symbol}</strong></td><td>{holding.type === 'fund' ? 'Fond' : 'Aktie'}</td><td>{holding.quantity}</td><td>{money(metrics.currentPrice, holding.currency)}</td><td>{money(metrics.marketValue, holding.currency)}</td><td className={metrics.pnl >= 0 ? 'pos' : 'neg'}>{money(metrics.pnl, holding.currency)} ({pct(metrics.pnlPct)})</td><td><button className="icon-btn" type="button" aria-label={`Ta bort ${holding.symbol}`} onClick={() => setHoldings((current) => current.filter((item) => item.id !== holding.id))}>×</button></td></tr>)}</tbody></table></div>}</section>
+    <section className="panel"><div className="section-heading"><div><p className="side-label">INNEHAV</p><h2>Registrerade positioner</h2></div><span>{holdings.length} poster</span></div>{holdings.length === 0 ? <div className="empty"><p>Din portfölj är tom. Lägg till första innehavet ovan.</p></div> : <div className="table-wrap"><table className="grid"><thead><tr><th>Ticker</th><th>Typ</th><th>Antal</th><th>Senaste kurs</th><th>Värde</th><th>Resultat</th><th></th></tr></thead><tbody>{rows.map(({ holding, metrics }) => <tr key={holding.id}><td><strong>{holding.symbol}</strong></td><td>{holding.type === 'fund' ? 'Fond' : 'Aktie'}</td><td>{holding.quantity}</td><td>{money(metrics.currentPrice, holding.currency)}</td><td>{money(metrics.marketValue, holding.currency)}</td><td className={metrics.pnl >= 0 ? 'pos' : 'neg'}>{money(metrics.pnl, holding.currency)} ({pct(metrics.pnlPct)})</td><td><button className="text-btn" type="button" onClick={() => { setEditingId(holding.id); setSymbol(holding.symbol); setType(holding.type); setQuantity(String(holding.quantity)); setAverageCost(String(holding.averageCost)) }}>Redigera</button><button className="icon-btn" type="button" aria-label={`Ta bort ${holding.symbol}`} onClick={() => setHoldings((current) => current.filter((item) => item.id !== holding.id))}>×</button></td></tr>)}</tbody></table></div>}</section>
     {analysis && <section className="ai-report panel"><div className="section-heading"><div><p className="side-label">AI-RAPPORT</p><h2>Portföljens analys</h2></div><span className="chip chip-watch">KÄLLBASERAD</span></div><p className="report-summary">{analysis.summary}</p><div className="report-columns"><div><h3>Styrkor</h3><ul>{analysis.strengths.map((item) => <li key={item}>{item}</li>)}</ul></div><div><h3>Risker</h3><ul className="risks">{analysis.risks.map((item) => <li key={item}>{item}</li>)}</ul></div><div><h3>Följ upp</h3><ul>{analysis.followUps.map((item) => <li key={item}>{item}</li>)}</ul></div></div><p className="fine">{analysis.disclaimer}</p></section>}
   </main>
 }
