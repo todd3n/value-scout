@@ -93,6 +93,11 @@ export async function scanSymbols(
   })
   const res = await fetch(`/api/scan?${params}`)
   if (!res.ok) {
+    if (res.status === 404) {
+      const base = import.meta.env.BASE_URL.endsWith("/") ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`
+      const fallback = await fetch(`${base}data.json`)
+      if (fallback.ok) return fallback.json()
+    }
     const err = (await res.json().catch(() => ({}))) as { error?: string }
     throw new Error(err.error || `HTTP ${res.status}`)
   }

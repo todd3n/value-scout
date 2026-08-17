@@ -1,0 +1,3150 @@
+{
+  "results": [
+    {
+      "symbol": "JPM",
+      "name": "JP Morgan Chase & Co.",
+      "currency": "USD",
+      "price": 362.84,
+      "marketCap": 964496261120,
+      "sector": "Financial Services",
+      "industry": "Banks - Diversified",
+      "metrics": {
+        "pe": 15.552507,
+        "forwardPe": 14.509542,
+        "profitMargin": 0.34921002,
+        "debtToEquity": null,
+        "beta": 0.977,
+        "dayChangePct": -0.0743546,
+        "maxDayDropPct": -0.5668457653036238,
+        "weekDrawdownPct": -0.6407788993982895
+      },
+      "setup": "none",
+      "setupLabel": "—",
+      "rating": "none",
+      "ratingLabel": "—",
+      "conviction": "låg",
+      "scorePct": 39,
+      "score": 39,
+      "maxScore": 100,
+      "dayChangePct": -0.0743546,
+      "maxDayDropPct": -0.5668457653036238,
+      "maxDayDropDate": "2026-08-13T13:30:00.000Z",
+      "dropAgeTradingDays": 1,
+      "dropWhenLabel": "-0,6 % 13 aug. (i går)",
+      "weekDrawdownPct": -0.6407788993982895,
+      "bounceTarget": 365.17999267578125,
+      "bounceUpsidePct": 0.6,
+      "fairValue": 365.17999267578125,
+      "fairValueMethod": "Återhämtningsnivå = högsta stängning senaste 5 handelsdagar (Yahoo). Analytikermål avser längre horisont.",
+      "upsidePct": 0.6,
+      "streetTarget": 374.57144,
+      "dropReason": "3 Bank Stocks Walking a Fine Line",
+      "dropReasonSource": "Yahoo Finance / StockStory",
+      "sources": [
+        {
+          "field": "Senaste kurs",
+          "source": "Yahoo Finance",
+          "detail": "Live-/fördröjd börskurs"
+        },
+        {
+          "field": "Nedgång",
+          "source": "Yahoo Finance",
+          "detail": "Dagliga stängningskurser"
+        },
+        {
+          "field": "Utdelning och rapport",
+          "source": "Yahoo Finance",
+          "detail": "Bolagskalender"
+        },
+        {
+          "field": "Nyheter / orsak",
+          "source": "Google News + Yahoo (+ Finnhub om nyckel finns)",
+          "detail": "Rubriker klassade som katalysator, risk eller kontext"
+        },
+        {
+          "field": "Analytikermål",
+          "source": "Yahoo Finance",
+          "detail": "Konsensus målkurs (längre horisont)"
+        },
+        {
+          "field": "Återhämtningsnivå",
+          "source": "Beräknad",
+          "detail": "Senaste 5 handelsdagars högsta stängning"
+        }
+      ],
+      "news": [
+        {
+          "title": "Bitcoin Just Took a $390 Million Hit: A JPMorgan Warning From April Explains Why",
+          "publisher": "BeInCrypto",
+          "link": "https://finance.yahoo.com/m/6340e3d4-68c0-3c56-bd53-bc55263bc365/bitcoin-just-took-a-%24390.html"
+        },
+        {
+          "title": "Banks Cheer as Trump’s Regulatory Rollback Spreads to Europe",
+          "publisher": "Bloomberg",
+          "link": "https://finance.yahoo.com/economy/policy/articles/banks-cheer-trump-regulatory-rollback-040005762.html"
+        },
+        {
+          "title": "3 Bank Stocks Walking a Fine Line",
+          "publisher": "StockStory",
+          "link": "https://finance.yahoo.com/markets/stocks/articles/3-bank-stocks-walking-fine-163700759.html"
+        },
+        {
+          "title": "JPMorgan Raises S&P 500 Target to 8,000 as Earnings and AI Growth Strengthen Outlook",
+          "publisher": "InvestorsHub",
+          "link": "https://finance.yahoo.com/m/97a4e92d-36e1-3f3d-a3ad-e325b32b2cc0/jpmorgan-raises-s%26p-500.html"
+        }
+      ],
+      "thesis": "JP Morgan Chase & Co.: Inget aktuellt köpläge.",
+      "reasons": [
+        "Nyhetsläge: Bitcoin Just Took a $390 Million Hit: A JPMorgan Warning From April Explains Why",
+        "Nyhetsläge: Banks Cheer as Trump’s Regulatory Rollback Spreads to Europe",
+        "Identifierad orsak",
+        "Large cap"
+      ],
+      "catalysts": [],
+      "risks": [
+        "3 Bank Stocks Walking a Fine Line",
+        "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+        "Kursen har redan återhämtat merparten av fallet"
+      ],
+      "breakdown": [
+        {
+          "key": "dip",
+          "label": "Nedgång",
+          "points": 0,
+          "max": 30,
+          "note": "-0,6 % 13 aug. (i går) · under tröskel · har återhämtats"
+        },
+        {
+          "key": "why",
+          "label": "Orsak",
+          "points": 14,
+          "max": 25,
+          "note": "3 Bank Stocks Walking a Fine Line"
+        },
+        {
+          "key": "quality",
+          "label": "Bolagskvalitet",
+          "points": 25,
+          "max": 25,
+          "note": "Uppfyller storlekskrav · positiv marginal"
+        },
+        {
+          "key": "bounce",
+          "label": "Återhämtningspotential",
+          "points": 0,
+          "max": 20,
+          "note": "0.6% till återhämtningsnivå · otillräcklig"
+        }
+      ],
+      "dataQuality": 100,
+      "verdict": "unknown",
+      "verdictLabel": "—",
+      "chart": [
+        {
+          "date": "2026-07-08T13:30:00.000Z",
+          "close": 330.6199951171875
+        },
+        {
+          "date": "2026-07-09T13:30:00.000Z",
+          "close": 335.4700012207031
+        },
+        {
+          "date": "2026-07-10T13:30:00.000Z",
+          "close": 336.4700012207031
+        },
+        {
+          "date": "2026-07-13T13:30:00.000Z",
+          "close": 334.5299987792969
+        },
+        {
+          "date": "2026-07-14T13:30:00.000Z",
+          "close": 342.8900146484375
+        },
+        {
+          "date": "2026-07-15T13:30:00.000Z",
+          "close": 346.9100036621094
+        },
+        {
+          "date": "2026-07-16T13:30:00.000Z",
+          "close": 343.1499938964844
+        },
+        {
+          "date": "2026-07-17T13:30:00.000Z",
+          "close": 341.1000061035156
+        },
+        {
+          "date": "2026-07-20T13:30:00.000Z",
+          "close": 338.8699951171875
+        },
+        {
+          "date": "2026-07-21T13:30:00.000Z",
+          "close": 345.2300109863281
+        },
+        {
+          "date": "2026-07-22T13:30:00.000Z",
+          "close": 348.2099914550781
+        },
+        {
+          "date": "2026-07-23T13:30:00.000Z",
+          "close": 349.8999938964844
+        },
+        {
+          "date": "2026-07-24T13:30:00.000Z",
+          "close": 353.2099914550781
+        },
+        {
+          "date": "2026-07-27T13:30:00.000Z",
+          "close": 356.20001220703125
+        },
+        {
+          "date": "2026-07-28T13:30:00.000Z",
+          "close": 357.30999755859375
+        },
+        {
+          "date": "2026-07-29T13:30:00.000Z",
+          "close": 344.7099914550781
+        },
+        {
+          "date": "2026-07-30T13:30:00.000Z",
+          "close": 350.8500061035156
+        },
+        {
+          "date": "2026-07-31T13:30:00.000Z",
+          "close": 351.7900085449219
+        },
+        {
+          "date": "2026-08-03T13:30:00.000Z",
+          "close": 352.6400146484375
+        },
+        {
+          "date": "2026-08-04T13:30:00.000Z",
+          "close": 357.5199890136719
+        },
+        {
+          "date": "2026-08-05T13:30:00.000Z",
+          "close": 359.239990234375
+        },
+        {
+          "date": "2026-08-06T13:30:00.000Z",
+          "close": 356.29998779296875
+        },
+        {
+          "date": "2026-08-07T13:30:00.000Z",
+          "close": 357.5199890136719
+        },
+        {
+          "date": "2026-08-10T13:30:00.000Z",
+          "close": 359.7900085449219
+        },
+        {
+          "date": "2026-08-11T13:30:00.000Z",
+          "close": 362.0400085449219
+        },
+        {
+          "date": "2026-08-12T13:30:00.000Z",
+          "close": 365.17999267578125
+        },
+        {
+          "date": "2026-08-13T13:30:00.000Z",
+          "close": 363.1099853515625
+        },
+        {
+          "date": "2026-08-14T13:30:00.000Z",
+          "close": 362.8399963378906
+        }
+      ],
+      "yahooUrl": "https://finance.yahoo.com/quote/JPM",
+      "buyReasons": [
+        {
+          "text": "Nyhetsläge: Bitcoin Just Took a $390 Million Hit: A JPMorgan Warning From April Explains Why",
+          "source": "Yahoo Finance / BeInCrypto"
+        },
+        {
+          "text": "Nyhetsläge: Banks Cheer as Trump’s Regulatory Rollback Spreads to Europe",
+          "source": "Yahoo Finance / Bloomberg"
+        }
+      ],
+      "riskItems": [
+        {
+          "text": "3 Bank Stocks Walking a Fine Line",
+          "source": "Yahoo Finance / StockStory"
+        },
+        {
+          "text": "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+          "source": "Modell / generell marknadsrisk"
+        },
+        {
+          "text": "Kursen har redan återhämtat merparten av fallet",
+          "source": "Modell"
+        }
+      ],
+      "researchHits": [
+        {
+          "title": "Bitcoin Just Took a $390 Million Hit: A JPMorgan Warning From April Explains Why",
+          "source": "Yahoo Finance / BeInCrypto",
+          "url": "https://finance.yahoo.com/m/6340e3d4-68c0-3c56-bd53-bc55263bc365/bitcoin-just-took-a-%24390.html",
+          "kind": "context"
+        },
+        {
+          "title": "Banks Cheer as Trump’s Regulatory Rollback Spreads to Europe",
+          "source": "Yahoo Finance / Bloomberg",
+          "url": "https://finance.yahoo.com/economy/policy/articles/banks-cheer-trump-regulatory-rollback-040005762.html",
+          "kind": "context"
+        },
+        {
+          "title": "3 Bank Stocks Walking a Fine Line",
+          "source": "Yahoo Finance / StockStory",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/3-bank-stocks-walking-fine-163700759.html",
+          "kind": "risk"
+        },
+        {
+          "title": "JPMorgan Raises S&P 500 Target to 8,000 as Earnings and AI Growth Strengthen Outlook",
+          "source": "Yahoo Finance / InvestorsHub",
+          "url": "https://finance.yahoo.com/m/97a4e92d-36e1-3f3d-a3ad-e325b32b2cc0/jpmorgan-raises-s%26p-500.html",
+          "kind": "context"
+        }
+      ],
+      "suggestedAmount": 0,
+      "suggestedShares": 0,
+      "positionPct": 0
+    },
+    {
+      "symbol": "META",
+      "name": "Meta Platforms, Inc.",
+      "currency": "USD",
+      "price": 589.85,
+      "marketCap": 1502646501376,
+      "sector": "Communication Services",
+      "industry": "Internet Content & Information",
+      "metrics": {
+        "pe": 22.224941,
+        "forwardPe": 16.908413,
+        "profitMargin": 0.29834998,
+        "debtToEquity": 42.997,
+        "beta": 1.243,
+        "dayChangePct": -0.8605468,
+        "maxDayDropPct": -3.383298787630214,
+        "weekDrawdownPct": -1.5472726009481272
+      },
+      "setup": "none",
+      "setupLabel": "—",
+      "rating": "none",
+      "ratingLabel": "—",
+      "conviction": "låg",
+      "scorePct": 29,
+      "score": 29,
+      "maxScore": 100,
+      "dayChangePct": -0.8605468,
+      "maxDayDropPct": -3.383298787630214,
+      "maxDayDropDate": "2026-08-12T13:30:00.000Z",
+      "dropAgeTradingDays": 2,
+      "dropWhenLabel": "-3,4 % 12 aug. (för 2 handelsdagar sedan)",
+      "weekDrawdownPct": -1.5472726009481272,
+      "bounceTarget": 599.1199951171875,
+      "bounceUpsidePct": 1.6,
+      "fairValue": 599.1199951171875,
+      "fairValueMethod": "Återhämtningsnivå = högsta stängning senaste 5 handelsdagar (Yahoo). Analytikermål avser längre horisont.",
+      "upsidePct": 1.6,
+      "streetTarget": 754.14246,
+      "dropReason": "AI market correction is coming, ECB blog predicts",
+      "dropReasonSource": "Yahoo Finance / Reuters",
+      "sources": [
+        {
+          "field": "Senaste kurs",
+          "source": "Yahoo Finance",
+          "detail": "Live-/fördröjd börskurs"
+        },
+        {
+          "field": "Nedgång",
+          "source": "Yahoo Finance",
+          "detail": "Dagliga stängningskurser"
+        },
+        {
+          "field": "Utdelning och rapport",
+          "source": "Yahoo Finance",
+          "detail": "Bolagskalender"
+        },
+        {
+          "field": "Nyheter / orsak",
+          "source": "Google News + Yahoo (+ Finnhub om nyckel finns)",
+          "detail": "Rubriker klassade som katalysator, risk eller kontext"
+        },
+        {
+          "field": "Analytikermål",
+          "source": "Yahoo Finance",
+          "detail": "Konsensus målkurs (längre horisont)"
+        },
+        {
+          "field": "Återhämtningsnivå",
+          "source": "Beräknad",
+          "detail": "Senaste 5 handelsdagars högsta stängning"
+        }
+      ],
+      "news": [
+        {
+          "title": "AI market correction is coming, ECB blog predicts",
+          "publisher": "Reuters",
+          "link": "https://finance.yahoo.com/markets/stocks/articles/ai-market-correction-coming-ecb-090224597.html"
+        },
+        {
+          "title": "Market Chatter: Alibaba's AI Models Exceeded 3 Billion in Global Downloads Over 6 Months",
+          "publisher": "MT Newswires",
+          "link": "https://finance.yahoo.com/technology/ai/articles/market-chatter-alibaba-apos-ai-084136623.html"
+        },
+        {
+          "title": "NBIS Jumps Premarket As Strong Q2 Fuels Best Weekly Move Since 2024: Analysts Praise ‘Backlog-Fueled Capacity Expansion’",
+          "publisher": "Stocktwits",
+          "link": "https://finance.yahoo.com/m/b14e749c-e24c-3392-814a-db605fc6ae20/nbis-jumps-premarket-as.html"
+        },
+        {
+          "title": "SNDK, MU Rise Overnight: Analyst Target Hikes, KOSPI Rebound Power Surge",
+          "publisher": "Stocktwits",
+          "link": "https://finance.yahoo.com/m/43a96bab-9d1e-352f-aa09-897f28010e86/sndk%2C-mu-rise-overnight%3A.html"
+        }
+      ],
+      "thesis": "Meta Platforms, Inc.: Inget aktuellt köpläge.",
+      "reasons": [
+        "Nyhetsläge: AI market correction is coming, ECB blog predicts",
+        "Nyhetsläge: Market Chatter: Alibaba's AI Models Exceeded 3 Billion in Global Downloads Over 6 Months",
+        "Large cap"
+      ],
+      "catalysts": [],
+      "risks": [
+        "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+        "Kursen har redan återhämtat merparten av fallet"
+      ],
+      "breakdown": [
+        {
+          "key": "dip",
+          "label": "Nedgång",
+          "points": 0,
+          "max": 30,
+          "note": "-3,4 % 12 aug. (för 2 handelsdagar sedan) · under tröskel · har återhämtats"
+        },
+        {
+          "key": "why",
+          "label": "Orsak",
+          "points": 4,
+          "max": 25,
+          "note": "AI market correction is coming, ECB blog predicts"
+        },
+        {
+          "key": "quality",
+          "label": "Bolagskvalitet",
+          "points": 25,
+          "max": 25,
+          "note": "Uppfyller storlekskrav · positiv marginal"
+        },
+        {
+          "key": "bounce",
+          "label": "Återhämtningspotential",
+          "points": 0,
+          "max": 20,
+          "note": "1.6% till återhämtningsnivå · otillräcklig"
+        }
+      ],
+      "dataQuality": 100,
+      "verdict": "unknown",
+      "verdictLabel": "—",
+      "chart": [
+        {
+          "date": "2026-07-08T13:30:00.000Z",
+          "close": 603.1199951171875
+        },
+        {
+          "date": "2026-07-09T13:30:00.000Z",
+          "close": 631.47998046875
+        },
+        {
+          "date": "2026-07-10T13:30:00.000Z",
+          "close": 669.2100219726562
+        },
+        {
+          "date": "2026-07-13T13:30:00.000Z",
+          "close": 656.72998046875
+        },
+        {
+          "date": "2026-07-14T13:30:00.000Z",
+          "close": 661.0399780273438
+        },
+        {
+          "date": "2026-07-15T13:30:00.000Z",
+          "close": 681.3099975585938
+        },
+        {
+          "date": "2026-07-16T13:30:00.000Z",
+          "close": 664.5399780273438
+        },
+        {
+          "date": "2026-07-17T13:30:00.000Z",
+          "close": 646.010009765625
+        },
+        {
+          "date": "2026-07-20T13:30:00.000Z",
+          "close": 645.8499755859375
+        },
+        {
+          "date": "2026-07-21T13:30:00.000Z",
+          "close": 643.8099975585938
+        },
+        {
+          "date": "2026-07-22T13:30:00.000Z",
+          "close": 627.1699829101562
+        },
+        {
+          "date": "2026-07-23T13:30:00.000Z",
+          "close": 606.0999755859375
+        },
+        {
+          "date": "2026-07-24T13:30:00.000Z",
+          "close": 595.1900024414062
+        },
+        {
+          "date": "2026-07-27T13:30:00.000Z",
+          "close": 593.8699951171875
+        },
+        {
+          "date": "2026-07-28T13:30:00.000Z",
+          "close": 593.4099731445312
+        },
+        {
+          "date": "2026-07-29T13:30:00.000Z",
+          "close": 585.6099853515625
+        },
+        {
+          "date": "2026-07-30T13:30:00.000Z",
+          "close": 539.030029296875
+        },
+        {
+          "date": "2026-07-31T13:30:00.000Z",
+          "close": 556.7100219726562
+        },
+        {
+          "date": "2026-08-03T13:30:00.000Z",
+          "close": 590.239990234375
+        },
+        {
+          "date": "2026-08-04T13:30:00.000Z",
+          "close": 587.9400024414062
+        },
+        {
+          "date": "2026-08-05T13:30:00.000Z",
+          "close": 588.77001953125
+        },
+        {
+          "date": "2026-08-06T13:30:00.000Z",
+          "close": 589.9000244140625
+        },
+        {
+          "date": "2026-08-07T13:30:00.000Z",
+          "close": 592.0999755859375
+        },
+        {
+          "date": "2026-08-10T13:30:00.000Z",
+          "close": 594.9199829101562
+        },
+        {
+          "date": "2026-08-11T13:30:00.000Z",
+          "close": 599.1199951171875
+        },
+        {
+          "date": "2026-08-12T13:30:00.000Z",
+          "close": 578.8499755859375
+        },
+        {
+          "date": "2026-08-13T13:30:00.000Z",
+          "close": 594.969970703125
+        },
+        {
+          "date": "2026-08-14T13:30:00.000Z",
+          "close": 589.8499755859375
+        }
+      ],
+      "yahooUrl": "https://finance.yahoo.com/quote/META",
+      "buyReasons": [
+        {
+          "text": "Nyhetsläge: AI market correction is coming, ECB blog predicts",
+          "source": "Yahoo Finance / Reuters"
+        },
+        {
+          "text": "Nyhetsläge: Market Chatter: Alibaba's AI Models Exceeded 3 Billion in Global Downloads Over 6 Months",
+          "source": "Yahoo Finance / MT Newswires"
+        }
+      ],
+      "riskItems": [
+        {
+          "text": "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+          "source": "Modell / generell marknadsrisk"
+        },
+        {
+          "text": "Kursen har redan återhämtat merparten av fallet",
+          "source": "Modell"
+        }
+      ],
+      "researchHits": [
+        {
+          "title": "AI market correction is coming, ECB blog predicts",
+          "source": "Yahoo Finance / Reuters",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/ai-market-correction-coming-ecb-090224597.html",
+          "kind": "context"
+        },
+        {
+          "title": "Market Chatter: Alibaba's AI Models Exceeded 3 Billion in Global Downloads Over 6 Months",
+          "source": "Yahoo Finance / MT Newswires",
+          "url": "https://finance.yahoo.com/technology/ai/articles/market-chatter-alibaba-apos-ai-084136623.html",
+          "kind": "context"
+        },
+        {
+          "title": "NBIS Jumps Premarket As Strong Q2 Fuels Best Weekly Move Since 2024: Analysts Praise ‘Backlog-Fueled Capacity Expansion’",
+          "source": "Yahoo Finance / Stocktwits",
+          "url": "https://finance.yahoo.com/m/b14e749c-e24c-3392-814a-db605fc6ae20/nbis-jumps-premarket-as.html",
+          "kind": "context"
+        },
+        {
+          "title": "SNDK, MU Rise Overnight: Analyst Target Hikes, KOSPI Rebound Power Surge",
+          "source": "Yahoo Finance / Stocktwits",
+          "url": "https://finance.yahoo.com/m/43a96bab-9d1e-352f-aa09-897f28010e86/sndk%2C-mu-rise-overnight%3A.html",
+          "kind": "context"
+        }
+      ],
+      "suggestedAmount": 0,
+      "suggestedShares": 0,
+      "positionPct": 0
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft Corporation",
+      "currency": "USD",
+      "price": 495.4,
+      "marketCap": 3678615371776,
+      "sector": "Technology",
+      "industry": "Software - Infrastructure",
+      "metrics": {
+        "pe": 27.62967,
+        "forwardPe": 21.015318,
+        "profitMargin": 0.40305,
+        "debtToEquity": 29.118,
+        "beta": 1.099,
+        "dayChangePct": -0.29786086,
+        "maxDayDropPct": -2.2587890152951937,
+        "weekDrawdownPct": -2.106470322399888
+      },
+      "setup": "none",
+      "setupLabel": "—",
+      "rating": "none",
+      "ratingLabel": "—",
+      "conviction": "låg",
+      "scorePct": 29,
+      "score": 29,
+      "maxScore": 100,
+      "dayChangePct": -0.29786086,
+      "maxDayDropPct": -2.2587890152951937,
+      "maxDayDropDate": "2026-08-12T13:30:00.000Z",
+      "dropAgeTradingDays": 2,
+      "dropWhenLabel": "-2,3 % 12 aug. (för 2 handelsdagar sedan)",
+      "weekDrawdownPct": -2.106470322399888,
+      "bounceTarget": 506.05999755859375,
+      "bounceUpsidePct": 2.2,
+      "fairValue": 506.05999755859375,
+      "fairValueMethod": "Återhämtningsnivå = högsta stängning senaste 5 handelsdagar (Yahoo). Analytikermål avser längre horisont.",
+      "upsidePct": 2.2,
+      "streetTarget": 569.5583,
+      "dropReason": "Microsoft is bringing its Copilot apps together before its planned ‘super app’ debut",
+      "dropReasonSource": "Yahoo Finance / Digital Trends",
+      "sources": [
+        {
+          "field": "Senaste kurs",
+          "source": "Yahoo Finance",
+          "detail": "Live-/fördröjd börskurs"
+        },
+        {
+          "field": "Nedgång",
+          "source": "Yahoo Finance",
+          "detail": "Dagliga stängningskurser"
+        },
+        {
+          "field": "Utdelning och rapport",
+          "source": "Yahoo Finance",
+          "detail": "Bolagskalender"
+        },
+        {
+          "field": "Nyheter / orsak",
+          "source": "Google News + Yahoo (+ Finnhub om nyckel finns)",
+          "detail": "Rubriker klassade som katalysator, risk eller kontext"
+        },
+        {
+          "field": "Analytikermål",
+          "source": "Yahoo Finance",
+          "detail": "Konsensus målkurs (längre horisont)"
+        },
+        {
+          "field": "Återhämtningsnivå",
+          "source": "Beräknad",
+          "detail": "Senaste 5 handelsdagars högsta stängning"
+        }
+      ],
+      "news": [
+        {
+          "title": "Microsoft is bringing its Copilot apps together before its planned ‘super app’ debut",
+          "publisher": "Digital Trends",
+          "link": "https://finance.yahoo.com/m/ebfcac67-d458-322e-9ccc-1b9978b75688/microsoft-is-bringing-its.html"
+        },
+        {
+          "title": "Satya Nadella's Microsoft Stock Jumped 18% in a Week After Azure's Annual Revenue Topped $100 Billion for the First Time. Is It Still a Buy?",
+          "publisher": "Motley Fool",
+          "link": "https://finance.yahoo.com/m/b1290d26-bd4a-3624-a23a-cae3ed029785/satya-nadella%27s-microsoft.html"
+        },
+        {
+          "title": "Microsoft wants you to ditch SMS passwords as AI makes phishing harder to stop",
+          "publisher": "Digital Trends",
+          "link": "https://finance.yahoo.com/m/3e309196-9259-359d-b121-5d848748bf1a/microsoft-wants-you-to-ditch.html"
+        },
+        {
+          "title": "Investors in Microsoft Love Shorting Out-of-the-Money MSFT Puts",
+          "publisher": "Barchart",
+          "link": "https://finance.yahoo.com/m/cf624c68-da1a-33af-8405-078d3526aee4/investors-in-microsoft-love.html"
+        }
+      ],
+      "thesis": "Microsoft Corporation: Inget aktuellt köpläge.",
+      "reasons": [
+        "Nyhetsläge: Microsoft is bringing its Copilot apps together before its planned ‘super app’ debut",
+        "Nyhetsläge: Satya Nadella's Microsoft Stock Jumped 18% in a Week After Azure's Annual Revenue Topped $100 Billion for the First Time. Is It Still a Buy?",
+        "Large cap"
+      ],
+      "catalysts": [],
+      "risks": [
+        "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+        "Kursen har redan återhämtat merparten av fallet"
+      ],
+      "breakdown": [
+        {
+          "key": "dip",
+          "label": "Nedgång",
+          "points": 0,
+          "max": 30,
+          "note": "-2,3 % 12 aug. (för 2 handelsdagar sedan) · under tröskel · har återhämtats"
+        },
+        {
+          "key": "why",
+          "label": "Orsak",
+          "points": 4,
+          "max": 25,
+          "note": "Microsoft is bringing its Copilot apps together before its planned ‘super app’ debut"
+        },
+        {
+          "key": "quality",
+          "label": "Bolagskvalitet",
+          "points": 25,
+          "max": 25,
+          "note": "Uppfyller storlekskrav · positiv marginal"
+        },
+        {
+          "key": "bounce",
+          "label": "Återhämtningspotential",
+          "points": 0,
+          "max": 20,
+          "note": "2.2% till återhämtningsnivå · otillräcklig"
+        }
+      ],
+      "dataQuality": 100,
+      "verdict": "unknown",
+      "verdictLabel": "—",
+      "chart": [
+        {
+          "date": "2026-07-08T13:30:00.000Z",
+          "close": 383.3399963378906
+        },
+        {
+          "date": "2026-07-09T13:30:00.000Z",
+          "close": 384.3599853515625
+        },
+        {
+          "date": "2026-07-10T13:30:00.000Z",
+          "close": 385.1000061035156
+        },
+        {
+          "date": "2026-07-13T13:30:00.000Z",
+          "close": 390.989990234375
+        },
+        {
+          "date": "2026-07-14T13:30:00.000Z",
+          "close": 384.92999267578125
+        },
+        {
+          "date": "2026-07-15T13:30:00.000Z",
+          "close": 395.6300048828125
+        },
+        {
+          "date": "2026-07-16T13:30:00.000Z",
+          "close": 401.1000061035156
+        },
+        {
+          "date": "2026-07-17T13:30:00.000Z",
+          "close": 393.82000732421875
+        },
+        {
+          "date": "2026-07-20T13:30:00.000Z",
+          "close": 402.2900085449219
+        },
+        {
+          "date": "2026-07-21T13:30:00.000Z",
+          "close": 397.75
+        },
+        {
+          "date": "2026-07-22T13:30:00.000Z",
+          "close": 390.3399963378906
+        },
+        {
+          "date": "2026-07-23T13:30:00.000Z",
+          "close": 381.5799865722656
+        },
+        {
+          "date": "2026-07-24T13:30:00.000Z",
+          "close": 381.70001220703125
+        },
+        {
+          "date": "2026-07-27T13:30:00.000Z",
+          "close": 389.1000061035156
+        },
+        {
+          "date": "2026-07-28T13:30:00.000Z",
+          "close": 393.3500061035156
+        },
+        {
+          "date": "2026-07-29T13:30:00.000Z",
+          "close": 390.5400085449219
+        },
+        {
+          "date": "2026-07-30T13:30:00.000Z",
+          "close": 451.1000061035156
+        },
+        {
+          "date": "2026-07-31T13:30:00.000Z",
+          "close": 464.7200012207031
+        },
+        {
+          "date": "2026-08-03T13:30:00.000Z",
+          "close": 487.6499938964844
+        },
+        {
+          "date": "2026-08-04T13:30:00.000Z",
+          "close": 492.80999755859375
+        },
+        {
+          "date": "2026-08-05T13:30:00.000Z",
+          "close": 487.4599914550781
+        },
+        {
+          "date": "2026-08-06T13:30:00.000Z",
+          "close": 499.8599853515625
+        },
+        {
+          "date": "2026-08-07T13:30:00.000Z",
+          "close": 499.989990234375
+        },
+        {
+          "date": "2026-08-10T13:30:00.000Z",
+          "close": 506.05999755859375
+        },
+        {
+          "date": "2026-08-11T13:30:00.000Z",
+          "close": 503.80999755859375
+        },
+        {
+          "date": "2026-08-12T13:30:00.000Z",
+          "close": 492.42999267578125
+        },
+        {
+          "date": "2026-08-13T13:30:00.000Z",
+          "close": 496.8800048828125
+        },
+        {
+          "date": "2026-08-14T13:30:00.000Z",
+          "close": 495.3999938964844
+        }
+      ],
+      "yahooUrl": "https://finance.yahoo.com/quote/MSFT",
+      "buyReasons": [
+        {
+          "text": "Nyhetsläge: Microsoft is bringing its Copilot apps together before its planned ‘super app’ debut",
+          "source": "Yahoo Finance / Digital Trends"
+        },
+        {
+          "text": "Nyhetsläge: Satya Nadella's Microsoft Stock Jumped 18% in a Week After Azure's Annual Revenue Topped $100 Billion for the First Time. Is It Still a Buy?",
+          "source": "Yahoo Finance / Motley Fool"
+        }
+      ],
+      "riskItems": [
+        {
+          "text": "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+          "source": "Modell / generell marknadsrisk"
+        },
+        {
+          "text": "Kursen har redan återhämtat merparten av fallet",
+          "source": "Modell"
+        }
+      ],
+      "researchHits": [
+        {
+          "title": "Microsoft is bringing its Copilot apps together before its planned ‘super app’ debut",
+          "source": "Yahoo Finance / Digital Trends",
+          "url": "https://finance.yahoo.com/m/ebfcac67-d458-322e-9ccc-1b9978b75688/microsoft-is-bringing-its.html",
+          "kind": "context"
+        },
+        {
+          "title": "Satya Nadella's Microsoft Stock Jumped 18% in a Week After Azure's Annual Revenue Topped $100 Billion for the First Time. Is It Still a Buy?",
+          "source": "Yahoo Finance / Motley Fool",
+          "url": "https://finance.yahoo.com/m/b1290d26-bd4a-3624-a23a-cae3ed029785/satya-nadella%27s-microsoft.html",
+          "kind": "context"
+        },
+        {
+          "title": "Microsoft wants you to ditch SMS passwords as AI makes phishing harder to stop",
+          "source": "Yahoo Finance / Digital Trends",
+          "url": "https://finance.yahoo.com/m/3e309196-9259-359d-b121-5d848748bf1a/microsoft-wants-you-to-ditch.html",
+          "kind": "context"
+        },
+        {
+          "title": "Investors in Microsoft Love Shorting Out-of-the-Money MSFT Puts",
+          "source": "Yahoo Finance / Barchart",
+          "url": "https://finance.yahoo.com/m/cf624c68-da1a-33af-8405-078d3526aee4/investors-in-microsoft-love.html",
+          "kind": "context"
+        }
+      ],
+      "suggestedAmount": 0,
+      "suggestedShares": 0,
+      "positionPct": 0
+    },
+    {
+      "symbol": "TSLA",
+      "name": "Tesla, Inc.",
+      "currency": "USD",
+      "price": 342.27,
+      "marketCap": 1351811596288,
+      "sector": "Consumer Cyclical",
+      "industry": "Auto Manufacturers",
+      "metrics": {
+        "pe": 311.15454,
+        "forwardPe": 157.03845,
+        "profitMargin": 0.03671,
+        "debtToEquity": 18.373,
+        "beta": 1.827,
+        "dayChangePct": 0.679491,
+        "maxDayDropPct": -1.592496569168012,
+        "weekDrawdownPct": 0
+      },
+      "setup": "none",
+      "setupLabel": "—",
+      "rating": "none",
+      "ratingLabel": "—",
+      "conviction": "låg",
+      "scorePct": 19,
+      "score": 19,
+      "maxScore": 100,
+      "dayChangePct": 0.679491,
+      "maxDayDropPct": -1.592496569168012,
+      "maxDayDropDate": "2026-08-12T13:30:00.000Z",
+      "dropAgeTradingDays": 2,
+      "dropWhenLabel": "-1,6 % 12 aug. (för 2 handelsdagar sedan)",
+      "weekDrawdownPct": 0,
+      "bounceTarget": 342.2699890136719,
+      "bounceUpsidePct": 0,
+      "fairValue": 342.2699890136719,
+      "fairValueMethod": "Återhämtningsnivå = högsta stängning senaste 5 handelsdagar (Yahoo). Analytikermål avser längre horisont.",
+      "upsidePct": 0,
+      "streetTarget": 395.3405,
+      "dropReason": "Elon Musk Says Tesla Is ‘Most Made in America’ Car Brand as Trump Tariffs Shake Up Auto Industry",
+      "dropReasonSource": "Yahoo Finance / Benzinga",
+      "sources": [
+        {
+          "field": "Senaste kurs",
+          "source": "Yahoo Finance",
+          "detail": "Live-/fördröjd börskurs"
+        },
+        {
+          "field": "Nedgång",
+          "source": "Yahoo Finance",
+          "detail": "Dagliga stängningskurser"
+        },
+        {
+          "field": "Utdelning och rapport",
+          "source": "Yahoo Finance",
+          "detail": "Bolagskalender"
+        },
+        {
+          "field": "Nyheter / orsak",
+          "source": "Google News + Yahoo (+ Finnhub om nyckel finns)",
+          "detail": "Rubriker klassade som katalysator, risk eller kontext"
+        },
+        {
+          "field": "Analytikermål",
+          "source": "Yahoo Finance",
+          "detail": "Konsensus målkurs (längre horisont)"
+        },
+        {
+          "field": "Återhämtningsnivå",
+          "source": "Beräknad",
+          "detail": "Senaste 5 handelsdagars högsta stängning"
+        }
+      ],
+      "news": [
+        {
+          "title": "Elon Musk Says Tesla Is ‘Most Made in America’ Car Brand as Trump Tariffs Shake Up Auto Industry",
+          "publisher": "Benzinga",
+          "link": "https://finance.yahoo.com/markets/stocks/articles/elon-musk-says-tesla-most-035929356.html"
+        },
+        {
+          "title": "AI market correction is coming, ECB blog predicts",
+          "publisher": "Reuters",
+          "link": "https://finance.yahoo.com/markets/stocks/articles/ai-market-correction-coming-ecb-090224597.html"
+        },
+        {
+          "title": "Rival Shows the Drawback in Tesla's Driverless Tech Strategy. Are They Right?",
+          "publisher": "Motley Fool",
+          "link": "https://finance.yahoo.com/m/6a5c9cc0-38ad-38ad-aaa7-89140affebd9/rival-shows-the-drawback-in.html"
+        },
+        {
+          "title": "EXCLUSIVE: Ross Gerber Says Tesla Could ‘Double’ Sales Without Elon Musk, Warns Investors on SpaceX Merger",
+          "publisher": "Benzinga",
+          "link": "https://finance.yahoo.com/markets/stocks/articles/exclusive-ross-gerber-says-tesla-140813250.html"
+        }
+      ],
+      "thesis": "Tesla, Inc.: Inget aktuellt köpläge.",
+      "reasons": [
+        "Nyhetsläge: Elon Musk Says Tesla Is ‘Most Made in America’ Car Brand as Trump Tariffs Shake Up Auto Industry",
+        "Nyhetsläge: AI market correction is coming, ECB blog predicts",
+        "Large cap"
+      ],
+      "catalysts": [],
+      "risks": [
+        "Hög beta (1.83) — större svängningar än marknaden.",
+        "Hög P/E (311) trots nedgång — värderingsrisk kvarstår.",
+        "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+        "Kursen har redan återhämtat merparten av fallet"
+      ],
+      "breakdown": [
+        {
+          "key": "dip",
+          "label": "Nedgång",
+          "points": 0,
+          "max": 30,
+          "note": "-1,6 % 12 aug. (för 2 handelsdagar sedan) · under tröskel · har återhämtats"
+        },
+        {
+          "key": "why",
+          "label": "Orsak",
+          "points": 4,
+          "max": 25,
+          "note": "Elon Musk Says Tesla Is ‘Most Made in America’ Car Brand as Trump Tariffs Shake Up Auto Industry"
+        },
+        {
+          "key": "quality",
+          "label": "Bolagskvalitet",
+          "points": 15,
+          "max": 25,
+          "note": "Uppfyller storlekskrav · hög beta"
+        },
+        {
+          "key": "bounce",
+          "label": "Återhämtningspotential",
+          "points": 0,
+          "max": 20,
+          "note": "0.0% till återhämtningsnivå · otillräcklig"
+        }
+      ],
+      "dataQuality": 100,
+      "verdict": "unknown",
+      "verdictLabel": "—",
+      "chart": [
+        {
+          "date": "2026-07-08T13:30:00.000Z",
+          "close": 394.05999755859375
+        },
+        {
+          "date": "2026-07-09T13:30:00.000Z",
+          "close": 406.54998779296875
+        },
+        {
+          "date": "2026-07-10T13:30:00.000Z",
+          "close": 407.760009765625
+        },
+        {
+          "date": "2026-07-13T13:30:00.000Z",
+          "close": 394.760009765625
+        },
+        {
+          "date": "2026-07-14T13:30:00.000Z",
+          "close": 396.17999267578125
+        },
+        {
+          "date": "2026-07-15T13:30:00.000Z",
+          "close": 394.4599914550781
+        },
+        {
+          "date": "2026-07-16T13:30:00.000Z",
+          "close": 391.05999755859375
+        },
+        {
+          "date": "2026-07-17T13:30:00.000Z",
+          "close": 380.8399963378906
+        },
+        {
+          "date": "2026-07-20T13:30:00.000Z",
+          "close": 369.57000732421875
+        },
+        {
+          "date": "2026-07-21T13:30:00.000Z",
+          "close": 378.92999267578125
+        },
+        {
+          "date": "2026-07-22T13:30:00.000Z",
+          "close": 374.010009765625
+        },
+        {
+          "date": "2026-07-23T13:30:00.000Z",
+          "close": 319.69000244140625
+        },
+        {
+          "date": "2026-07-24T13:30:00.000Z",
+          "close": 313.0299987792969
+        },
+        {
+          "date": "2026-07-27T13:30:00.000Z",
+          "close": 309.2200012207031
+        },
+        {
+          "date": "2026-07-28T13:30:00.000Z",
+          "close": 307.44000244140625
+        },
+        {
+          "date": "2026-07-29T13:30:00.000Z",
+          "close": 298.32000732421875
+        },
+        {
+          "date": "2026-07-30T13:30:00.000Z",
+          "close": 308.8500061035156
+        },
+        {
+          "date": "2026-07-31T13:30:00.000Z",
+          "close": 311.2099914550781
+        },
+        {
+          "date": "2026-08-03T13:30:00.000Z",
+          "close": 322.0799865722656
+        },
+        {
+          "date": "2026-08-04T13:30:00.000Z",
+          "close": 327.3500061035156
+        },
+        {
+          "date": "2026-08-05T13:30:00.000Z",
+          "close": 321.54998779296875
+        },
+        {
+          "date": "2026-08-06T13:30:00.000Z",
+          "close": 319.5299987792969
+        },
+        {
+          "date": "2026-08-07T13:30:00.000Z",
+          "close": 328.5799865722656
+        },
+        {
+          "date": "2026-08-10T13:30:00.000Z",
+          "close": 330.8800048828125
+        },
+        {
+          "date": "2026-08-11T13:30:00.000Z",
+          "close": 332.80999755859375
+        },
+        {
+          "date": "2026-08-12T13:30:00.000Z",
+          "close": 327.510009765625
+        },
+        {
+          "date": "2026-08-13T13:30:00.000Z",
+          "close": 339.9599914550781
+        },
+        {
+          "date": "2026-08-14T13:30:00.000Z",
+          "close": 342.2699890136719
+        }
+      ],
+      "yahooUrl": "https://finance.yahoo.com/quote/TSLA",
+      "buyReasons": [
+        {
+          "text": "Nyhetsläge: Elon Musk Says Tesla Is ‘Most Made in America’ Car Brand as Trump Tariffs Shake Up Auto Industry",
+          "source": "Yahoo Finance / Benzinga"
+        },
+        {
+          "text": "Nyhetsläge: AI market correction is coming, ECB blog predicts",
+          "source": "Yahoo Finance / Reuters"
+        }
+      ],
+      "riskItems": [
+        {
+          "text": "Hög beta (1.83) — större svängningar än marknaden.",
+          "source": "Yahoo Finance, nyckeltal"
+        },
+        {
+          "text": "Hög P/E (311) trots nedgång — värderingsrisk kvarstår.",
+          "source": "Yahoo Finance, nyckeltal"
+        },
+        {
+          "text": "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+          "source": "Modell / generell marknadsrisk"
+        },
+        {
+          "text": "Kursen har redan återhämtat merparten av fallet",
+          "source": "Modell"
+        }
+      ],
+      "researchHits": [
+        {
+          "title": "Elon Musk Says Tesla Is ‘Most Made in America’ Car Brand as Trump Tariffs Shake Up Auto Industry",
+          "source": "Yahoo Finance / Benzinga",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/elon-musk-says-tesla-most-035929356.html",
+          "kind": "context"
+        },
+        {
+          "title": "AI market correction is coming, ECB blog predicts",
+          "source": "Yahoo Finance / Reuters",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/ai-market-correction-coming-ecb-090224597.html",
+          "kind": "context"
+        },
+        {
+          "title": "Rival Shows the Drawback in Tesla's Driverless Tech Strategy. Are They Right?",
+          "source": "Yahoo Finance / Motley Fool",
+          "url": "https://finance.yahoo.com/m/6a5c9cc0-38ad-38ad-aaa7-89140affebd9/rival-shows-the-drawback-in.html",
+          "kind": "context"
+        },
+        {
+          "title": "EXCLUSIVE: Ross Gerber Says Tesla Could ‘Double’ Sales Without Elon Musk, Warns Investors on SpaceX Merger",
+          "source": "Yahoo Finance / Benzinga",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/exclusive-ross-gerber-says-tesla-140813250.html",
+          "kind": "context"
+        }
+      ],
+      "suggestedAmount": 0,
+      "suggestedShares": 0,
+      "positionPct": 0
+    },
+    {
+      "symbol": "V",
+      "name": "Visa Inc.",
+      "currency": "USD",
+      "price": 364.15,
+      "marketCap": 679885275136,
+      "sector": "Financial Services",
+      "industry": "Credit Services",
+      "metrics": {
+        "pe": 30.965136,
+        "forwardPe": 24.315084,
+        "profitMargin": 0.50782,
+        "debtToEquity": 67.821,
+        "beta": 0.759,
+        "dayChangePct": -0.355731,
+        "maxDayDropPct": -0.9371020968659302,
+        "weekDrawdownPct": -0.3557308160138742
+      },
+      "setup": "none",
+      "setupLabel": "—",
+      "rating": "none",
+      "ratingLabel": "—",
+      "conviction": "låg",
+      "scorePct": 50,
+      "score": 50,
+      "maxScore": 100,
+      "dayChangePct": -0.355731,
+      "maxDayDropPct": -0.9371020968659302,
+      "maxDayDropDate": "2026-08-12T13:30:00.000Z",
+      "dropAgeTradingDays": 2,
+      "dropWhenLabel": "-0,9 % 12 aug. (för 2 handelsdagar sedan)",
+      "weekDrawdownPct": -0.3557308160138742,
+      "bounceTarget": 365.45001220703125,
+      "bounceUpsidePct": 0.4,
+      "fairValue": 365.45001220703125,
+      "fairValueMethod": "Återhämtningsnivå = högsta stängning senaste 5 handelsdagar (Yahoo). Analytikermål avser längre horisont.",
+      "upsidePct": 0.4,
+      "streetTarget": 416.20026,
+      "dropReason": "Ex-dividend för 6 handelsdag(ar) sedan. Kursjustering kopplad till utdelning.",
+      "dropReasonSource": "Yahoo Finance, kalender (ex-dividend)",
+      "sources": [
+        {
+          "field": "Senaste kurs",
+          "source": "Yahoo Finance",
+          "detail": "Live-/fördröjd börskurs"
+        },
+        {
+          "field": "Nedgång",
+          "source": "Yahoo Finance",
+          "detail": "Dagliga stängningskurser"
+        },
+        {
+          "field": "Utdelning och rapport",
+          "source": "Yahoo Finance",
+          "detail": "Bolagskalender"
+        },
+        {
+          "field": "Nyheter / orsak",
+          "source": "Google News + Yahoo (+ Finnhub om nyckel finns)",
+          "detail": "Rubriker klassade som katalysator, risk eller kontext"
+        },
+        {
+          "field": "Analytikermål",
+          "source": "Yahoo Finance",
+          "detail": "Konsensus målkurs (längre horisont)"
+        },
+        {
+          "field": "Återhämtningsnivå",
+          "source": "Beräknad",
+          "detail": "Senaste 5 handelsdagars högsta stängning"
+        }
+      ],
+      "news": [
+        {
+          "title": "Visa’s Agentic Ready Program Moves Issuer-Layer Readiness From Theory to Production",
+          "publisher": "Forkast News",
+          "link": "https://finance.yahoo.com/technology/ai/articles/visa-agentic-ready-program-moves-011957911.html"
+        },
+        {
+          "title": "Visa (V) Drew Fresh Interest From Bill Ackman’s Pershing Square",
+          "publisher": "Simply Wall St.",
+          "link": "https://finance.yahoo.com/markets/stocks/articles/visa-v-drew-fresh-interest-120853703.html"
+        },
+        {
+          "title": "More Than 30% of Americans 80 and Older Still Carry Mortgage Debt. The Number Climbs to 41% for Those 65 to 79, Visa Says",
+          "publisher": "Benzinga",
+          "link": "https://finance.yahoo.com/real-estate/articles/more-30-americans-80-older-163153780.html"
+        },
+        {
+          "title": "Week in review: Trump lawsuit against Harvard dismissed",
+          "publisher": "Higher Ed Dive",
+          "link": "https://finance.yahoo.com/m/77708769-5b68-39c0-bb63-b394e5fa3cb1/week-in-review%3A-trump-lawsuit.html"
+        }
+      ],
+      "thesis": "Visa Inc.: Inget aktuellt köpläge.",
+      "reasons": [
+        "Ex-dividend nyligen (6 dag(ar) sedan) — del av fallet kan vara teknisk kursjustering.",
+        "Nyhetsläge: Visa’s Agentic Ready Program Moves Issuer-Layer Readiness From Theory to Production",
+        "Nyhetsläge: Visa (V) Drew Fresh Interest From Bill Ackman’s Pershing Square",
+        "Identifierad orsak",
+        "Large cap"
+      ],
+      "catalysts": [],
+      "risks": [
+        "Week in review: Trump lawsuit against Harvard dismissed",
+        "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+        "Kursen har redan återhämtat merparten av fallet"
+      ],
+      "breakdown": [
+        {
+          "key": "dip",
+          "label": "Nedgång",
+          "points": 0,
+          "max": 30,
+          "note": "-0,9 % 12 aug. (för 2 handelsdagar sedan) · under tröskel · har återhämtats"
+        },
+        {
+          "key": "why",
+          "label": "Orsak",
+          "points": 25,
+          "max": 25,
+          "note": "Ex-dividend för 6 handelsdag(ar) sedan. Kursjustering kopplad till utdelning."
+        },
+        {
+          "key": "quality",
+          "label": "Bolagskvalitet",
+          "points": 25,
+          "max": 25,
+          "note": "Uppfyller storlekskrav · positiv marginal"
+        },
+        {
+          "key": "bounce",
+          "label": "Återhämtningspotential",
+          "points": 0,
+          "max": 20,
+          "note": "0.4% till återhämtningsnivå · otillräcklig"
+        }
+      ],
+      "dataQuality": 100,
+      "verdict": "unknown",
+      "verdictLabel": "—",
+      "chart": [
+        {
+          "date": "2026-07-08T13:30:00.000Z",
+          "close": 347.5299987792969
+        },
+        {
+          "date": "2026-07-09T13:30:00.000Z",
+          "close": 348.20001220703125
+        },
+        {
+          "date": "2026-07-10T13:30:00.000Z",
+          "close": 348.9700012207031
+        },
+        {
+          "date": "2026-07-13T13:30:00.000Z",
+          "close": 357.75
+        },
+        {
+          "date": "2026-07-14T13:30:00.000Z",
+          "close": 356.0199890136719
+        },
+        {
+          "date": "2026-07-15T13:30:00.000Z",
+          "close": 355.1400146484375
+        },
+        {
+          "date": "2026-07-16T13:30:00.000Z",
+          "close": 365.1400146484375
+        },
+        {
+          "date": "2026-07-17T13:30:00.000Z",
+          "close": 358.55999755859375
+        },
+        {
+          "date": "2026-07-20T13:30:00.000Z",
+          "close": 360.57000732421875
+        },
+        {
+          "date": "2026-07-21T13:30:00.000Z",
+          "close": 355.82000732421875
+        },
+        {
+          "date": "2026-07-22T13:30:00.000Z",
+          "close": 353.4200134277344
+        },
+        {
+          "date": "2026-07-23T13:30:00.000Z",
+          "close": 351.6000061035156
+        },
+        {
+          "date": "2026-07-24T13:30:00.000Z",
+          "close": 355.739990234375
+        },
+        {
+          "date": "2026-07-27T13:30:00.000Z",
+          "close": 362.5299987792969
+        },
+        {
+          "date": "2026-07-28T13:30:00.000Z",
+          "close": 366.5899963378906
+        },
+        {
+          "date": "2026-07-29T13:30:00.000Z",
+          "close": 368.7300109863281
+        },
+        {
+          "date": "2026-07-30T13:30:00.000Z",
+          "close": 366.2699890136719
+        },
+        {
+          "date": "2026-07-31T13:30:00.000Z",
+          "close": 366.1300048828125
+        },
+        {
+          "date": "2026-08-03T13:30:00.000Z",
+          "close": 365.6700134277344
+        },
+        {
+          "date": "2026-08-04T13:30:00.000Z",
+          "close": 369.5899963378906
+        },
+        {
+          "date": "2026-08-05T13:30:00.000Z",
+          "close": 368.5400085449219
+        },
+        {
+          "date": "2026-08-06T13:30:00.000Z",
+          "close": 370.4700012207031
+        },
+        {
+          "date": "2026-08-07T13:30:00.000Z",
+          "close": 362.5
+        },
+        {
+          "date": "2026-08-10T13:30:00.000Z",
+          "close": 361.32000732421875
+        },
+        {
+          "date": "2026-08-11T13:30:00.000Z",
+          "close": 362.82000732421875
+        },
+        {
+          "date": "2026-08-12T13:30:00.000Z",
+          "close": 359.4200134277344
+        },
+        {
+          "date": "2026-08-13T13:30:00.000Z",
+          "close": 365.45001220703125
+        },
+        {
+          "date": "2026-08-14T13:30:00.000Z",
+          "close": 364.1499938964844
+        }
+      ],
+      "yahooUrl": "https://finance.yahoo.com/quote/V",
+      "buyReasons": [
+        {
+          "text": "Ex-dividend nyligen (6 dag(ar) sedan) — del av fallet kan vara teknisk kursjustering.",
+          "source": "Yahoo Finance, bolagskalender"
+        },
+        {
+          "text": "Nyhetsläge: Visa’s Agentic Ready Program Moves Issuer-Layer Readiness From Theory to Production",
+          "source": "Yahoo Finance / Forkast News"
+        },
+        {
+          "text": "Nyhetsläge: Visa (V) Drew Fresh Interest From Bill Ackman’s Pershing Square",
+          "source": "Yahoo Finance / Simply Wall St."
+        }
+      ],
+      "riskItems": [
+        {
+          "text": "Week in review: Trump lawsuit against Harvard dismissed",
+          "source": "Yahoo Finance / Higher Ed Dive"
+        },
+        {
+          "text": "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+          "source": "Modell / generell marknadsrisk"
+        },
+        {
+          "text": "Kursen har redan återhämtat merparten av fallet",
+          "source": "Modell"
+        }
+      ],
+      "researchHits": [
+        {
+          "title": "Visa’s Agentic Ready Program Moves Issuer-Layer Readiness From Theory to Production",
+          "source": "Yahoo Finance / Forkast News",
+          "url": "https://finance.yahoo.com/technology/ai/articles/visa-agentic-ready-program-moves-011957911.html",
+          "kind": "context"
+        },
+        {
+          "title": "Visa (V) Drew Fresh Interest From Bill Ackman’s Pershing Square",
+          "source": "Yahoo Finance / Simply Wall St.",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/visa-v-drew-fresh-interest-120853703.html",
+          "kind": "context"
+        },
+        {
+          "title": "More Than 30% of Americans 80 and Older Still Carry Mortgage Debt. The Number Climbs to 41% for Those 65 to 79, Visa Says",
+          "source": "Yahoo Finance / Benzinga",
+          "url": "https://finance.yahoo.com/real-estate/articles/more-30-americans-80-older-163153780.html",
+          "kind": "context"
+        },
+        {
+          "title": "Week in review: Trump lawsuit against Harvard dismissed",
+          "source": "Yahoo Finance / Higher Ed Dive",
+          "url": "https://finance.yahoo.com/m/77708769-5b68-39c0-bb63-b394e5fa3cb1/week-in-review%3A-trump-lawsuit.html",
+          "kind": "risk"
+        }
+      ],
+      "suggestedAmount": 0,
+      "suggestedShares": 0,
+      "positionPct": 0
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet Inc.",
+      "currency": "USD",
+      "price": 345.9,
+      "marketCap": 4230334382080,
+      "sector": "Communication Services",
+      "industry": "Internet Content & Information",
+      "metrics": {
+        "pe": 17.364458,
+        "forwardPe": 23.456905,
+        "profitMargin": 0.54771,
+        "debtToEquity": 18.859,
+        "beta": 1.237,
+        "dayChangePct": -0.13280733,
+        "maxDayDropPct": -3.837548009148786,
+        "weekDrawdownPct": -3.2501665569091136
+      },
+      "setup": "none",
+      "setupLabel": "—",
+      "rating": "none",
+      "ratingLabel": "—",
+      "conviction": "låg",
+      "scorePct": 29,
+      "score": 29,
+      "maxScore": 100,
+      "dayChangePct": -0.13280733,
+      "maxDayDropPct": -3.837548009148786,
+      "maxDayDropDate": "2026-08-11T13:30:00.000Z",
+      "dropAgeTradingDays": 3,
+      "dropWhenLabel": "-3,8 % 11 aug. (för 3 handelsdagar sedan)",
+      "weekDrawdownPct": -3.2501665569091136,
+      "bounceTarget": 357.5199890136719,
+      "bounceUpsidePct": 3.4,
+      "fairValue": 357.5199890136719,
+      "fairValueMethod": "Återhämtningsnivå = högsta stängning senaste 5 handelsdagar (Yahoo). Analytikermål avser längre horisont.",
+      "upsidePct": 3.4,
+      "streetTarget": 427.52,
+      "dropReason": "Alphabet's Reported $112 Billion Profit Included a $94 Billion Paper Gain From SpaceX. Here's What the Company Actually Earned.",
+      "dropReasonSource": "Yahoo Finance / Motley Fool",
+      "sources": [
+        {
+          "field": "Senaste kurs",
+          "source": "Yahoo Finance",
+          "detail": "Live-/fördröjd börskurs"
+        },
+        {
+          "field": "Nedgång",
+          "source": "Yahoo Finance",
+          "detail": "Dagliga stängningskurser"
+        },
+        {
+          "field": "Utdelning och rapport",
+          "source": "Yahoo Finance",
+          "detail": "Bolagskalender"
+        },
+        {
+          "field": "Nyheter / orsak",
+          "source": "Google News + Yahoo (+ Finnhub om nyckel finns)",
+          "detail": "Rubriker klassade som katalysator, risk eller kontext"
+        },
+        {
+          "field": "Analytikermål",
+          "source": "Yahoo Finance",
+          "detail": "Konsensus målkurs (längre horisont)"
+        },
+        {
+          "field": "Återhämtningsnivå",
+          "source": "Beräknad",
+          "detail": "Senaste 5 handelsdagars högsta stängning"
+        }
+      ],
+      "news": [
+        {
+          "title": "Alphabet's Reported $112 Billion Profit Included a $94 Billion Paper Gain From SpaceX. Here's What the Company Actually Earned.",
+          "publisher": "Motley Fool",
+          "link": "https://finance.yahoo.com/m/6fc04381-f510-30d8-ad44-f6ae73a9b9d9/alphabet%27s-reported-%24112.html"
+        },
+        {
+          "title": "Sundar Pichai Raised Alphabet's Capex Guidance to $205 Billion the Same Quarter Google Cloud's Backlog Hit $514 Billion. Here's Which Number Actually Matters More.",
+          "publisher": "Motley Fool",
+          "link": "https://finance.yahoo.com/m/eb273f19-1625-3f00-8984-d8acbbedd6ae/sundar-pichai-raised.html"
+        },
+        {
+          "title": "What Is Alphabet (GOOGL) Betting On With Gemini 3.7 Flash?",
+          "publisher": "Simply Wall St.",
+          "link": "https://finance.yahoo.com/technology/ai/articles/alphabet-googl-betting-gemini-3-220907115.html"
+        },
+        {
+          "title": "Berkshire Hathaway Boosts Alphabet Stake",
+          "publisher": "MT Newswires",
+          "link": "https://finance.yahoo.com/markets/stocks/articles/berkshire-hathaway-boosts-alphabet-stake-084102719.html"
+        }
+      ],
+      "thesis": "Alphabet Inc.: Inget aktuellt köpläge.",
+      "reasons": [
+        "Nyhetsläge: Alphabet's Reported $112 Billion Profit Included a $94 Billion Paper Gain From SpaceX. Here's What the Company Actually Earned.",
+        "Nyhetsläge: Sundar Pichai Raised Alphabet's Capex Guidance to $205 Billion the Same Quarter Google Cloud's Backlog Hit $514 Billion. Here's Which Number Actually Matters More.",
+        "Large cap"
+      ],
+      "catalysts": [],
+      "risks": [
+        "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+        "Kursen har redan återhämtat merparten av fallet"
+      ],
+      "breakdown": [
+        {
+          "key": "dip",
+          "label": "Nedgång",
+          "points": 0,
+          "max": 30,
+          "note": "-3,8 % 11 aug. (för 3 handelsdagar sedan) · under tröskel · har återhämtats"
+        },
+        {
+          "key": "why",
+          "label": "Orsak",
+          "points": 4,
+          "max": 25,
+          "note": "Alphabet's Reported $112 Billion Profit Included a $94 Billion Paper Gain From SpaceX. Here's What the Company Actually Earned."
+        },
+        {
+          "key": "quality",
+          "label": "Bolagskvalitet",
+          "points": 25,
+          "max": 25,
+          "note": "Uppfyller storlekskrav · positiv marginal"
+        },
+        {
+          "key": "bounce",
+          "label": "Återhämtningspotential",
+          "points": 0,
+          "max": 20,
+          "note": "3.4% till återhämtningsnivå · otillräcklig"
+        }
+      ],
+      "dataQuality": 100,
+      "verdict": "unknown",
+      "verdictLabel": "—",
+      "chart": [
+        {
+          "date": "2026-07-08T13:30:00.000Z",
+          "close": 361.9200134277344
+        },
+        {
+          "date": "2026-07-09T13:30:00.000Z",
+          "close": 358.8900146484375
+        },
+        {
+          "date": "2026-07-10T13:30:00.000Z",
+          "close": 357.17999267578125
+        },
+        {
+          "date": "2026-07-13T13:30:00.000Z",
+          "close": 352.510009765625
+        },
+        {
+          "date": "2026-07-14T13:30:00.000Z",
+          "close": 359.510009765625
+        },
+        {
+          "date": "2026-07-15T13:30:00.000Z",
+          "close": 370.9200134277344
+        },
+        {
+          "date": "2026-07-16T13:30:00.000Z",
+          "close": 354.4599914550781
+        },
+        {
+          "date": "2026-07-17T13:30:00.000Z",
+          "close": 346.7699890136719
+        },
+        {
+          "date": "2026-07-20T13:30:00.000Z",
+          "close": 351.989990234375
+        },
+        {
+          "date": "2026-07-21T13:30:00.000Z",
+          "close": 347.1499938964844
+        },
+        {
+          "date": "2026-07-22T13:30:00.000Z",
+          "close": 342.0899963378906
+        },
+        {
+          "date": "2026-07-23T13:30:00.000Z",
+          "close": 317.69000244140625
+        },
+        {
+          "date": "2026-07-24T13:30:00.000Z",
+          "close": 319.739990234375
+        },
+        {
+          "date": "2026-07-27T13:30:00.000Z",
+          "close": 326.55999755859375
+        },
+        {
+          "date": "2026-07-28T13:30:00.000Z",
+          "close": 333.7099914550781
+        },
+        {
+          "date": "2026-07-29T13:30:00.000Z",
+          "close": 336.7099914550781
+        },
+        {
+          "date": "2026-07-30T13:30:00.000Z",
+          "close": 333.6600036621094
+        },
+        {
+          "date": "2026-07-31T13:30:00.000Z",
+          "close": 356.1300048828125
+        },
+        {
+          "date": "2026-08-03T13:30:00.000Z",
+          "close": 373.510009765625
+        },
+        {
+          "date": "2026-08-04T13:30:00.000Z",
+          "close": 377.6499938964844
+        },
+        {
+          "date": "2026-08-05T13:30:00.000Z",
+          "close": 362.42999267578125
+        },
+        {
+          "date": "2026-08-06T13:30:00.000Z",
+          "close": 357.75
+        },
+        {
+          "date": "2026-08-07T13:30:00.000Z",
+          "close": 354.29998779296875
+        },
+        {
+          "date": "2026-08-10T13:30:00.000Z",
+          "close": 357.5199890136719
+        },
+        {
+          "date": "2026-08-11T13:30:00.000Z",
+          "close": 343.79998779296875
+        },
+        {
+          "date": "2026-08-12T13:30:00.000Z",
+          "close": 343.5400085449219
+        },
+        {
+          "date": "2026-08-13T13:30:00.000Z",
+          "close": 346.3599853515625
+        },
+        {
+          "date": "2026-08-14T13:30:00.000Z",
+          "close": 345.8999938964844
+        }
+      ],
+      "yahooUrl": "https://finance.yahoo.com/quote/GOOGL",
+      "buyReasons": [
+        {
+          "text": "Nyhetsläge: Alphabet's Reported $112 Billion Profit Included a $94 Billion Paper Gain From SpaceX. Here's What the Company Actually Earned.",
+          "source": "Yahoo Finance / Motley Fool"
+        },
+        {
+          "text": "Nyhetsläge: Sundar Pichai Raised Alphabet's Capex Guidance to $205 Billion the Same Quarter Google Cloud's Backlog Hit $514 Billion. Here's Which Number Actually Matters More.",
+          "source": "Yahoo Finance / Motley Fool"
+        }
+      ],
+      "riskItems": [
+        {
+          "text": "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+          "source": "Modell / generell marknadsrisk"
+        },
+        {
+          "text": "Kursen har redan återhämtat merparten av fallet",
+          "source": "Modell"
+        }
+      ],
+      "researchHits": [
+        {
+          "title": "Alphabet's Reported $112 Billion Profit Included a $94 Billion Paper Gain From SpaceX. Here's What the Company Actually Earned.",
+          "source": "Yahoo Finance / Motley Fool",
+          "url": "https://finance.yahoo.com/m/6fc04381-f510-30d8-ad44-f6ae73a9b9d9/alphabet%27s-reported-%24112.html",
+          "kind": "context"
+        },
+        {
+          "title": "Sundar Pichai Raised Alphabet's Capex Guidance to $205 Billion the Same Quarter Google Cloud's Backlog Hit $514 Billion. Here's Which Number Actually Matters More.",
+          "source": "Yahoo Finance / Motley Fool",
+          "url": "https://finance.yahoo.com/m/eb273f19-1625-3f00-8984-d8acbbedd6ae/sundar-pichai-raised.html",
+          "kind": "context"
+        },
+        {
+          "title": "What Is Alphabet (GOOGL) Betting On With Gemini 3.7 Flash?",
+          "source": "Yahoo Finance / Simply Wall St.",
+          "url": "https://finance.yahoo.com/technology/ai/articles/alphabet-googl-betting-gemini-3-220907115.html",
+          "kind": "context"
+        },
+        {
+          "title": "Berkshire Hathaway Boosts Alphabet Stake",
+          "source": "Yahoo Finance / MT Newswires",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/berkshire-hathaway-boosts-alphabet-stake-084102719.html",
+          "kind": "context"
+        }
+      ],
+      "suggestedAmount": 0,
+      "suggestedShares": 0,
+      "positionPct": 0
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon.com, Inc.",
+      "currency": "USD",
+      "price": 262.65,
+      "marketCap": 2833025073152,
+      "sector": "Consumer Cyclical",
+      "industry": "Internet Retail",
+      "metrics": {
+        "pe": 21.147343,
+        "forwardPe": 25.246893,
+        "profitMargin": 0.1744,
+        "debtToEquity": 45.617,
+        "beta": 1.454,
+        "dayChangePct": -0.9353943,
+        "maxDayDropPct": -2.092850300572195,
+        "weekDrawdownPct": -5.552160323899614
+      },
+      "setup": "none",
+      "setupLabel": "—",
+      "rating": "none",
+      "ratingLabel": "—",
+      "conviction": "låg",
+      "scorePct": 65,
+      "score": 65,
+      "maxScore": 100,
+      "dayChangePct": -0.9353943,
+      "maxDayDropPct": -2.092850300572195,
+      "maxDayDropDate": "2026-08-11T13:30:00.000Z",
+      "dropAgeTradingDays": 3,
+      "dropWhenLabel": "-2,1 % 11 aug. (för 3 handelsdagar sedan)",
+      "weekDrawdownPct": -5.552160323899614,
+      "bounceTarget": 278.0899963378906,
+      "bounceUpsidePct": 5.9,
+      "fairValue": 278.0899963378906,
+      "fairValueMethod": "Återhämtningsnivå = högsta stängning senaste 5 handelsdagar (Yahoo). Analytikermål avser längre horisont.",
+      "upsidePct": 5.9,
+      "streetTarget": 327.004,
+      "dropReason": "Amazon (AMZN) Stock Could Be A Bargain On Cash Flow And Earnings - Yahoo Finance",
+      "dropReasonSource": "Google News / Yahoo Finance",
+      "sources": [
+        {
+          "field": "Senaste kurs",
+          "source": "Yahoo Finance",
+          "detail": "Live-/fördröjd börskurs"
+        },
+        {
+          "field": "Nedgång",
+          "source": "Yahoo Finance",
+          "detail": "Dagliga stängningskurser"
+        },
+        {
+          "field": "Utdelning och rapport",
+          "source": "Yahoo Finance",
+          "detail": "Bolagskalender"
+        },
+        {
+          "field": "Nyheter / orsak",
+          "source": "Google News + Yahoo (+ Finnhub om nyckel finns)",
+          "detail": "Rubriker klassade som katalysator, risk eller kontext"
+        },
+        {
+          "field": "Analytikermål",
+          "source": "Yahoo Finance",
+          "detail": "Konsensus målkurs (längre horisont)"
+        },
+        {
+          "field": "Återhämtningsnivå",
+          "source": "Beräknad",
+          "detail": "Senaste 5 handelsdagars högsta stängning"
+        }
+      ],
+      "news": [
+        {
+          "title": "Market Chatter: Anthropic's IPO Valuation Relies on $190 Billion to $200 Billion 2028 Revenue Forecast",
+          "publisher": "MT Newswires",
+          "link": "https://finance.yahoo.com/markets/stocks/articles/market-chatter-anthropic-apos-ipo-082650226.html"
+        },
+        {
+          "title": "Amazon Restores Binding Arbitration, Prohibits Class Actions for US Users",
+          "publisher": "MT Newswires",
+          "link": "https://finance.yahoo.com/technology/articles/amazon-restores-binding-arbitration-prohibits-073555448.html"
+        },
+        {
+          "title": "Michael Burry Says ‘You Could Have Heard It First’ — As Big Tech’s $3T AI Spending Risk Comes Into Focus",
+          "publisher": "Stocktwits",
+          "link": "https://finance.yahoo.com/m/9b345087-9ecd-3a36-9b67-4fdae0d9cee6/michael-burry-says-%E2%80%98you-could.html"
+        },
+        {
+          "title": "Elon Musk and Jensen Huang’s New Partnership Could Create the Next Era of Technology",
+          "publisher": "24/7 Wall St.",
+          "link": "https://finance.yahoo.com/m/b94480b0-a424-374d-8de4-cbe0d88d870e/elon-musk-and-jensen-huang%E2%80%99s.html"
+        }
+      ],
+      "thesis": "Amazon.com, Inc.: Inget aktuellt köpläge.",
+      "reasons": [
+        "Färsk nedgång som fortfarande håller: -2,1 % 11 aug. (för 3 handelsdagar sedan).",
+        "Återhämtning till senaste topp ger ca 5.9 % uppsida.",
+        "Amazon (AMZN) Stock Could Be A Bargain On Cash Flow And Earnings - Yahoo Finance",
+        "Nyhetsläge: Amazon.com, Inc. $AMZN Stock Holdings Lifted by Howard Financial Services LTD. - MarketBeat",
+        "-2,1 % 11 aug. (för 3 handelsdagar sedan)"
+      ],
+      "catalysts": [
+        "Amazon (AMZN) Stock Could Be A Bargain On Cash Flow And Earnings - Yahoo Finance",
+        "Återhämtning till 278.09 USD ≈ 5.9%"
+      ],
+      "risks": [
+        "Begränsad teoretisk uppsida till senaste topp.",
+        "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen."
+      ],
+      "breakdown": [
+        {
+          "key": "dip",
+          "label": "Nedgång",
+          "points": 16,
+          "max": 30,
+          "note": "-2,1 % 11 aug. (för 3 handelsdagar sedan) · på gränsen"
+        },
+        {
+          "key": "why",
+          "label": "Orsak",
+          "points": 4,
+          "max": 25,
+          "note": "Amazon (AMZN) Stock Could Be A Bargain On Cash Flow And Earnings - Yahoo Finance"
+        },
+        {
+          "key": "quality",
+          "label": "Bolagskvalitet",
+          "points": 25,
+          "max": 25,
+          "note": "Uppfyller storlekskrav · positiv marginal"
+        },
+        {
+          "key": "bounce",
+          "label": "Återhämtningspotential",
+          "points": 20,
+          "max": 20,
+          "note": "5.9% till återhämtningsnivå · ≥5,5%"
+        }
+      ],
+      "dataQuality": 100,
+      "verdict": "unknown",
+      "verdictLabel": "—",
+      "chart": [
+        {
+          "date": "2026-07-08T13:30:00.000Z",
+          "close": 243.6199951171875
+        },
+        {
+          "date": "2026-07-09T13:30:00.000Z",
+          "close": 247.0399932861328
+        },
+        {
+          "date": "2026-07-10T13:30:00.000Z",
+          "close": 245.33999633789062
+        },
+        {
+          "date": "2026-07-13T13:30:00.000Z",
+          "close": 247.30999755859375
+        },
+        {
+          "date": "2026-07-14T13:30:00.000Z",
+          "close": 247.49000549316406
+        },
+        {
+          "date": "2026-07-15T13:30:00.000Z",
+          "close": 254.9600067138672
+        },
+        {
+          "date": "2026-07-16T13:30:00.000Z",
+          "close": 249.88999938964844
+        },
+        {
+          "date": "2026-07-17T13:30:00.000Z",
+          "close": 247.22999572753906
+        },
+        {
+          "date": "2026-07-20T13:30:00.000Z",
+          "close": 249.99000549316406
+        },
+        {
+          "date": "2026-07-21T13:30:00.000Z",
+          "close": 247.5500030517578
+        },
+        {
+          "date": "2026-07-22T13:30:00.000Z",
+          "close": 244.85000610351562
+        },
+        {
+          "date": "2026-07-23T13:30:00.000Z",
+          "close": 233.66000366210938
+        },
+        {
+          "date": "2026-07-24T13:30:00.000Z",
+          "close": 232.11000061035156
+        },
+        {
+          "date": "2026-07-27T13:30:00.000Z",
+          "close": 231.38999938964844
+        },
+        {
+          "date": "2026-07-28T13:30:00.000Z",
+          "close": 230.86000061035156
+        },
+        {
+          "date": "2026-07-29T13:30:00.000Z",
+          "close": 226.64999389648438
+        },
+        {
+          "date": "2026-07-30T13:30:00.000Z",
+          "close": 235.5
+        },
+        {
+          "date": "2026-07-31T13:30:00.000Z",
+          "close": 271.5799865722656
+        },
+        {
+          "date": "2026-08-03T13:30:00.000Z",
+          "close": 284.0199890136719
+        },
+        {
+          "date": "2026-08-04T13:30:00.000Z",
+          "close": 277.4200134277344
+        },
+        {
+          "date": "2026-08-05T13:30:00.000Z",
+          "close": 272.6499938964844
+        },
+        {
+          "date": "2026-08-06T13:30:00.000Z",
+          "close": 272.260009765625
+        },
+        {
+          "date": "2026-08-07T13:30:00.000Z",
+          "close": 274.4800109863281
+        },
+        {
+          "date": "2026-08-10T13:30:00.000Z",
+          "close": 278.0899963378906
+        },
+        {
+          "date": "2026-08-11T13:30:00.000Z",
+          "close": 272.2699890136719
+        },
+        {
+          "date": "2026-08-12T13:30:00.000Z",
+          "close": 267.2799987792969
+        },
+        {
+          "date": "2026-08-13T13:30:00.000Z",
+          "close": 265.1300048828125
+        },
+        {
+          "date": "2026-08-14T13:30:00.000Z",
+          "close": 262.6499938964844
+        }
+      ],
+      "yahooUrl": "https://finance.yahoo.com/quote/AMZN",
+      "buyReasons": [
+        {
+          "text": "Färsk nedgång som fortfarande håller: -2,1 % 11 aug. (för 3 handelsdagar sedan).",
+          "source": "Yahoo Finance, dagliga stängningar"
+        },
+        {
+          "text": "Återhämtning till senaste topp ger ca 5.9 % uppsida.",
+          "source": "Beräknad från Yahoo-kursdata"
+        },
+        {
+          "text": "Amazon (AMZN) Stock Could Be A Bargain On Cash Flow And Earnings - Yahoo Finance",
+          "source": "Google News / Yahoo Finance"
+        },
+        {
+          "text": "Nyhetsläge: Amazon.com, Inc. $AMZN Stock Holdings Lifted by Howard Financial Services LTD. - MarketBeat",
+          "source": "Google News / MarketBeat"
+        },
+        {
+          "text": "Nyhetsläge: Amazon Stock’s Next Leg Is Already On The Order Book - Trefis",
+          "source": "Google News / Trefis"
+        }
+      ],
+      "riskItems": [
+        {
+          "text": "Begränsad teoretisk uppsida till senaste topp.",
+          "source": "Beräknad från kursdata"
+        },
+        {
+          "text": "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+          "source": "Modell / generell marknadsrisk"
+        }
+      ],
+      "researchHits": [
+        {
+          "title": "Amazon.com, Inc. $AMZN Stock Holdings Lifted by Howard Financial Services LTD. - MarketBeat",
+          "source": "Google News / MarketBeat",
+          "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNX0l6SVdjUnFwVlpNVGp0VGZMSVZ0bFhFX1FVZGZPY3p5dTdCaF9IY2xwUTEweUU4aU5tT1FITlBSdnNrRE01bTViOEtSSndMRlF3R3h4UHlpT0J0QVJHYXpPLWVSNmNEdy01b2FvTXV3NTFHUERQRVMyMXJfUjEweGJFVkY3MUZSV0d3cHlXY2hMWEt2R2I4alNWc1BOTktFaUZoYV9DbE8xaW5sNV9GNGowSWRPT0tOMTFTVFItY3NGOUlCdy1yLUVFeEdoQjQ?oc=5",
+          "publishedAt": "2026-08-17T08:54:33.000Z",
+          "kind": "context"
+        },
+        {
+          "title": "Amazon Stock’s Next Leg Is Already On The Order Book - Trefis",
+          "source": "Google News / Trefis",
+          "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPSDZwODczWWUxZkg4MWxuTmM5eHB6V0pIYWV0WHk4VjZRNFMyaW5wM2I5SmtnNXdnMlhhVDdOZEd1Y3VxMmQ0N3NyaUc2b0FicmRNZHljTXBuWTZfcnVqQnlNeVRQZHJJQ3U1YkhUZDllTklQbmFOekZuZER6ckJnS0ViNkZ6UkdhMTE3TlVSb0ZPaUVUQnVEemQ5aW1VbGMwY2p4TjVjQXVYZzNvNmloajJn?oc=5",
+          "publishedAt": "2026-08-12T15:37:25.000Z",
+          "kind": "context"
+        },
+        {
+          "title": "Amazon (AMZN) Stock May Trade At A 39% Discount Following AI Demand News - simplywall.st",
+          "source": "Google News / simplywall.st",
+          "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPOF9uTHZIallwS2s0Z0pnckcyTmthR0owcmFWd0U5dldwdGxoSTZneHZkc3JyWW84VEFhYTQxeHVTNkJIeG5FVUxjQkxuYjEyaGZWZ3NvbWo2OTM4a3FHMUNvcmhtZFQyMDg4TDNxUHZsQ0hVVHdUNjdYMGdUcEwxd0sxc3J3NkVSZXN3S2xIVFZVRjBpNXZmQXo1dzdxRXdtbVQ0MUFFSlpKTTJaU0hveHhoR2J3b05fV2oxdEtsU3pvaWpk0gHKAUFVX3lxTFAtVTkzUE5nRXJPd05ienNZTEM4YWFQb18yWm5NZS0wclJWY1BSLWpPU0I3RVBvdUM0QTlmMHdISFZ2dXRFeGR0clRlc2lpSGNMS1J3b1pheUFabWlXUjNqOEFBTWFvQ015Y0dXMnowRnhVa01oNGdaSDE5OVdnNzFFVHQwU294UFdZT0MzS2dZeUJ0QWtBV2loUlhnM2o5VGlNSFJzaUVqLW1DaHk2TGtQVnRNRHZ0aGE3MlRCRElnNkFIT2tJQUpDaGc?oc=5",
+          "publishedAt": "2026-08-15T14:34:06.000Z",
+          "kind": "context"
+        },
+        {
+          "title": "Amazon (AMZN) Stock Could Be A Bargain On Cash Flow And Earnings - Yahoo Finance",
+          "source": "Google News / Yahoo Finance",
+          "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPZzEzU2l5Z1VIMzk2WGttTTlCOVpXU01PalJkeC14cUFEdDNSbktBeXhlUDJkRUYwSW1NSWxqVnUxTjZaNXpLd2pGaTJjLUthME9VRThJajhlQnBpX0MyaHJMdFg4bjI0OGtVLVF4Z0ZRVDZzY0hnMDJERWdiZFltQmVaVUlpRW5rUHYwUmh5WUl3SjY1dVBjMkJEYk8?oc=5",
+          "publishedAt": "2026-08-11T17:09:24.000Z",
+          "kind": "catalyst"
+        },
+        {
+          "title": "Amazon.com vs. Comcast: Which Stock Is a Better Buy in 2026? - The Motley Fool",
+          "source": "Google News / The Motley Fool",
+          "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQYUdTOXZIbzhWT29nWUNreHhlVEQyMjN0bWE5OXJYUXBNQnBwV0xPc1JqUTZrZExaYzU3RTVZdnBlOWo5cnhMc0kwUXpkTFh6VEhQVWlrWFluWUpDQ2t5UDAzNUlHRGdsRzZoNk13V3JCT2VqM25ieFVBYkt3SkhPa1V3REk3UTZwakVlZE5xUExCdFNCSVYyNlB0a0VNVlA4WDlCMmNER21lc3pZd0Uw?oc=5",
+          "publishedAt": "2026-08-14T20:12:00.000Z",
+          "kind": "context"
+        },
+        {
+          "title": "Amazon.com, Inc. $AMZN Shares Sold by Central Pacific Bank Trust Division - MarketBeat",
+          "source": "Google News / MarketBeat",
+          "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOSlhtUlVCQXozakpaLUpzQ21CenNRSXdORE1oaWpDbWNaX1BBUFZhZG53VG42UEhoZThabWdOTHpvTk5VaHRHZjRTZU1LbVl3ZkVhRTVPcVp0OWtqWmQ0VDgxd1hXYm9IbEg1VXpROEM0WmVZMmliR3ZfZEZ5UkRYdmFuUXRVNGxWZlFHSFFoRHE2SmFGa2w0a1Nzb1JIY2xXc2VkR2swbC1KaHFxYUlCTHBkVkZsMjQxdkplc2JIWTN0c2lmdXg4aUh3?oc=5",
+          "publishedAt": "2026-08-17T07:38:51.000Z",
+          "kind": "context"
+        },
+        {
+          "title": "Amazon.com vs. StubHub: Which Consumer Stock Is a Better Buy in 2026? - The Motley Fool",
+          "source": "Google News / The Motley Fool",
+          "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNNnFlZVREU2dtVm5yZnd4WHRqZzVfWTlaanJWVUJFdzRUTV9EMmNLN1JxN2EwSTluVnRBNnc5RHBJdkRRbkRNN1VQU0hBT29uV3VqMmdkWjJBc2VuS0ppRk9zbWZHY1ZqX2ZQRG5GamtfVUZXZENiWmxtTGVPcE9jWGh0aDJ4RzRnd29kZHVlTWtQVExQN3VtUWdodHFtQTFFV0pnemxURWkzWXN0N2J3UEFmTlFBMjgtYXNz?oc=5",
+          "publishedAt": "2026-08-14T23:08:00.000Z",
+          "kind": "context"
+        },
+        {
+          "title": "Amazon.com, Inc. $AMZN Shares Bought by Grant Private Wealth Management Inc - MarketBeat",
+          "source": "Google News / MarketBeat",
+          "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPRHlEVWNUVk90MzhFbTdTZVFpNkhyZGMxeV9qX3NxbHBsSzJGUEJYaVN2YnJaNHgwanhkZm1vVVdDLXphQUVTZmE1QXRmVFlIbGwtV0JoTjJBZTlWWTRZU1BOWmdnZ0d1c0wyNm1fT3hYZzRPZXRoNXhmNnpXZ041anQwX280UkdpdklLZDIzMmlPSF95c1lrczBLY085YkNtYWhCVUVOWXAwb3Z1Zk5fMzgtc2FWeVlDWkxjeU9GTlQ1c3M4eTE3NGFmRjc?oc=5",
+          "publishedAt": "2026-08-17T08:54:32.000Z",
+          "kind": "context"
+        },
+        {
+          "title": "Amazon.com Announces Second Quarter Results - Amazon Investor Relations",
+          "source": "Google News / Amazon Investor Relations",
+          "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOZExYaC1BN1dHSmNVeXVxYjdmTVB1Mk9zQTkta2hBZUJKc2FuTWhmNmdPRngzcFF3MUtNc1U4ODBEc2wxYmVoVWZIemI1c1E1elh5OGs2N2RhUHZzdnN6S3RNUDlsYmZSQWpsdWgtSlVrRm9xWkVsZ2RhQ3pxbjRWeGdqMlJmM1g3WUZacmU5U0xVSkdpQklvRHdyU1JwWkhySEN0NW0xOWdabFZ5eFRn?oc=5",
+          "publishedAt": "2026-07-30T07:00:00.000Z",
+          "kind": "context"
+        },
+        {
+          "title": "Going Into Earnings, Is Amazon Stock a Buy, a Sell, or Fairly Valued? - Morningstar",
+          "source": "Google News / Morningstar",
+          "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQYVhlWkV1eFFZaGlyQVJZQjNONzRicU5DR0xkVHRYXzFRX3BFTm5vWGVfTF9ZcURwMkJhXzNnci1xOXBUV1FNSUZ4VzNLSGltWjcweFFwT0NaNEM0R01XaE55TXF2NkpENjJ6RjdDQkNFQTJaU2NIbXZKZjAzZm13M3NSM1N0Nm1vRDRqT3I1VFI0b21fcC0zSnNZNmxjOEVqakh0LTNnNmdWRUE?oc=5",
+          "publishedAt": "2026-07-27T07:00:00.000Z",
+          "kind": "context"
+        },
+        {
+          "title": "Here’s How Much Amazon Stock Is Expected to Move After Earnings - Investopedia",
+          "source": "Google News / Investopedia",
+          "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNX2lkeTRTd3ZJUmgyTk12dHc2TFpqRWw1ZUtaZTZIYkoyODZCamRROUhLTndGbHdCbEpPbFpwM2c1QmRmbDdyQmU5enZLYnFaMjB1N3F0cVJXNTR6WC1NdXA5ai1yZFhNM3dENC1WSUI3elBZNTlpNm0tck5heEh2Mm5xR01CMHVQMEpyWlhnVGZxdmMtSFg0T3hkWFRTMzg4WG9Qc3JBbERjQjdxbld0Uy1yaUxaOEdWYWRTM2poOTBxQQ?oc=5",
+          "publishedAt": "2026-07-30T07:00:00.000Z",
+          "kind": "context"
+        },
+        {
+          "title": "How to File a Claim in the $2.5 Billion Amazon Prime Settlement - Time Magazine",
+          "source": "Google News / Time Magazine",
+          "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNVmZVWmFEOFpjMV9jVE5YNzZVbHNiOVFrb21rcVhZSUR2Q2plTkpzM3ZiczAyS3RWZ21tZUE5N2s4MjlLaVFMZ3NWWG9XNndQOTEtazRwdGNEeFlvUXc1VUUyYjE5ZjFSYnpySEhzNWJKSm1yMTZJeTU5RU5YT3Y2cUotemJiVG9HZ3hNZHlNSDNJYTNm?oc=5",
+          "publishedAt": "2026-07-24T07:00:00.000Z",
+          "kind": "context"
+        }
+      ],
+      "suggestedAmount": 0,
+      "suggestedShares": 0,
+      "positionPct": 0
+    },
+    {
+      "symbol": "KO",
+      "name": "Coca-Cola Company (The)",
+      "currency": "USD",
+      "price": 87.71,
+      "marketCap": 377376571392,
+      "sector": "Consumer Defensive",
+      "industry": "Beverages - Non-Alcoholic",
+      "metrics": {
+        "pe": 26.33934,
+        "forwardPe": 24.872532,
+        "profitMargin": 0.28558,
+        "debtToEquity": 115.519,
+        "beta": 0.342,
+        "dayChangePct": 0.331733,
+        "maxDayDropPct": -0.44894598517067774,
+        "weekDrawdownPct": 0
+      },
+      "setup": "none",
+      "setupLabel": "—",
+      "rating": "none",
+      "ratingLabel": "—",
+      "conviction": "låg",
+      "scorePct": 29,
+      "score": 29,
+      "maxScore": 100,
+      "dayChangePct": 0.331733,
+      "maxDayDropPct": -0.44894598517067774,
+      "maxDayDropDate": "2026-08-11T13:30:00.000Z",
+      "dropAgeTradingDays": 3,
+      "dropWhenLabel": "-0,4 % 11 aug. (för 3 handelsdagar sedan)",
+      "weekDrawdownPct": 0,
+      "bounceTarget": 87.70999908447266,
+      "bounceUpsidePct": 0,
+      "fairValue": 87.70999908447266,
+      "fairValueMethod": "Återhämtningsnivå = högsta stängning senaste 5 handelsdagar (Yahoo). Analytikermål avser längre horisont.",
+      "upsidePct": 0,
+      "streetTarget": 94.69565,
+      "dropReason": "Berkshire Piles $17 Billion More into Google: Why Is Michael Burry Worried?",
+      "dropReasonSource": "Yahoo Finance / BeInCrypto",
+      "sources": [
+        {
+          "field": "Senaste kurs",
+          "source": "Yahoo Finance",
+          "detail": "Live-/fördröjd börskurs"
+        },
+        {
+          "field": "Nedgång",
+          "source": "Yahoo Finance",
+          "detail": "Dagliga stängningskurser"
+        },
+        {
+          "field": "Utdelning och rapport",
+          "source": "Yahoo Finance",
+          "detail": "Bolagskalender"
+        },
+        {
+          "field": "Nyheter / orsak",
+          "source": "Google News + Yahoo (+ Finnhub om nyckel finns)",
+          "detail": "Rubriker klassade som katalysator, risk eller kontext"
+        },
+        {
+          "field": "Analytikermål",
+          "source": "Yahoo Finance",
+          "detail": "Konsensus målkurs (längre horisont)"
+        },
+        {
+          "field": "Återhämtningsnivå",
+          "source": "Beräknad",
+          "detail": "Senaste 5 handelsdagars högsta stängning"
+        }
+      ],
+      "news": [
+        {
+          "title": "Berkshire Piles $17 Billion More into Google: Why Is Michael Burry Worried?",
+          "publisher": "BeInCrypto",
+          "link": "https://finance.yahoo.com/m/b875d902-bebe-327f-b547-4d840c3f4ec9/berkshire-piles-%2417-billion.html"
+        },
+        {
+          "title": "There's No Denying Altria Group Has a High Yield, But This Stock Could Be an Even Better Buy for Dividend Investors Looking for Reliable Passive Income",
+          "publisher": "Motley Fool",
+          "link": "https://finance.yahoo.com/m/fee4d72e-af89-3d75-8d66-3c42851b3724/there%27s-no-denying-altria.html"
+        },
+        {
+          "title": "This Dividend King Has Raised Its Payout for 64 Straight Years -- And It's Outperforming the \"Magnificent Seven\" This Year",
+          "publisher": "Motley Fool",
+          "link": "https://finance.yahoo.com/m/435c657d-f257-3986-9c6a-0d72b688cf94/this-dividend-king-has-raised.html"
+        },
+        {
+          "title": "5 Dividend Aristocrats to Buy for Lifelong Income in August",
+          "publisher": "24/7 Wall St.",
+          "link": "https://finance.yahoo.com/m/885e3ccf-c0b7-30b1-b973-2457d5e930ce/5-dividend-aristocrats-to-buy.html"
+        }
+      ],
+      "thesis": "Coca-Cola Company (The): Inget aktuellt köpläge.",
+      "reasons": [
+        "Nyhetsläge: Berkshire Piles $17 Billion More into Google: Why Is Michael Burry Worried?",
+        "Nyhetsläge: There's No Denying Altria Group Has a High Yield, But This Stock Could Be an Even Better Buy for Dividend Investors Looking for Reliable Passive Income",
+        "Large cap"
+      ],
+      "catalysts": [],
+      "risks": [
+        "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+        "Kursen har redan återhämtat merparten av fallet"
+      ],
+      "breakdown": [
+        {
+          "key": "dip",
+          "label": "Nedgång",
+          "points": 0,
+          "max": 30,
+          "note": "-0,4 % 11 aug. (för 3 handelsdagar sedan) · under tröskel · har återhämtats"
+        },
+        {
+          "key": "why",
+          "label": "Orsak",
+          "points": 4,
+          "max": 25,
+          "note": "Berkshire Piles $17 Billion More into Google: Why Is Michael Burry Worried?"
+        },
+        {
+          "key": "quality",
+          "label": "Bolagskvalitet",
+          "points": 25,
+          "max": 25,
+          "note": "Uppfyller storlekskrav · positiv marginal"
+        },
+        {
+          "key": "bounce",
+          "label": "Återhämtningspotential",
+          "points": 0,
+          "max": 20,
+          "note": "0.0% till återhämtningsnivå · otillräcklig"
+        }
+      ],
+      "dataQuality": 100,
+      "verdict": "unknown",
+      "verdictLabel": "—",
+      "chart": [
+        {
+          "date": "2026-07-08T13:30:00.000Z",
+          "close": 83.4000015258789
+        },
+        {
+          "date": "2026-07-09T13:30:00.000Z",
+          "close": 82.62999725341797
+        },
+        {
+          "date": "2026-07-10T13:30:00.000Z",
+          "close": 83.48999786376953
+        },
+        {
+          "date": "2026-07-13T13:30:00.000Z",
+          "close": 84.25
+        },
+        {
+          "date": "2026-07-14T13:30:00.000Z",
+          "close": 83.08000183105469
+        },
+        {
+          "date": "2026-07-15T13:30:00.000Z",
+          "close": 82.44999694824219
+        },
+        {
+          "date": "2026-07-16T13:30:00.000Z",
+          "close": 84.91999816894531
+        },
+        {
+          "date": "2026-07-17T13:30:00.000Z",
+          "close": 81.55999755859375
+        },
+        {
+          "date": "2026-07-20T13:30:00.000Z",
+          "close": 82.12000274658203
+        },
+        {
+          "date": "2026-07-21T13:30:00.000Z",
+          "close": 81.97000122070312
+        },
+        {
+          "date": "2026-07-22T13:30:00.000Z",
+          "close": 82.19999694824219
+        },
+        {
+          "date": "2026-07-23T13:30:00.000Z",
+          "close": 81.16999816894531
+        },
+        {
+          "date": "2026-07-24T13:30:00.000Z",
+          "close": 82.25
+        },
+        {
+          "date": "2026-07-27T13:30:00.000Z",
+          "close": 84.06999969482422
+        },
+        {
+          "date": "2026-07-28T13:30:00.000Z",
+          "close": 88.2699966430664
+        },
+        {
+          "date": "2026-07-29T13:30:00.000Z",
+          "close": 89.08000183105469
+        },
+        {
+          "date": "2026-07-30T13:30:00.000Z",
+          "close": 88.48999786376953
+        },
+        {
+          "date": "2026-07-31T13:30:00.000Z",
+          "close": 87.58999633789062
+        },
+        {
+          "date": "2026-08-03T13:30:00.000Z",
+          "close": 86.86000061035156
+        },
+        {
+          "date": "2026-08-04T13:30:00.000Z",
+          "close": 86.55999755859375
+        },
+        {
+          "date": "2026-08-05T13:30:00.000Z",
+          "close": 86.83000183105469
+        },
+        {
+          "date": "2026-08-06T13:30:00.000Z",
+          "close": 86.8499984741211
+        },
+        {
+          "date": "2026-08-07T13:30:00.000Z",
+          "close": 87.05000305175781
+        },
+        {
+          "date": "2026-08-10T13:30:00.000Z",
+          "close": 86.87000274658203
+        },
+        {
+          "date": "2026-08-11T13:30:00.000Z",
+          "close": 86.4800033569336
+        },
+        {
+          "date": "2026-08-12T13:30:00.000Z",
+          "close": 86.70999908447266
+        },
+        {
+          "date": "2026-08-13T13:30:00.000Z",
+          "close": 87.41999816894531
+        },
+        {
+          "date": "2026-08-14T13:30:00.000Z",
+          "close": 87.70999908447266
+        }
+      ],
+      "yahooUrl": "https://finance.yahoo.com/quote/KO",
+      "buyReasons": [
+        {
+          "text": "Nyhetsläge: Berkshire Piles $17 Billion More into Google: Why Is Michael Burry Worried?",
+          "source": "Yahoo Finance / BeInCrypto"
+        },
+        {
+          "text": "Nyhetsläge: There's No Denying Altria Group Has a High Yield, But This Stock Could Be an Even Better Buy for Dividend Investors Looking for Reliable Passive Income",
+          "source": "Yahoo Finance / Motley Fool"
+        }
+      ],
+      "riskItems": [
+        {
+          "text": "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+          "source": "Modell / generell marknadsrisk"
+        },
+        {
+          "text": "Kursen har redan återhämtat merparten av fallet",
+          "source": "Modell"
+        }
+      ],
+      "researchHits": [
+        {
+          "title": "Berkshire Piles $17 Billion More into Google: Why Is Michael Burry Worried?",
+          "source": "Yahoo Finance / BeInCrypto",
+          "url": "https://finance.yahoo.com/m/b875d902-bebe-327f-b547-4d840c3f4ec9/berkshire-piles-%2417-billion.html",
+          "kind": "context"
+        },
+        {
+          "title": "There's No Denying Altria Group Has a High Yield, But This Stock Could Be an Even Better Buy for Dividend Investors Looking for Reliable Passive Income",
+          "source": "Yahoo Finance / Motley Fool",
+          "url": "https://finance.yahoo.com/m/fee4d72e-af89-3d75-8d66-3c42851b3724/there%27s-no-denying-altria.html",
+          "kind": "context"
+        },
+        {
+          "title": "This Dividend King Has Raised Its Payout for 64 Straight Years -- And It's Outperforming the \"Magnificent Seven\" This Year",
+          "source": "Yahoo Finance / Motley Fool",
+          "url": "https://finance.yahoo.com/m/435c657d-f257-3986-9c6a-0d72b688cf94/this-dividend-king-has-raised.html",
+          "kind": "context"
+        },
+        {
+          "title": "5 Dividend Aristocrats to Buy for Lifelong Income in August",
+          "source": "Yahoo Finance / 24/7 Wall St.",
+          "url": "https://finance.yahoo.com/m/885e3ccf-c0b7-30b1-b973-2457d5e930ce/5-dividend-aristocrats-to-buy.html",
+          "kind": "context"
+        }
+      ],
+      "suggestedAmount": 0,
+      "suggestedShares": 0,
+      "positionPct": 0
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corporation",
+      "currency": "USD",
+      "price": 225.16,
+      "marketCap": 5453600260096,
+      "sector": "Technology",
+      "industry": "Semiconductors",
+      "metrics": {
+        "pe": 34.480858,
+        "forwardPe": 17.59288,
+        "profitMargin": 0.62966,
+        "debtToEquity": 6.555,
+        "beta": 2.215,
+        "dayChangePct": -0.0621391,
+        "maxDayDropPct": -2.862119784760874,
+        "weekDrawdownPct": -0.06213909798140378
+      },
+      "setup": "none",
+      "setupLabel": "—",
+      "rating": "none",
+      "ratingLabel": "—",
+      "conviction": "låg",
+      "scorePct": 24,
+      "score": 24,
+      "maxScore": 100,
+      "dayChangePct": -0.0621391,
+      "maxDayDropPct": -2.862119784760874,
+      "maxDayDropDate": "2026-08-10T13:30:00.000Z",
+      "dropAgeTradingDays": 4,
+      "dropWhenLabel": "-2,9 % 10 aug. (för 4 handelsdagar sedan)",
+      "weekDrawdownPct": -0.06213909798140378,
+      "bounceTarget": 225.3000030517578,
+      "bounceUpsidePct": 0.1,
+      "fairValue": 225.3000030517578,
+      "fairValueMethod": "Återhämtningsnivå = högsta stängning senaste 5 handelsdagar (Yahoo). Analytikermål avser längre horisont.",
+      "upsidePct": 0.1,
+      "streetTarget": 302.82758,
+      "dropReason": "Nvidia Discloses Multi-Billion-Dollar Stakes in Intel, SpaceX in Filing",
+      "dropReasonSource": "Yahoo Finance / MT Newswires",
+      "sources": [
+        {
+          "field": "Senaste kurs",
+          "source": "Yahoo Finance",
+          "detail": "Live-/fördröjd börskurs"
+        },
+        {
+          "field": "Nedgång",
+          "source": "Yahoo Finance",
+          "detail": "Dagliga stängningskurser"
+        },
+        {
+          "field": "Utdelning och rapport",
+          "source": "Yahoo Finance",
+          "detail": "Bolagskalender"
+        },
+        {
+          "field": "Nyheter / orsak",
+          "source": "Google News + Yahoo (+ Finnhub om nyckel finns)",
+          "detail": "Rubriker klassade som katalysator, risk eller kontext"
+        },
+        {
+          "field": "Analytikermål",
+          "source": "Yahoo Finance",
+          "detail": "Konsensus målkurs (längre horisont)"
+        },
+        {
+          "field": "Återhämtningsnivå",
+          "source": "Beräknad",
+          "detail": "Senaste 5 handelsdagars högsta stängning"
+        }
+      ],
+      "news": [
+        {
+          "title": "Nvidia Discloses Multi-Billion-Dollar Stakes in Intel, SpaceX in Filing",
+          "publisher": "MT Newswires",
+          "link": "https://finance.yahoo.com/markets/stocks/articles/nvidia-discloses-multi-billion-dollar-085130728.html"
+        },
+        {
+          "title": "Market Chatter: Nvidia Discussing $3 Billion Investment SB Energy's OpenAI Ohio Data Center",
+          "publisher": "MT Newswires",
+          "link": "https://finance.yahoo.com/technology/ai/articles/market-chatter-nvidia-discussing-3-081125623.html"
+        },
+        {
+          "title": "Market Chatter: Nvidia, OpenAI Close in on Deal for Ohio Data Center",
+          "publisher": "MT Newswires",
+          "link": "https://finance.yahoo.com/technology/ai/articles/market-chatter-nvidia-openai-close-081931110.html"
+        },
+        {
+          "title": "What Nvidia's $500 billion Wall Street deal signals about the AI boom",
+          "publisher": "Euronews",
+          "link": "https://finance.yahoo.com/m/79d9ac76-6f30-344a-b857-0aa76773eaea/what-nvidia%27s-%24500-billion.html"
+        }
+      ],
+      "thesis": "NVIDIA Corporation: Inget aktuellt köpläge.",
+      "reasons": [
+        "Nyhetsläge: Nvidia Discloses Multi-Billion-Dollar Stakes in Intel, SpaceX in Filing",
+        "Nyhetsläge: Market Chatter: Nvidia Discussing $3 Billion Investment SB Energy's OpenAI Ohio Data Center",
+        "Large cap"
+      ],
+      "catalysts": [],
+      "risks": [
+        "Hög beta (2.21) — större svängningar än marknaden.",
+        "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+        "Kursen har redan återhämtat merparten av fallet"
+      ],
+      "breakdown": [
+        {
+          "key": "dip",
+          "label": "Nedgång",
+          "points": 0,
+          "max": 30,
+          "note": "-2,9 % 10 aug. (för 4 handelsdagar sedan) · för gammal (>3 handelsdagar) · har återhämtats"
+        },
+        {
+          "key": "why",
+          "label": "Orsak",
+          "points": 4,
+          "max": 25,
+          "note": "Nvidia Discloses Multi-Billion-Dollar Stakes in Intel, SpaceX in Filing"
+        },
+        {
+          "key": "quality",
+          "label": "Bolagskvalitet",
+          "points": 20,
+          "max": 25,
+          "note": "Uppfyller storlekskrav · positiv marginal · hög beta"
+        },
+        {
+          "key": "bounce",
+          "label": "Återhämtningspotential",
+          "points": 0,
+          "max": 20,
+          "note": "0.1% till återhämtningsnivå · otillräcklig"
+        }
+      ],
+      "dataQuality": 100,
+      "verdict": "unknown",
+      "verdictLabel": "—",
+      "chart": [
+        {
+          "date": "2026-07-08T13:30:00.000Z",
+          "close": 204.1199951171875
+        },
+        {
+          "date": "2026-07-09T13:30:00.000Z",
+          "close": 202.77999877929688
+        },
+        {
+          "date": "2026-07-10T13:30:00.000Z",
+          "close": 210.9600067138672
+        },
+        {
+          "date": "2026-07-13T13:30:00.000Z",
+          "close": 203.52999877929688
+        },
+        {
+          "date": "2026-07-14T13:30:00.000Z",
+          "close": 211.8000030517578
+        },
+        {
+          "date": "2026-07-15T13:30:00.000Z",
+          "close": 212.5
+        },
+        {
+          "date": "2026-07-16T13:30:00.000Z",
+          "close": 207.39999389648438
+        },
+        {
+          "date": "2026-07-17T13:30:00.000Z",
+          "close": 202.80999755859375
+        },
+        {
+          "date": "2026-07-20T13:30:00.000Z",
+          "close": 203.27999877929688
+        },
+        {
+          "date": "2026-07-21T13:30:00.000Z",
+          "close": 207.2899932861328
+        },
+        {
+          "date": "2026-07-22T13:30:00.000Z",
+          "close": 212.05999755859375
+        },
+        {
+          "date": "2026-07-23T13:30:00.000Z",
+          "close": 208.75999450683594
+        },
+        {
+          "date": "2026-07-24T13:30:00.000Z",
+          "close": 206.83999633789062
+        },
+        {
+          "date": "2026-07-27T13:30:00.000Z",
+          "close": 196.50999450683594
+        },
+        {
+          "date": "2026-07-28T13:30:00.000Z",
+          "close": 197.00999450683594
+        },
+        {
+          "date": "2026-07-29T13:30:00.000Z",
+          "close": 190.00999450683594
+        },
+        {
+          "date": "2026-07-30T13:30:00.000Z",
+          "close": 195.0399932861328
+        },
+        {
+          "date": "2026-07-31T13:30:00.000Z",
+          "close": 200.75
+        },
+        {
+          "date": "2026-08-03T13:30:00.000Z",
+          "close": 206.63999938964844
+        },
+        {
+          "date": "2026-08-04T13:30:00.000Z",
+          "close": 211.94000244140625
+        },
+        {
+          "date": "2026-08-05T13:30:00.000Z",
+          "close": 219.22000122070312
+        },
+        {
+          "date": "2026-08-06T13:30:00.000Z",
+          "close": 218.99000549316406
+        },
+        {
+          "date": "2026-08-07T13:30:00.000Z",
+          "close": 223.9600067138672
+        },
+        {
+          "date": "2026-08-10T13:30:00.000Z",
+          "close": 217.5500030517578
+        },
+        {
+          "date": "2026-08-11T13:30:00.000Z",
+          "close": 217.5
+        },
+        {
+          "date": "2026-08-12T13:30:00.000Z",
+          "close": 224.08999633789062
+        },
+        {
+          "date": "2026-08-13T13:30:00.000Z",
+          "close": 225.3000030517578
+        },
+        {
+          "date": "2026-08-14T13:30:00.000Z",
+          "close": 225.16000366210938
+        }
+      ],
+      "yahooUrl": "https://finance.yahoo.com/quote/NVDA",
+      "buyReasons": [
+        {
+          "text": "Nyhetsläge: Nvidia Discloses Multi-Billion-Dollar Stakes in Intel, SpaceX in Filing",
+          "source": "Yahoo Finance / MT Newswires"
+        },
+        {
+          "text": "Nyhetsläge: Market Chatter: Nvidia Discussing $3 Billion Investment SB Energy's OpenAI Ohio Data Center",
+          "source": "Yahoo Finance / MT Newswires"
+        }
+      ],
+      "riskItems": [
+        {
+          "text": "Hög beta (2.21) — större svängningar än marknaden.",
+          "source": "Yahoo Finance, nyckeltal"
+        },
+        {
+          "text": "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+          "source": "Modell / generell marknadsrisk"
+        },
+        {
+          "text": "Kursen har redan återhämtat merparten av fallet",
+          "source": "Modell"
+        }
+      ],
+      "researchHits": [
+        {
+          "title": "Nvidia Discloses Multi-Billion-Dollar Stakes in Intel, SpaceX in Filing",
+          "source": "Yahoo Finance / MT Newswires",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/nvidia-discloses-multi-billion-dollar-085130728.html",
+          "kind": "context"
+        },
+        {
+          "title": "Market Chatter: Nvidia Discussing $3 Billion Investment SB Energy's OpenAI Ohio Data Center",
+          "source": "Yahoo Finance / MT Newswires",
+          "url": "https://finance.yahoo.com/technology/ai/articles/market-chatter-nvidia-discussing-3-081125623.html",
+          "kind": "context"
+        },
+        {
+          "title": "Market Chatter: Nvidia, OpenAI Close in on Deal for Ohio Data Center",
+          "source": "Yahoo Finance / MT Newswires",
+          "url": "https://finance.yahoo.com/technology/ai/articles/market-chatter-nvidia-openai-close-081931110.html",
+          "kind": "context"
+        },
+        {
+          "title": "What Nvidia's $500 billion Wall Street deal signals about the AI boom",
+          "source": "Yahoo Finance / Euronews",
+          "url": "https://finance.yahoo.com/m/79d9ac76-6f30-344a-b857-0aa76773eaea/what-nvidia%27s-%24500-billion.html",
+          "kind": "context"
+        }
+      ],
+      "suggestedAmount": 0,
+      "suggestedShares": 0,
+      "positionPct": 0
+    },
+    {
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "currency": "USD",
+      "price": 305.93,
+      "marketCap": 4464797286400,
+      "sector": "Technology",
+      "industry": "Consumer Electronics",
+      "metrics": {
+        "pe": 35.083714,
+        "forwardPe": 32.17704,
+        "profitMargin": 0.27618998,
+        "debtToEquity": 78.445,
+        "beta": 1.086,
+        "dayChangePct": 0.21948946,
+        "maxDayDropPct": -1.6180949873660748,
+        "weekDrawdownPct": -0.7558609667258815
+      },
+      "setup": "none",
+      "setupLabel": "—",
+      "rating": "none",
+      "ratingLabel": "—",
+      "conviction": "låg",
+      "scorePct": 29,
+      "score": 29,
+      "maxScore": 100,
+      "dayChangePct": 0.21948946,
+      "maxDayDropPct": -1.6180949873660748,
+      "maxDayDropDate": "2026-08-10T13:30:00.000Z",
+      "dropAgeTradingDays": 4,
+      "dropWhenLabel": "-1,6 % 10 aug. (för 4 handelsdagar sedan)",
+      "weekDrawdownPct": -0.7558609667258815,
+      "bounceTarget": 308.260009765625,
+      "bounceUpsidePct": 0.8,
+      "fairValue": 308.260009765625,
+      "fairValueMethod": "Återhämtningsnivå = högsta stängning senaste 5 handelsdagar (Yahoo). Analytikermål avser längre horisont.",
+      "upsidePct": 0.8,
+      "streetTarget": 322.2844,
+      "dropReason": "Market Chatter: Apple May Buy Chinese Memory Chips Despite US Request",
+      "dropReasonSource": "Yahoo Finance / MT Newswires",
+      "sources": [
+        {
+          "field": "Senaste kurs",
+          "source": "Yahoo Finance",
+          "detail": "Live-/fördröjd börskurs"
+        },
+        {
+          "field": "Nedgång",
+          "source": "Yahoo Finance",
+          "detail": "Dagliga stängningskurser"
+        },
+        {
+          "field": "Utdelning och rapport",
+          "source": "Yahoo Finance",
+          "detail": "Bolagskalender"
+        },
+        {
+          "field": "Nyheter / orsak",
+          "source": "Google News + Yahoo (+ Finnhub om nyckel finns)",
+          "detail": "Rubriker klassade som katalysator, risk eller kontext"
+        },
+        {
+          "field": "Analytikermål",
+          "source": "Yahoo Finance",
+          "detail": "Konsensus målkurs (längre horisont)"
+        },
+        {
+          "field": "Återhämtningsnivå",
+          "source": "Beräknad",
+          "detail": "Senaste 5 handelsdagars högsta stängning"
+        }
+      ],
+      "news": [
+        {
+          "title": "Market Chatter: Apple May Buy Chinese Memory Chips Despite US Request",
+          "publisher": "MT Newswires",
+          "link": "https://finance.yahoo.com/markets/stocks/articles/market-chatter-apple-may-buy-083914102.html"
+        },
+        {
+          "title": "Apple may finally have a $2,000 reason to enter foldables",
+          "publisher": "TheStreet",
+          "link": "https://finance.yahoo.com/m/58146bc1-3641-3c5b-bb0c-e43e69e502b4/apple-may-finally-have-a.html"
+        },
+        {
+          "title": "Ross Gerber Says 'Now Is a Good Time' to Buy iPhone 17 as Apple Prepares for Potential Price Hike With Next Model: 'If You're Looking…'",
+          "publisher": "Benzinga",
+          "link": "https://finance.yahoo.com/markets/stocks/articles/ross-gerber-says-now-good-053529161.html"
+        },
+        {
+          "title": "Apple’s first foldable could reshape its entire iPhone launch",
+          "publisher": "TheStreet",
+          "link": "https://finance.yahoo.com/m/2f3a1955-f6c7-35e4-9b81-2c860b2d345e/apple%E2%80%99s-first-foldable-could.html"
+        }
+      ],
+      "thesis": "Apple Inc.: Inget aktuellt köpläge.",
+      "reasons": [
+        "Nyhetsläge: Market Chatter: Apple May Buy Chinese Memory Chips Despite US Request",
+        "Nyhetsläge: Apple may finally have a $2,000 reason to enter foldables",
+        "Large cap"
+      ],
+      "catalysts": [],
+      "risks": [
+        "Hög P/E (35) trots nedgång — värderingsrisk kvarstår.",
+        "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+        "Kursen har redan återhämtat merparten av fallet"
+      ],
+      "breakdown": [
+        {
+          "key": "dip",
+          "label": "Nedgång",
+          "points": 0,
+          "max": 30,
+          "note": "-1,6 % 10 aug. (för 4 handelsdagar sedan) · för gammal (>3 handelsdagar) · har återhämtats"
+        },
+        {
+          "key": "why",
+          "label": "Orsak",
+          "points": 4,
+          "max": 25,
+          "note": "Market Chatter: Apple May Buy Chinese Memory Chips Despite US Request"
+        },
+        {
+          "key": "quality",
+          "label": "Bolagskvalitet",
+          "points": 25,
+          "max": 25,
+          "note": "Uppfyller storlekskrav · positiv marginal"
+        },
+        {
+          "key": "bounce",
+          "label": "Återhämtningspotential",
+          "points": 0,
+          "max": 20,
+          "note": "0.8% till återhämtningsnivå · otillräcklig"
+        }
+      ],
+      "dataQuality": 100,
+      "verdict": "unknown",
+      "verdictLabel": "—",
+      "chart": [
+        {
+          "date": "2026-07-08T13:30:00.000Z",
+          "close": 313.3900146484375
+        },
+        {
+          "date": "2026-07-09T13:30:00.000Z",
+          "close": 316.2200012207031
+        },
+        {
+          "date": "2026-07-10T13:30:00.000Z",
+          "close": 315.32000732421875
+        },
+        {
+          "date": "2026-07-13T13:30:00.000Z",
+          "close": 317.30999755859375
+        },
+        {
+          "date": "2026-07-14T13:30:00.000Z",
+          "close": 314.8599853515625
+        },
+        {
+          "date": "2026-07-15T13:30:00.000Z",
+          "close": 327.5
+        },
+        {
+          "date": "2026-07-16T13:30:00.000Z",
+          "close": 333.260009765625
+        },
+        {
+          "date": "2026-07-17T13:30:00.000Z",
+          "close": 333.739990234375
+        },
+        {
+          "date": "2026-07-20T13:30:00.000Z",
+          "close": 326.5899963378906
+        },
+        {
+          "date": "2026-07-21T13:30:00.000Z",
+          "close": 327.739990234375
+        },
+        {
+          "date": "2026-07-22T13:30:00.000Z",
+          "close": 325.8900146484375
+        },
+        {
+          "date": "2026-07-23T13:30:00.000Z",
+          "close": 321.6600036621094
+        },
+        {
+          "date": "2026-07-24T13:30:00.000Z",
+          "close": 333.0199890136719
+        },
+        {
+          "date": "2026-07-27T13:30:00.000Z",
+          "close": 336.9100036621094
+        },
+        {
+          "date": "2026-07-28T13:30:00.000Z",
+          "close": 340.0799865722656
+        },
+        {
+          "date": "2026-07-29T13:30:00.000Z",
+          "close": 338.19000244140625
+        },
+        {
+          "date": "2026-07-30T13:30:00.000Z",
+          "close": 333.42999267578125
+        },
+        {
+          "date": "2026-07-31T13:30:00.000Z",
+          "close": 308.9100036621094
+        },
+        {
+          "date": "2026-08-03T13:30:00.000Z",
+          "close": 303.4200134277344
+        },
+        {
+          "date": "2026-08-04T13:30:00.000Z",
+          "close": 309.3800048828125
+        },
+        {
+          "date": "2026-08-05T13:30:00.000Z",
+          "close": 311
+        },
+        {
+          "date": "2026-08-06T13:30:00.000Z",
+          "close": 312.4100036621094
+        },
+        {
+          "date": "2026-08-07T13:30:00.000Z",
+          "close": 313.3299865722656
+        },
+        {
+          "date": "2026-08-10T13:30:00.000Z",
+          "close": 308.260009765625
+        },
+        {
+          "date": "2026-08-11T13:30:00.000Z",
+          "close": 304.9100036621094
+        },
+        {
+          "date": "2026-08-12T13:30:00.000Z",
+          "close": 302.25
+        },
+        {
+          "date": "2026-08-13T13:30:00.000Z",
+          "close": 305.260009765625
+        },
+        {
+          "date": "2026-08-14T13:30:00.000Z",
+          "close": 305.92999267578125
+        }
+      ],
+      "yahooUrl": "https://finance.yahoo.com/quote/AAPL",
+      "buyReasons": [
+        {
+          "text": "Nyhetsläge: Market Chatter: Apple May Buy Chinese Memory Chips Despite US Request",
+          "source": "Yahoo Finance / MT Newswires"
+        },
+        {
+          "text": "Nyhetsläge: Apple may finally have a $2,000 reason to enter foldables",
+          "source": "Yahoo Finance / TheStreet"
+        }
+      ],
+      "riskItems": [
+        {
+          "text": "Hög P/E (35) trots nedgång — värderingsrisk kvarstår.",
+          "source": "Yahoo Finance, nyckeltal"
+        },
+        {
+          "text": "Kortsiktig återhämtning är inte garanterad; nyheter och makro kan fortsätta pressa kursen.",
+          "source": "Modell / generell marknadsrisk"
+        },
+        {
+          "text": "Kursen har redan återhämtat merparten av fallet",
+          "source": "Modell"
+        }
+      ],
+      "researchHits": [
+        {
+          "title": "Market Chatter: Apple May Buy Chinese Memory Chips Despite US Request",
+          "source": "Yahoo Finance / MT Newswires",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/market-chatter-apple-may-buy-083914102.html",
+          "kind": "context"
+        },
+        {
+          "title": "Apple may finally have a $2,000 reason to enter foldables",
+          "source": "Yahoo Finance / TheStreet",
+          "url": "https://finance.yahoo.com/m/58146bc1-3641-3c5b-bb0c-e43e69e502b4/apple-may-finally-have-a.html",
+          "kind": "context"
+        },
+        {
+          "title": "Ross Gerber Says 'Now Is a Good Time' to Buy iPhone 17 as Apple Prepares for Potential Price Hike With Next Model: 'If You're Looking…'",
+          "source": "Yahoo Finance / Benzinga",
+          "url": "https://finance.yahoo.com/markets/stocks/articles/ross-gerber-says-now-good-053529161.html",
+          "kind": "context"
+        },
+        {
+          "title": "Apple’s first foldable could reshape its entire iPhone launch",
+          "source": "Yahoo Finance / TheStreet",
+          "url": "https://finance.yahoo.com/m/2f3a1955-f6c7-35e4-9b81-2c860b2d345e/apple%E2%80%99s-first-foldable-could.html",
+          "kind": "context"
+        }
+      ],
+      "suggestedAmount": 0,
+      "suggestedShares": 0,
+      "positionPct": 0
+    }
+  ],
+  "fetchedAt": "2026-08-17T09:08:56.070Z",
+  "source": "Yahoo Finance and Google News"
+}
