@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "test:fallback": "node --experimental-strip-types scripts/test-client-fallback.mjs",
+    "test:portfolio": "node --experimental-strip-types scripts/test-portfolio.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -877,3 +877,43 @@
     font-size: 1.35rem;
   }
 }
+
+.page-nav { display:flex; gap:.35rem; padding:.6rem 1rem; background:#10283d; border-bottom:1px solid rgba(255,255,255,.1); }
+.page-nav button { border:1px solid rgba(255,255,255,.13); background:transparent; color:#9eb0bf; padding:.55rem .8rem; font:inherit; font-size:.75rem; cursor:pointer; }
+.page-nav button.on, .page-nav button:hover { color:#0f2638; background:#dce9e4; border-color:#dce9e4; }
+.feature-page { min-width:0; padding:1.3rem clamp(1rem, 3vw, 2.6rem) 2.5rem; overflow:auto; background:linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),var(--bg); background-size:24px 24px; }
+.feature-heading { display:flex; justify-content:space-between; gap:1.5rem; align-items:flex-start; max-width:1280px; margin:0 auto 1.2rem; }
+.feature-heading h1 { margin:.25rem 0 .45rem; color:#eef3f4; font-size:clamp(1.7rem, 3vw, 2.7rem); letter-spacing:-.04em; }
+.feature-heading p:not(.eyebrow) { max-width:720px; color:#94a7b6; line-height:1.55; margin:0; }
+.eyebrow { color:#7ca99a; letter-spacing:.16em; text-transform:uppercase; font-size:.65rem; margin:0; }
+.feature-badge { border:1px solid rgba(201,168,76,.45); color:#c9a84c; padding:.45rem .6rem; font-size:.63rem; letter-spacing:.1em; white-space:nowrap; }
+.feature-grid { display:grid; grid-template-columns:minmax(0, 1.3fr) minmax(280px, .7fr); gap:1rem; max-width:1280px; margin:0 auto 1rem; }
+.panel { background:rgba(12,31,48,.82); border:1px solid rgba(171,195,202,.22); padding:1rem; min-width:0; }
+.panel h2 { margin:.2rem 0 .85rem; color:#eaf0f0; font-size:1.1rem; }
+.section-heading { display:flex; justify-content:space-between; align-items:start; gap:1rem; margin-bottom:.8rem; }
+.section-heading > span { color:#8fa3b5; font-size:.72rem; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:.7rem; }
+.field select { width:100%; background:#10283d; color:#edf3f3; border:1px solid rgba(171,195,202,.28); padding:.65rem; font:inherit; }
+.primary-btn { width:100%; border:1px solid #dce9e4; background:#dce9e4; color:#10283d; padding:.72rem .85rem; font:inherit; font-size:.75rem; font-weight:700; cursor:pointer; }
+.primary-btn:hover { background:#f3f7f4; }
+.primary-btn:disabled { cursor:wait; opacity:.55; }
+.primary-btn.compact { width:auto; padding:.45rem .6rem; font-size:.68rem; }
+.error-banner { color:#f0b3a6; background:rgba(176,96,80,.12); border-left:3px solid #b06050; padding:.55rem .65rem; font-size:.75rem; }
+.metric-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:.75rem; margin:1rem 0; }
+.metric-grid div { padding:.7rem; background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.08); }
+.metric-grid span { display:block; color:#8fa3b5; font-size:.68rem; margin-bottom:.25rem; }
+.metric-grid strong { color:#eaf0f0; font-size:1rem; }
+.ai-report { max-width:1280px; margin:0 auto 1rem; }
+.report-summary { color:#d7e1e1; line-height:1.6; max-width:900px; }
+.report-columns { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:1rem; }
+.report-columns h3 { color:#c9a84c; font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; }
+.report-columns ul, .method-list { color:#aabac1; font-size:.78rem; line-height:1.55; padding-left:1.1rem; }
+.report-columns li, .method-list li { margin-bottom:.45rem; }
+.paper-metrics { max-width:1280px; margin:0 auto 1rem; grid-template-columns:repeat(5, minmax(0,1fr)); }
+.signal-list { display:grid; gap:.45rem; }
+.signal-row { display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:.75rem; padding:.65rem; background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.08); }
+.signal-row strong, .signal-row span { display:block; }
+.signal-row span, .signal-row small { color:#8fa3b5; font-size:.7rem; }
+.signal-row small { text-align:right; margin-top:.25rem; }
+.page-disclaimer { max-width:1280px; margin:1rem auto 0; }
+@media (max-width: 800px) { .feature-heading { flex-direction:column; } .feature-badge { white-space:normal; } .feature-grid, .report-columns { grid-template-columns:1fr; } .paper-metrics { grid-template-columns:repeat(2, minmax(0,1fr)); } .page-nav { overflow:auto; } .signal-row { grid-template-columns:1fr auto; } .signal-row .primary-btn { grid-column:1 / -1; width:100%; } }

@@ -4,9 +4,12 @@ import { yahooUrlFor } from './api/client'
 import { useLiveScanner } from './hooks/useLiveScanner'
 import { PriceChart } from './components/PriceChart'
 import { WATCHLISTS } from './data/watchlists'
+import { PortfolioPage } from './features/PortfolioPage'
+import { PaperTradingPage } from './features/PaperTradingPage'
 import './App.css'
 
 type Tab = 'sniper' | 'watch' | 'all'
+type Page = 'scanner' | 'portfolio' | 'paper'
 
 function fmtNum(n: number | null | undefined, digits = 1) {
   if (n == null || !Number.isFinite(n)) return '—'
@@ -253,6 +256,7 @@ export default function App() {
   const [market, setMarket] = useState<'all' | 'US' | 'UK' | 'SE'>('all')
   const [selected, setSelected] = useState<string | null>(null)
   const [q, setQ] = useState('')
+  const [page, setPage] = useState<Page>('scanner')
 
   const { results, status, setRunning, universeSize } = useLiveScanner(portfolio, risk)
 
@@ -371,7 +375,13 @@ export default function App() {
         />
       </div>
 
-      <div className="workspace">
+      <nav className="page-nav" aria-label="Value Scout-sidor">
+        <button type="button" className={page === 'scanner' ? 'on' : ''} onClick={() => setPage('scanner')}>Scanner</button>
+        <button type="button" className={page === 'portfolio' ? 'on' : ''} onClick={() => setPage('portfolio')}>Min portfölj</button>
+        <button type="button" className={page === 'paper' ? 'on' : ''} onClick={() => setPage('paper')}>Paper trading</button>
+      </nav>
+
+      {page === 'portfolio' ? <PortfolioPage results={results} /> : page === 'paper' ? <PaperTradingPage results={results} /> : <div className="workspace">
         <aside className="sidebar">
           <p className="side-label">Kriterier</p>
           <p className="rule-box">
@@ -558,7 +568,7 @@ export default function App() {
         </main>
 
         {selectedRow && <DetailPanel a={selectedRow} onClose={() => setSelected(null)} />}
-      </div>
+      </div>}
     </div>
   )
 }
