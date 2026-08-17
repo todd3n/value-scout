@@ -81,6 +81,8 @@ export function yahooUrlFor(symbol: string): string {
   return `https://finance.yahoo.com/quote/${encodeURIComponent(symbol)}`
 }
 
+const MANUS_API_BASE = 'https://3000-i41dbe2935xmpsi1wpvd3-9e36b5fa.us2.manus.computer'
+
 export async function scanSymbols(
   symbols: string[],
   portfolio: number,
@@ -91,7 +93,7 @@ export async function scanSymbols(
     portfolio: String(portfolio),
     risk: String(risk),
   })
-  const res = await fetch(`/api/scan?${params}`)
+  const res = await fetch(`${MANUS_API_BASE}/api/value-scout/scan?${params}`)
   if (!res.ok) {
     if (res.status === 404) {
       const base = import.meta.env.BASE_URL.endsWith("/") ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`
