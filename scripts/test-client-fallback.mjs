@@ -8,10 +8,11 @@ const fallbackPayload = {
 
 const originalFetch = globalThis.fetch
 try {
-  for (const apiFailure of ['status', 'network']) {
+  for (const apiFailure of ['status', 'network', 'timeout']) {
     globalThis.fetch = async (url) => {
       if (String(url).includes('/api/value-scout/scan')) {
         if (apiFailure === 'network') throw new Error('offline')
+        if (apiFailure === 'timeout') throw new DOMException('The operation timed out', 'TimeoutError')
         return new Response('upstream unavailable', { status: 503 })
       }
       if (String(url).endsWith('/data.json')) {
@@ -22,7 +23,7 @@ try {
     const response = await scanSymbols(['AAPL'], 500000, 2)
     assert.equal(response.results[0].symbol, 'AAPL')
   }
-  console.log('fallback-test: passed for 503 and network failure')
+  console.log('fallback-test: passed for 503, network failure, and timeout')
 } finally {
   globalThis.fetch = originalFetch
 }
