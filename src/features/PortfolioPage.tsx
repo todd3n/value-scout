@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-import { scanSymbols, type Analysis } from '../api/client'
+import { scanSymbols, VALUE_SCOUT_DATA_SERVICE, type Analysis } from '../api/client'
 import { fundQuoteWarning, holdingMetrics, HOLDINGS_KEY, readLocal, writeLocal, type HoldingType, type PortfolioHolding } from '../lib/portfolio'
-
-const API_BASE = 'https://3000-i41dbe2935xmpsi1wpvd3-9e36b5fa.us2.manus.computer'
 
 type PortfolioAnalysis = { summary: string; strengths: string[]; risks: string[]; followUps: string[]; disclaimer: string }
 
@@ -67,7 +65,7 @@ export function PortfolioPage({ results }: { results: Analysis[] }) {
         const metrics = holdingMetrics(holding, next[holding.symbol])
         return { symbol: holding.symbol, type: holding.type, quantity: holding.quantity, averageCost: holding.averageCost, currency: holding.currency, ...metrics }
       })
-      const aiResponse = await fetch(`${API_BASE}/api/value-scout/portfolio-analysis`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ holdings: payload }) })
+      const aiResponse = await fetch(`${VALUE_SCOUT_DATA_SERVICE}/api/value-scout/portfolio-analysis`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ holdings: payload }) })
       if (!aiResponse.ok) throw new Error(`AI-analys misslyckades (${aiResponse.status})`)
       const body = await aiResponse.json() as { analysis?: PortfolioAnalysis; error?: string }
       if (!body.analysis) throw new Error(body.error || 'AI-analys saknar resultat')

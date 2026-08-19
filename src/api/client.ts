@@ -83,7 +83,8 @@ export function yahooUrlFor(symbol: string): string {
   return `https://finance.yahoo.com/quote/${encodeURIComponent(symbol)}`
 }
 
-const MANUS_API_BASE = 'https://3000-i41dbe2935xmpsi1wpvd3-9e36b5fa.us2.manus.computer'
+/** Internal Value Scout data service. It is never shown as a separate user-facing product. */
+export const VALUE_SCOUT_DATA_SERVICE = 'https://webbai-seo-hruovxmw.manus.space'
 
 type ScanResponse = { results: Analysis[]; fetchedAt: string; source?: string }
 export type PaperHistory = { trades: PaperTrade[]; events: TradeEvent[]; updatedAt?: string | null }
@@ -106,7 +107,7 @@ export function getPaperInstallationId(): string {
 export async function loadPaperHistory(): Promise<PaperHistory | null> {
   try {
     const installationId = getPaperInstallationId()
-    const res = await fetch(`${MANUS_API_BASE}/api/value-scout/paper-history?installationId=${encodeURIComponent(installationId)}`, { signal: AbortSignal.timeout(10000) })
+    const res = await fetch(`${VALUE_SCOUT_DATA_SERVICE}/api/value-scout/paper-history?installationId=${encodeURIComponent(installationId)}`, { signal: AbortSignal.timeout(10000) })
     if (!res.ok) return null
     return await res.json() as PaperHistory
   } catch {
@@ -116,7 +117,7 @@ export async function loadPaperHistory(): Promise<PaperHistory | null> {
 
 export async function savePaperHistory(trades: PaperTrade[], events: TradeEvent[]): Promise<boolean> {
   try {
-    const res = await fetch(`${MANUS_API_BASE}/api/value-scout/paper-history`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ installationId: getPaperInstallationId(), trades, events }), signal: AbortSignal.timeout(10000) })
+    const res = await fetch(`${VALUE_SCOUT_DATA_SERVICE}/api/value-scout/paper-history`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ installationId: getPaperInstallationId(), trades, events }), signal: AbortSignal.timeout(10000) })
     return res.ok
   } catch {
     return false
@@ -125,7 +126,7 @@ export async function savePaperHistory(trades: PaperTrade[], events: TradeEvent[
 
 export async function loadPaperMonitorStatus(): Promise<PaperMonitorStatus | null> {
   try {
-    const res = await fetch(`${MANUS_API_BASE}/api/value-scout/monitor-status?refresh=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(10000) })
+    const res = await fetch(`${VALUE_SCOUT_DATA_SERVICE}/api/value-scout/monitor-status?refresh=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(10000) })
     if (!res.ok) return null
     return await res.json() as PaperMonitorStatus
   } catch {
@@ -160,7 +161,7 @@ export async function scanSymbols(
     refresh: String(Date.now()),
   })
   try {
-    const res = await fetch(`${MANUS_API_BASE}/api/value-scout/scan?${params}`, {
+    const res = await fetch(`${VALUE_SCOUT_DATA_SERVICE}/api/value-scout/scan?${params}`, {
       cache: 'no-store',
       headers: { 'Cache-Control': 'no-cache' },
       signal: AbortSignal.timeout(120000),

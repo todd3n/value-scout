@@ -52,9 +52,14 @@
 
 - [ ] Verifiera automatiskt exitbeslut end-to-end efter att publicerad scheduled monitor är aktiv.
 
-- [ ] Ta fram ett enhetligt terminalinspirerat designsystem för hela Value Scout.
-- [ ] Gör om Scanner-vyn med tydlig marknadsöversikt, filter, datakällor och rangordnade signaler.
-- [ ] Gör om Min portfölj med mer professionell positionsöversikt, riskfördelning och analysflöde.
-- [ ] Gör om Paper trading med tydlig positionstratt, beslutsjournal och orderstatus.
-- [ ] Förbättra navigation, tomlägen, laddning, mobil layout och tillgänglighet genom hela Value Scout.
-- [ ] Verifiera full UI-regression och publicera Value Scout-makeovern till GitHub Pages.
+- [x] Ta fram ett enhetligt terminalinspirerat designsystem för hela Value Scout.
+- [x] Gör om Scanner-vyn med tydlig marknadsöversikt, filter, datakällor och rangordnade signaler.
+- [x] Gör om Min portfölj med mer professionell positionsöversikt, riskfördelning och analysflöde.
+- [x] Gör om Paper trading med tydlig positionstratt, beslutsjournal och orderstatus.
+- [x] Förbättra navigation, tomlägen, laddning, mobil layout och tillgänglighet genom hela Value Scout.
+- [x] Verifiera full UI-regression och publicera Value Scout-makeovern till GitHub Pages.
+
+- [ ] Ta bort alla användarvända hänvisningar och beroenden till WebbAI Analys från Value Scout.
+- [ ] Märk Value Scouts datalager som en intern Value Scout-tjänst i UI och dokumentation.
+- [ ] Verifiera att Value Scout fungerar och navigerar fristående från GitHub Pages-länken.
+- [ ] Publicera frikopplad Value Scout-version till GitHub Pages.
