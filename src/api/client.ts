@@ -85,7 +85,7 @@ export function yahooUrlFor(symbol: string): string {
 
 const MANUS_API_BASE = 'https://3000-i41dbe2935xmpsi1wpvd3-9e36b5fa.us2.manus.computer'
 
-type ScanResponse = { results: Analysis[]; fetchedAt: string }
+type ScanResponse = { results: Analysis[]; fetchedAt: string; source?: string }
 export type PaperHistory = { trades: PaperTrade[]; events: TradeEvent[]; updatedAt?: string | null }
 
 const PAPER_INSTALLATION_KEY = 'value-scout-installation-v1'
@@ -126,7 +126,7 @@ async function loadFallback(): Promise<ScanResponse | null> {
   try {
     const base = (import.meta as ImportMeta & { env?: { BASE_URL?: string } }).env?.BASE_URL || "/"
     const normalizedBase = base.endsWith("/") ? base : `${base}/`
-    const fallback = await fetch(`${normalizedBase}data.json`, { signal: AbortSignal.timeout(10000) })
+    const fallback = await fetch(`${normalizedBase}data.json?refresh=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(10000) })
     if (fallback.ok) return fallback.json() as Promise<ScanResponse>
   } catch {
     // The fallback is best effort; preserve the original API failure below.
@@ -143,9 +143,12 @@ export async function scanSymbols(
     symbols: symbols.join(','),
     portfolio: String(portfolio),
     risk: String(risk),
+    refresh: String(Date.now()),
   })
   try {
     const res = await fetch(`${MANUS_API_BASE}/api/value-scout/scan?${params}`, {
+      cache: 'no-store',
+      headers: { 'Cache-Control': 'no-cache' },
       signal: AbortSignal.timeout(60000),
     })
     if (res.ok) return res.json() as Promise<ScanResponse>

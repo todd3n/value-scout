@@ -18,6 +18,7 @@ export type ScannerStatus = {
   cycle: number
   lastError: string | null
   lastUpdate: string | null
+  lastSource: string | null
   nextUpdateAt: string | null
 }
 
@@ -86,6 +87,7 @@ export function useLiveScanner(portfolio: number, risk: number) {
     typeof window !== 'undefined' ? loadCache() : [],
   )
   const universe = resolveWatchlist('all')
+  const [refreshToken, setRefreshToken] = useState(0)
   const [status, setStatus] = useState<ScannerStatus>({
     running: true,
     phase: 'idle',
@@ -95,6 +97,7 @@ export function useLiveScanner(portfolio: number, risk: number) {
     cycle: 0,
     lastError: null,
     lastUpdate: null,
+    lastSource: null,
     nextUpdateAt: null,
   })
 
@@ -111,6 +114,12 @@ export function useLiveScanner(portfolio: number, risk: number) {
   const setRunning = useCallback((on: boolean) => {
     runningRef.current = on
     setStatus((s) => ({ ...s, running: on, phase: on ? s.phase : 'idle' }))
+  }, [])
+
+  const refresh = useCallback(() => {
+    runningRef.current = true
+    setStatus((s) => ({ ...s, running: true, phase: 'scanning', lastError: null, nextUpdateAt: null }))
+    setRefreshToken((value) => value + 1)
   }, [])
 
   useEffect(() => {
@@ -173,6 +182,7 @@ export function useLiveScanner(portfolio: number, risk: number) {
               ...s,
               doneInCycle: done,
               lastUpdate: data.fetchedAt,
+              lastSource: data.source || 'Yahoo Finance och Google News',
               lastError: null,
             }))
           } catch (e) {
@@ -204,7 +214,7 @@ export function useLiveScanner(portfolio: number, risk: number) {
     return () => {
       abortRef.current += 1
     }
-  }, [])
+  }, [refreshToken])
 
-  return { results, status, setRunning, universeSize: universe.length }
+  return { results, status, setRunning, refresh, universeSize: universe.length }
 }

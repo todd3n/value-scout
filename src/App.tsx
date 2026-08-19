@@ -258,7 +258,7 @@ export default function App() {
   const [q, setQ] = useState('')
   const [page, setPage] = useState<Page>('scanner')
 
-  const { results, status, setRunning, universeSize } = useLiveScanner(portfolio, risk)
+  const { results, status, setRunning, refresh, universeSize } = useLiveScanner(portfolio, risk)
 
   const counts = useMemo(
     () => ({
@@ -334,6 +334,10 @@ export default function App() {
                     : 'Stoppad'}
             </strong>
             <span>{liveLabel}</span>
+            <small className="freshness-line">
+              {status.lastUpdate ? `Data ${new Date(status.lastUpdate).toLocaleString('sv-SE')}` : 'Ingen färsk hämtning ännu'}
+              {status.lastSource ? ` · ${status.lastSource}` : ''}
+            </small>
           </div>
         </div>
 
@@ -363,9 +367,14 @@ export default function App() {
           </div>
         </div>
 
-        <button type="button" className="bar-btn" onClick={() => setRunning(!status.running)}>
-          {status.running ? 'Stoppa' : 'Starta'}
-        </button>
+        <div className="bar-actions">
+          <button type="button" className="bar-btn refresh-action" onClick={refresh}>
+            Uppdatera nu
+          </button>
+          <button type="button" className="bar-btn" onClick={() => setRunning(!status.running)}>
+            {status.running ? 'Stoppa' : 'Starta'}
+          </button>
+        </div>
       </header>
 
       <div className="progress-track" aria-hidden>
@@ -484,6 +493,7 @@ export default function App() {
                   ? 'Färska nedgångar med datum och orsak. Tom lista är normalt.'
                   : `${universeSize} bolag · US ${counts.usa} · UK ${counts.uk} · SE ${counts.se}`}
               </p>
+              <div className="market-tape"><span>LIVE DATA</span><strong>{status.lastUpdate ? new Date(status.lastUpdate).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : ' väntar'}</strong><em>{status.phase === 'error' ? status.lastError : status.phase === 'scanning' ? 'hämtar nya kurser' : 'senaste snapshot'}</em></div>
             </div>
           </div>
 

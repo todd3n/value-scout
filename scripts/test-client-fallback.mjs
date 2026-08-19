@@ -15,7 +15,7 @@ try {
         if (apiFailure === 'timeout') throw new DOMException('The operation timed out', 'TimeoutError')
         return new Response('upstream unavailable', { status: 503 })
       }
-      if (String(url).endsWith('/data.json')) {
+      if (String(url).includes('/data.json')) {
         return new Response(JSON.stringify(fallbackPayload), { status: 200 })
       }
       throw new Error(`unexpected URL ${url}`)
