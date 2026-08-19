@@ -127,7 +127,10 @@ async function loadFallback(): Promise<ScanResponse | null> {
     const base = (import.meta as ImportMeta & { env?: { BASE_URL?: string } }).env?.BASE_URL || "/"
     const normalizedBase = base.endsWith("/") ? base : `${base}/`
     const fallback = await fetch(`${normalizedBase}data.json?refresh=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(10000) })
-    if (fallback.ok) return fallback.json() as Promise<ScanResponse>
+    if (fallback.ok) {
+      const data = await fallback.json() as ScanResponse
+      return { ...data, source: data.source || 'Fallbacksnapshot — kan vara inaktuell' }
+    }
   } catch {
     // The fallback is best effort; preserve the original API failure below.
   }
@@ -149,7 +152,7 @@ export async function scanSymbols(
     const res = await fetch(`${MANUS_API_BASE}/api/value-scout/scan?${params}`, {
       cache: 'no-store',
       headers: { 'Cache-Control': 'no-cache' },
-      signal: AbortSignal.timeout(60000),
+      signal: AbortSignal.timeout(120000),
     })
     if (res.ok) return res.json() as Promise<ScanResponse>
     const fallback = await loadFallback()

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { scanSymbols, type Analysis } from '../api/client'
 import { resolveWatchlist } from '../data/watchlists'
 
-const BATCH = 6
+const BATCH = 3
 const PAUSE_BETWEEN_BATCH_MS = 1200
 /** Keep scanning — short pause between full passes so values stay fresh. */
 const CYCLE_PAUSE_MS = 90_000
@@ -118,7 +118,7 @@ export function useLiveScanner(portfolio: number, risk: number) {
 
   const refresh = useCallback(() => {
     runningRef.current = true
-    setStatus((s) => ({ ...s, running: true, phase: 'scanning', lastError: null, nextUpdateAt: null }))
+    setStatus((s) => ({ ...s, running: true, phase: 'scanning', lastError: null, lastUpdate: null, lastSource: null, nextUpdateAt: null }))
     setRefreshToken((value) => value + 1)
   }, [])
 
