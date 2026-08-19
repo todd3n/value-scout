@@ -43,9 +43,18 @@
 - [x] Testa orderlivscykel, beslutsspårbarhet och datakällmärkning
 - [x] Publicera VS:s utökade paper-tradingversion
 
-- [ ] Lägg till gratis återkommande backendbevakning av öppna VS-paper-positioner
-- [ ] Kör bevakning idempotent och spara automatiska exitbeslut med källor
-- [ ] Visa senaste automatiska kontroll och bevakningsläge i Paper trading
-- [ ] Testa schemalagd exit utan dubbla säljloggar
+- [x] Lägg till gratis återkommande backendbevakning av öppna VS-paper-positioner
+- [x] Kör bevakning idempotent och spara automatiska exitbeslut med källor
+- [x] Visa senaste automatiska kontroll och bevakningsläge i Paper trading
+- [x] Testa schemalagd exit utan dubbla säljloggar
 - [ ] Spara checkpoint och begära publicering före aktivering
 - [ ] Aktivera kostnadsfri VS-bevakning under marknadstid
+
+- [ ] Verifiera automatiskt exitbeslut end-to-end efter att publicerad scheduled monitor är aktiv.
+
+- [ ] Ta fram ett enhetligt terminalinspirerat designsystem för hela Value Scout.
+- [ ] Gör om Scanner-vyn med tydlig marknadsöversikt, filter, datakällor och rangordnade signaler.
+- [ ] Gör om Min portfölj med mer professionell positionsöversikt, riskfördelning och analysflöde.
+- [ ] Gör om Paper trading med tydlig positionstratt, beslutsjournal och orderstatus.
+- [ ] Förbättra navigation, tomlägen, laddning, mobil layout och tillgänglighet genom hela Value Scout.
+- [ ] Verifiera full UI-regression och publicera Value Scout-makeovern till GitHub Pages.

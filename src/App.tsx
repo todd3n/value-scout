@@ -316,8 +316,9 @@ export default function App() {
         <div className="brand-block">
           <span className="mark" aria-hidden />
           <div>
+            <span className="brand-kicker">Research terminal</span>
             <strong>Value Scout</strong>
-            <span>Marknadsbevakning</span>
+            <span>Marknadsbevakning · Paper validation</span>
           </div>
         </div>
 
@@ -388,6 +389,7 @@ export default function App() {
         <button type="button" className={page === 'scanner' ? 'on' : ''} onClick={() => setPage('scanner')}>Scanner</button>
         <button type="button" className={page === 'portfolio' ? 'on' : ''} onClick={() => setPage('portfolio')}>Min portfölj</button>
         <button type="button" className={page === 'paper' ? 'on' : ''} onClick={() => setPage('paper')}>Paper trading</button>
+        <span className="nav-context">VS / {page === 'scanner' ? 'SIGNALER' : page === 'portfolio' ? 'PORTFÖLJ' : 'PAPER LAB'}</span>
       </nav>
 
       {page === 'portfolio' ? <PortfolioPage results={results} /> : page === 'paper' ? <PaperTradingPage results={results} /> : <div className="workspace">
@@ -485,6 +487,7 @@ export default function App() {
         <main className="main">
           <div className="main-head">
             <div>
+              <p className="terminal-kicker">Signal intelligence / {market === 'all' ? 'global coverage' : `${market} market`}</p>
               <h1>
                 {tab === 'sniper' ? 'Köplägen' : tab === 'watch' ? 'Bevakning' : 'Alla bolag'}
               </h1>
@@ -494,6 +497,12 @@ export default function App() {
                   : `${universeSize} bolag · US ${counts.usa} · UK ${counts.uk} · SE ${counts.se}`}
               </p>
               <div className="market-tape"><span>LIVE DATA</span><strong>{status.lastUpdate ? new Date(status.lastUpdate).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : ' väntar'}</strong><em>{status.phase === 'error' ? status.lastError : status.phase === 'scanning' ? 'hämtar nya kurser' : 'senaste snapshot'}</em></div>
+            </div>
+            <div className="scan-summary-grid" aria-label="Sammanfattning av marknadsscannern">
+              <div><span>Modellfilter</span><strong>3D DROP</strong><small>Dokumenterad orsak</small></div>
+              <div><span>Signalstyrka</span><strong>{counts.sniper}</strong><small>Köplägen</small></div>
+              <div><span>Övervakning</span><strong>{counts.watch}</strong><small>Under fortsatt analys</small></div>
+              <div><span>Urval</span><strong>{universeSize}</strong><small>US · UK · SE</small></div>
             </div>
           </div>
 
@@ -518,6 +527,7 @@ export default function App() {
                     <th>Kurs</th>
                     <th>När / nedgång</th>
                     <th>Uppsida</th>
+                    <th>Modell</th>
                     <th>Orsak</th>
                     <th></th>
                   </tr>
@@ -556,6 +566,13 @@ export default function App() {
                       <td className="when">{a.dropWhenLabel || '—'}</td>
                       <td className="pos">
                         {a.bounceUpsidePct != null ? `+${fmtNum(a.bounceUpsidePct, 1)}%` : '—'}
+                      </td>
+                      <td>
+                        <div className="model-score" title={`Modellpoäng ${a.scorePct}% · Datakvalitet ${a.dataQuality}/100`}>
+                          <strong>{fmtNum(a.scorePct, 0)}</strong>
+                          <span>DATA {a.dataQuality}</span>
+                          <i style={{ width: `${Math.min(100, Math.max(0, a.scorePct))}%` }} />
+                        </div>
                       </td>
                       <td className="why">{a.dropReason}</td>
                       <td>

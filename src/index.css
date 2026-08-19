@@ -1,18 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@450;500&display=swap');
 
 :root {
-  --navy: #0b1f33;
-  --navy-2: #132a42;
-  --ink: #15202b;
-  --muted: #5a6a78;
-  --line: #d5dde5;
-  --bg: #eef1f4;
-  --panel: #ffffff;
-  --accent: #0b6e6a;
-  --accent-soft: #e4f2f1;
-  --warn: #8a6d1d;
-  --danger: #8b3a30;
-  --ok: #1a6b4a;
+  --navy: #08141f;
+  --navy-2: #0d2232;
+  --ink: #e9f0f4;
+  --muted: #8da2b0;
+  --line: #213b4d;
+  --bg: #061018;
+  --panel: #0b1b28;
+  --accent: #5bd0bb;
+  --accent-soft: #123a3d;
+  --warn: #e0b65a;
+  --danger: #ef887b;
+  --ok: #68d59b;
   --sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, monospace;
 
