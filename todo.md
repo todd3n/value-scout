@@ -35,10 +35,17 @@
 - [x] Testa färsk data och UI-regression
 - [x] Publicera senaste Value Scout-versionen
 
-- [ ] Skapa en komplett simulerad orderlivscykel för VS:s köp, bevakning och sälj
-- [ ] Spara strukturerat beslutsunderlag för varje köp och sälj med pris-, nyhets- och riskskäl
-- [ ] Lägg till datakvalitets- och marknadsstatusgate innan en paper-order kan fyllas
-- [ ] Utöka automatiska exitregler med tid, mål, stop och försämrad signal
-- [ ] Visa positionens aktuella tes, exitregel och varje beslut i Paper trading
-- [ ] Testa orderlivscykel, beslutsspårbarhet och datakällmärkning
-- [ ] Publicera VS:s utökade paper-tradingversion
+- [x] Skapa en komplett simulerad orderlivscykel för VS:s köp, bevakning och sälj
+- [x] Spara strukturerat beslutsunderlag för varje köp och sälj med pris-, nyhets- och riskskäl
+- [x] Lägg till datakvalitets- och marknadsstatusgate innan en paper-order kan fyllas
+- [x] Utöka automatiska exitregler med tid, mål, stop och försämrad signal
+- [x] Visa positionens aktuella tes, exitregel och varje beslut i Paper trading
+- [x] Testa orderlivscykel, beslutsspårbarhet och datakällmärkning
+- [x] Publicera VS:s utökade paper-tradingversion
+
+- [ ] Lägg till gratis återkommande backendbevakning av öppna VS-paper-positioner
+- [ ] Kör bevakning idempotent och spara automatiska exitbeslut med källor
+- [ ] Visa senaste automatiska kontroll och bevakningsläge i Paper trading
+- [ ] Testa schemalagd exit utan dubbla säljloggar
+- [ ] Spara checkpoint och begära publicering före aktivering
+- [ ] Aktivera kostnadsfri VS-bevakning under marknadstid

@@ -87,6 +87,7 @@ const MANUS_API_BASE = 'https://3000-i41dbe2935xmpsi1wpvd3-9e36b5fa.us2.manus.co
 
 type ScanResponse = { results: Analysis[]; fetchedAt: string; source?: string }
 export type PaperHistory = { trades: PaperTrade[]; events: TradeEvent[]; updatedAt?: string | null }
+export type PaperMonitorStatus = { enabled: boolean; intervalMinutes: number; lastRunAt: string | null; lastSummary: string }
 
 const PAPER_INSTALLATION_KEY = 'value-scout-installation-v1'
 
@@ -119,6 +120,16 @@ export async function savePaperHistory(trades: PaperTrade[], events: TradeEvent[
     return res.ok
   } catch {
     return false
+  }
+}
+
+export async function loadPaperMonitorStatus(): Promise<PaperMonitorStatus | null> {
+  try {
+    const res = await fetch(`${MANUS_API_BASE}/api/value-scout/monitor-status?refresh=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(10000) })
+    if (!res.ok) return null
+    return await res.json() as PaperMonitorStatus
+  } catch {
+    return null
   }
 }
 

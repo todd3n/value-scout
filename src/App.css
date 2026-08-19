@@ -996,6 +996,12 @@
 .decision-kind { display: inline-block; padding: .16rem .3rem; color: #fff; font-family: var(--mono); font-size: .62rem; letter-spacing: .06em; }
 .decision-kind.buy { background: #1b6a4b; }
 .decision-kind.sell { background: #9a4d3e; }
+.monitor-strip { display: flex; align-items: center; gap: .65rem; margin: -.1rem 0 .85rem; padding: .55rem .75rem; background: #eef3f0; border: 1px solid #bfd0c5; color: #173e2e; }
+.monitor-strip strong { display: block; font-family: var(--mono); font-size: .68rem; letter-spacing: .05em; }
+.monitor-strip small { display: block; margin-top: .18rem; color: #486253; font-size: .72rem; }
+.monitor-strip em { margin-left: auto; color: #5a705f; font-size: .69rem; font-style: normal; text-align: right; }
+.monitor-led { width: 8px; height: 8px; border-radius: 50%; background: #a3874a; flex: 0 0 auto; }
+.monitor-led.active { background: #299b67; box-shadow: 0 0 0 4px rgba(41,155,103,.12); }
 @media (max-width: 900px) {
   .topbar { grid-template-columns: 1fr auto; }
   .live-pill { grid-column: 1 / -1; grid-row: 2; }
