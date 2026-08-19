@@ -15,6 +15,16 @@ export type PortfolioHolding = {
 export type PaperTradeStatus = 'open' | 'won' | 'lost' | 'expired' | 'closed'
 export type TradeAction = 'buy' | 'sell'
 export type PaperOrderStatus = 'received' | 'filled' | 'closed' | 'rejected'
+export type PaperDecisionKind = 'entry' | 'target' | 'stop' | 'signal_exit' | 'time_exit' | 'manual'
+
+export type PaperDecision = {
+  kind: PaperDecisionKind
+  summary: string
+  evidence: string[]
+  source: string
+  dataAsOf: string
+  decidedAt: string
+}
 
 export type TradeEvent = {
   id: string
@@ -31,6 +41,9 @@ export type TradeEvent = {
   source: string
   status: PaperOrderStatus
   occurredAt: string
+  decisionKind?: PaperDecisionKind
+  evidence?: string[]
+  dataAsOf?: string
 }
 
 export type PaperTrade = {
@@ -52,6 +65,12 @@ export type PaperTrade = {
   exitPrice?: number
   status: PaperTradeStatus
   source: string
+  dataQuality?: number
+  filledAt?: string
+  reviewAt?: string
+  expiresAt?: string
+  entryDecision?: PaperDecision
+  exitDecision?: PaperDecision
 }
 
 export const HOLDINGS_KEY = 'value-scout-holdings-v1'
@@ -107,10 +126,66 @@ export function paperTradePnl(trade: PaperTrade, quote?: Analysis) {
   return { current, pnl: (current - trade.entryPrice) * trade.quantity, pnlPct: trade.entryPrice ? ((current - trade.entryPrice) / trade.entryPrice) * 100 : 0 }
 }
 
-export function resolvePaperTrade(trade: PaperTrade, quote?: Analysis): PaperTrade {
+function plusDays(iso: string, days: number) {
+  return new Date(new Date(iso).getTime() + days * 24 * 60 * 60 * 1000).toISOString()
+}
+
+export function buildEntryDecision(input: {
+  reason: string
+  source: string
+  price: number
+  targetPrice: number | null
+  stopPrice: number | null
+  dataQuality?: number
+  dataAsOf: string
+}): PaperDecision {
+  const target = input.targetPrice != null ? `Målpris ${input.targetPrice.toFixed(2)}.` : 'Inget separat målpris kunde beräknas.'
+  const stop = input.stopPrice != null ? `Riskgräns ${input.stopPrice.toFixed(2)}.` : 'Ingen stop-nivå kunde beräknas.'
+  return {
+    kind: 'entry',
+    summary: input.reason,
+    evidence: [`Entrypris ${input.price.toFixed(2)}.`, target, stop, `Datakvalitet ${input.dataQuality ?? 0}/100.`],
+    source: input.source,
+    dataAsOf: input.dataAsOf,
+    decidedAt: input.dataAsOf,
+  }
+}
+
+export function resolvePaperTrade(trade: PaperTrade, quote?: Analysis, now = new Date()): PaperTrade {
   if (trade.status !== 'open' || quote?.price == null) return trade
+  const dataAsOf = now.toISOString()
   const hitTarget = trade.targetPrice != null && quote.price >= trade.targetPrice
   const hitStop = trade.stopPrice != null && quote.price <= trade.stopPrice
-  if (!hitTarget && !hitStop) return trade
-  return { ...trade, status: hitTarget ? 'won' : 'lost', exitPrice: quote.price, closedAt: new Date().toISOString() }
+  const signalInvalid = quote.setup === 'none' || quote.setup === 'error'
+  const timeExit = trade.expiresAt != null && now.getTime() >= new Date(trade.expiresAt).getTime()
+  if (!hitTarget && !hitStop && !signalInvalid && !timeExit) return trade
+  const kind: PaperDecisionKind = hitTarget ? 'target' : hitStop ? 'stop' : signalInvalid ? 'signal_exit' : 'time_exit'
+  const summary = hitTarget
+    ? 'VS stänger positionen eftersom målpriset träffades.'
+    : hitStop
+      ? 'VS stänger positionen eftersom riskgränsen träffades.'
+      : signalInvalid
+        ? 'VS stänger positionen eftersom köpsignalen inte längre är giltig i den senaste analysen.'
+        : 'VS stänger positionen eftersom maximal innehavstid har nåtts utan avslutad tes.'
+  const decision: PaperDecision = {
+    kind,
+    summary,
+    evidence: [`Senaste pris ${quote.price.toFixed(2)}.`, quote.dropReason || 'Ingen ny orsak tillgänglig.', `Setup: ${quote.setupLabel}.`],
+    source: quote.dropReasonSource || trade.source,
+    dataAsOf,
+    decidedAt: dataAsOf,
+  }
+  return {
+    ...trade,
+    status: hitTarget ? 'won' : hitStop ? 'lost' : timeExit ? 'expired' : 'closed',
+    orderStatus: 'closed',
+    exitPrice: quote.price,
+    closedAt: dataAsOf,
+    exitDecision: decision,
+  }
+}
+
+
+export function paperTradeReviewDates(openedAt: string) {
+  return { reviewAt: plusDays(openedAt, 14), expiresAt: plusDays(openedAt, 30) }
 }

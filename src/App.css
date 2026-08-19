@@ -984,6 +984,18 @@
 .row-yahoo { color: #0b5d7a; font-family: var(--mono); font-size: .65rem; }
 .chip-sniper { background: #d9e8df; color: #15553e; border-color: #a6c4b4; }
 .chip-watch { background: #eee4c8; color: #6d5316; border-color: #d6bd78; }
+.decision-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: .8rem; }
+.decision-card { padding: .9rem; border: 1px solid var(--line); background: #f8faf9; }
+.decision-card > div { display: flex; align-items: center; gap: .55rem; }
+.decision-card strong { font-family: var(--mono); font-size: .73rem; color: #0b263d; }
+.decision-card p { margin: .6rem 0 .35rem; color: #253848; font-size: .82rem; line-height: 1.45; }
+.decision-card small { display: block; color: var(--muted); font-family: var(--mono); font-size: .64rem; }
+.decision-card ul { margin: .65rem 0 0; padding-left: 1rem; color: #415668; font-size: .73rem; }
+.decision-card li + li { margin-top: .2rem; }
+.decision-card hr { border: 0; border-top: 1px solid var(--line); margin: .9rem 0; }
+.decision-kind { display: inline-block; padding: .16rem .3rem; color: #fff; font-family: var(--mono); font-size: .62rem; letter-spacing: .06em; }
+.decision-kind.buy { background: #1b6a4b; }
+.decision-kind.sell { background: #9a4d3e; }
 @media (max-width: 900px) {
   .topbar { grid-template-columns: 1fr auto; }
   .live-pill { grid-column: 1 / -1; grid-row: 2; }

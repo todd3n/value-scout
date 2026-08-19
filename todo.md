@@ -27,3 +27,18 @@
 - [x] Lägg till automatiserade tester för load/save paper-history, återläsning och offline-fallback
 - [x] Verifiera att fjärrhistorik överlever omladdning utan dubbla events
 - [x] Prioritera nyare persistent data framför stale localStorage vid merge
+
+- [x] Fixa Starta-flödet så ny data hämtas utan stale cache
+- [x] Visa tydlig senaste uppdatering, datakälla och uppdateringsstatus
+- [x] Redesignera scannerdashboarden mot professionell marknadsterminal-estetik
+- [x] Förbättra tabellhierarki, KPI-paneler, filter och mobil responsivitet
+- [x] Testa färsk data och UI-regression
+- [x] Publicera senaste Value Scout-versionen
+
+- [ ] Skapa en komplett simulerad orderlivscykel för VS:s köp, bevakning och sälj
+- [ ] Spara strukturerat beslutsunderlag för varje köp och sälj med pris-, nyhets- och riskskäl
+- [ ] Lägg till datakvalitets- och marknadsstatusgate innan en paper-order kan fyllas
+- [ ] Utöka automatiska exitregler med tid, mål, stop och försämrad signal
+- [ ] Visa positionens aktuella tes, exitregel och varje beslut i Paper trading
+- [ ] Testa orderlivscykel, beslutsspårbarhet och datakällmärkning
+- [ ] Publicera VS:s utökade paper-tradingversion

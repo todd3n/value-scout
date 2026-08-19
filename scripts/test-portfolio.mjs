@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { holdingMetrics, paperTradePnl, readLocal, resolvePaperTrade, writeLocal } from '../src/lib/portfolio.ts'
+import { buildEntryDecision, holdingMetrics, paperTradePnl, paperTradeReviewDates, readLocal, resolvePaperTrade, writeLocal } from '../src/lib/portfolio.ts'
 import { isMarketOpen, marketForSymbol, marketStatus } from '../src/lib/marketHours.ts'
 
 const holding = { id: 'aapl-1', symbol: 'AAPL', type: 'stock', quantity: 10, averageCost: 100, currency: 'USD', addedAt: '2026-08-17T00:00:00.000Z' }
@@ -16,6 +16,19 @@ assert.equal(tradePnl.pnlPct, 15)
 const targetTrade = resolvePaperTrade(trade, { symbol: 'AAPL', price: 121 })
 assert.equal(targetTrade.status, 'won')
 assert.equal(targetTrade.exitPrice, 121)
+assert.equal(targetTrade.exitDecision?.kind, 'target')
+const signalExit = resolvePaperTrade(trade, { symbol: 'AAPL', price: 101, setup: 'none', setupLabel: 'Ingen setup', dropReason: 'Tes försämrad', dropReasonSource: 'Yahoo Finance' })
+assert.equal(signalExit.status, 'closed')
+assert.equal(signalExit.exitDecision?.kind, 'signal_exit')
+const timeExit = resolvePaperTrade({ ...trade, expiresAt: '2026-08-18T00:00:00.000Z' }, { symbol: 'AAPL', price: 101, setup: 'watch', setupLabel: 'Bevakning', dropReason: 'Ingen ny katalysator', dropReasonSource: 'Yahoo Finance' }, new Date('2026-08-19T00:00:00.000Z'))
+assert.equal(timeExit.status, 'expired')
+assert.equal(timeExit.exitDecision?.kind, 'time_exit')
+const reviewDates = paperTradeReviewDates('2026-08-17T00:00:00.000Z')
+assert.equal(reviewDates.reviewAt, '2026-08-31T00:00:00.000Z')
+assert.equal(reviewDates.expiresAt, '2026-09-16T00:00:00.000Z')
+const entryDecision = buildEntryDecision({ reason: 'Färsk nedgång med källstöd.', source: 'Yahoo Finance', price: 100, targetPrice: 110, stopPrice: 95, dataQuality: 80, dataAsOf: '2026-08-17T00:00:00.000Z' })
+assert.equal(entryDecision.kind, 'entry')
+assert.equal(entryDecision.evidence.length, 4)
 const store = new Map()
 globalThis.localStorage = { getItem: (key) => store.get(key) ?? null, setItem: (key, value) => store.set(key, value) }
 writeLocal('holdings', [holding])
@@ -30,4 +43,4 @@ assert.equal(marketForSymbol('VOLV-B.ST', 'SEK'), 'Sverige')
 assert.equal(marketForSymbol('VOD.L', 'GBP'), 'UK')
 assert.equal(marketForSymbol('AAPL', 'USD'), 'USA')
 assert.match(marketStatus('USA', new Date('2026-08-17T13:00:00.000Z')).hours, /09:30–16:00/)
-console.log('portfolio-test: passed for valuation, P/L, auto-close, persistence, and market hours')
+console.log('portfolio-test: passed for valuation, P/L, paper-order lifecycle, decision evidence, persistence, and market hours')
