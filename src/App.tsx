@@ -335,8 +335,8 @@ export default function App() {
             </strong>
             <span>{liveLabel}</span>
             <small className="freshness-line">
-              {status.lastUpdate ? `Data ${new Date(status.lastUpdate).toLocaleString('sv-SE')}` : 'Ingen färsk hämtning ännu'}
-              {status.lastSource ? ` · ${status.lastSource}` : ''}
+              {status.phase === 'scanning' ? 'Hämtar färsk data…' : status.lastUpdate ? `Data ${new Date(status.lastUpdate).toLocaleString('sv-SE')}` : 'Ingen färsk hämtning ännu'}
+              {status.phase !== 'scanning' && status.lastSource ? ` · ${status.lastSource}` : ''}
             </small>
           </div>
         </div>
