@@ -69,11 +69,11 @@
 - [x] Lägg till tester för i dag, tidigare handelsdag och helgfall.
 - [x] Publicera och liveverifiera korrigerade datumetiketter i Value Scout.
 
-- [ ] Kartlägg aktuella produktionsfel i scanner, dataladdning och paper trading.
+- [x] Kartlägg aktuella produktionsfel i scanner, dataladdning och paper trading.
 - [x] Förbättra felhantering och datakvalitetssignaler vid fördröjd eller ofullständig marknadsdata.
 - [x] Förbättra återkoppling, tillgänglighet och mobil användbarhet i centrala Value Scout-flöden.
 - [x] Lägg till regressionstester för identifierade stabilitetsproblem.
-- [ ] Publicera och liveverifiera kvalitetshöjningarna i Value Scout.
+- [x] Publicera och liveverifiera kvalitetshöjningarna i Value Scout.
 
 - [x] Märk sparade scannerresultat och delvis uppdaterade listor tydligt under en pågående genomgång.
 - [x] Visa uppdateringsomfång, datakälla och eventuell fallback utan att kalla osäker data live.
@@ -85,7 +85,7 @@
 - [x] Gör GitHub Pages-byggflödet reproducerbart så källingång och publicerade assets inte blandas ihop.
 
 - [x] Ta bort den onödiga Cache-Control-begäran som utlöser en blockerad CORS-preflight i live-scannern.
-- [ ] Testa att publika scanbatches blir liveverifierade utan fallback.
+- [x] Testa att publika scanbatches blir liveverifierade utan fallback.
 
 - [x] Ersätt hela äldre datumetiketten i paper-tradingjournalen så absolut datum inte dupliceras.
 
