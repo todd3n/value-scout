@@ -22,3 +22,7 @@ Den byggda klienten laddar nu korrekt från `/value-scout/` och visar den nya li
 ## GitHub Pages-publicering
 
 Kvalitetsrundan publicerades till `gh-pages` i commit `ab8f996`. Den första kontrollen från den publika adressen visade att den föregående klientversionen fortfarande serverades medan den nya genomgången hade börjat. Nästa kontroll ska bekräfta GitHub Pages-källgren och distributionsstatus innan uppgiften markeras som liveverifierad.
+
+GitHub Pages-konfigurationen använder `main`, inte `gh-pages`. Därför synkroniserades den testade committen även till `main` i commit `6142d2b`. Den publika klienten visar nu korrekt den nya märkningen **BLANDAD DATA**, antal liveverifierade resultat och etiketten **SPARAT RESULTAT** för den äldre LRCX-raden. Konsolen är utan JavaScript-fel. Under den första genomgången returnerade batchanrop fallbackdata, vilket är korrekt märkt men ska utredas för att öka andelen liveverifierade signaler.
+
+En direkt kontroll från samma publika webborigin mot scan-API:t returnerade HTTP 200 och analysdata för NKE, UNP och RTX. Detta betyder att API:t är nåbart och att den tydliga fallbackmärkningen fungerar som skydd mot en osäker batch. Nästa sidaomladdning och genomgång kontrolleras för att säkerställa att klienten därefter räknar dessa svar som liveverifierade.

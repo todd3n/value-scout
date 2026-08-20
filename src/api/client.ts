@@ -168,7 +168,6 @@ export async function scanSymbols(
   try {
     const res = await fetch(`${VALUE_SCOUT_DATA_SERVICE}/api/value-scout/scan?${params}`, {
       cache: 'no-store',
-      headers: { 'Cache-Control': 'no-cache' },
       signal: AbortSignal.timeout(120000),
     })
     if (res.ok) {

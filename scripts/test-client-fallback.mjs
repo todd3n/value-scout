@@ -9,8 +9,10 @@ const fallbackPayload = {
 const originalFetch = globalThis.fetch
 try {
   for (const apiFailure of ['status', 'network', 'timeout']) {
-    globalThis.fetch = async (url) => {
+    let scanRequest
+    globalThis.fetch = async (url, options) => {
       if (String(url).includes('/api/value-scout/scan')) {
+        scanRequest = options
         if (apiFailure === 'network') throw new Error('offline')
         if (apiFailure === 'timeout') throw new DOMException('The operation timed out', 'TimeoutError')
         return new Response('upstream unavailable', { status: 503 })
@@ -24,6 +26,7 @@ try {
     assert.equal(response.results[0].symbol, 'AAPL')
     assert.equal(response.delivery, 'fallback')
     assert.match(response.source, /Fallbacksnapshot/)
+    assert.equal(scanRequest?.headers, undefined, 'scananrop ska inte trigga CORS-preflight med specialheaders')
   }
   console.log('fallback-test: passed for 503, network failure, and timeout')
 } finally {

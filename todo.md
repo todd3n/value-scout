@@ -83,3 +83,6 @@
 - [x] Återställ den lokala Vite-ingången så produktionsbyggen alltid kan generera GitHub Pages-assets korrekt.
 - [x] Kontrollera visuellt den byggda Value Scout-klienten före GitHub Pages-publicering.
 - [x] Gör GitHub Pages-byggflödet reproducerbart så källingång och publicerade assets inte blandas ihop.
+
+- [x] Ta bort den onödiga Cache-Control-begäran som utlöser en blockerad CORS-preflight i live-scannern.
+- [ ] Testa att publika scanbatches blir liveverifierade utan fallback.
