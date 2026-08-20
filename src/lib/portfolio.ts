@@ -24,6 +24,7 @@ export type PaperDecision = {
   source: string
   dataAsOf: string
   decidedAt: string
+  signalDate?: string
 }
 
 export type TradeEvent = {
@@ -109,6 +110,17 @@ export function formatTradeTimestamp(iso?: string) {
   return iso ? new Date(iso).toLocaleString('sv-SE', { dateStyle: 'short', timeStyle: 'short' }) : '—'
 }
 
+export function formatSignalDate(iso?: string) {
+  return iso ? new Date(iso).toLocaleDateString('sv-SE', { dateStyle: 'medium' }) : '—'
+}
+
+/** Replaces relative labels in a stored signal with the actual market date so old
+ * journal entries cannot become misleading when read on a later day. */
+export function formatArchivedSignalReason(reason: string, signalDate?: string, recordedAt?: string) {
+  const absoluteDate = formatSignalDate(signalDate || recordedAt)
+  return reason.replace(/\((?:i dag|i går|för \d+ handelsdagar sedan)\)/i, `(${absoluteDate})`)
+}
+
 export function fundQuoteWarning(symbol: string, hasQuote: boolean) {
   return hasQuote ? '' : `Kursdata saknas för fondkod: ${symbol}. Innehavet sparas, men analysen använder inte en aktuell fondkurs.`
 }
@@ -138,16 +150,24 @@ export function buildEntryDecision(input: {
   stopPrice: number | null
   dataQuality?: number
   dataAsOf: string
+  signalDate?: string
 }): PaperDecision {
   const target = input.targetPrice != null ? `Målpris ${input.targetPrice.toFixed(2)}.` : 'Inget separat målpris kunde beräknas.'
   const stop = input.stopPrice != null ? `Riskgräns ${input.stopPrice.toFixed(2)}.` : 'Ingen stop-nivå kunde beräknas.'
   return {
     kind: 'entry',
     summary: input.reason,
-    evidence: [`Entrypris ${input.price.toFixed(2)}.`, target, stop, `Datakvalitet ${input.dataQuality ?? 0}/100.`],
+    evidence: [
+      `Entrypris ${input.price.toFixed(2)}.`,
+      target,
+      stop,
+      `Datakvalitet ${input.dataQuality ?? 0}/100.`,
+      ...(input.signalDate ? [`Kursnedgång noterad ${formatSignalDate(input.signalDate)}.`] : []),
+    ],
     source: input.source,
     dataAsOf: input.dataAsOf,
     decidedAt: input.dataAsOf,
+    signalDate: input.signalDate,
   }
 }
 

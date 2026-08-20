@@ -86,7 +86,12 @@ export function yahooUrlFor(symbol: string): string {
 /** Internal Value Scout data service. It is never shown as a separate user-facing product. */
 export const VALUE_SCOUT_DATA_SERVICE = 'https://webbai-seo-hruovxmw.manus.space'
 
-type ScanResponse = { results: Analysis[]; fetchedAt: string; source?: string }
+export type ScanResponse = {
+  results: Analysis[]
+  fetchedAt: string
+  source?: string
+  delivery: 'live' | 'fallback'
+}
 export type PaperHistory = { trades: PaperTrade[]; events: TradeEvent[]; updatedAt?: string | null }
 export type PaperMonitorStatus = { enabled: boolean; intervalMinutes: number; lastRunAt: string | null; lastSummary: string }
 
@@ -141,7 +146,7 @@ async function loadFallback(): Promise<ScanResponse | null> {
     const fallback = await fetch(`${normalizedBase}data.json?refresh=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(10000) })
     if (fallback.ok) {
       const data = await fallback.json() as ScanResponse
-      return { ...data, source: data.source || 'Fallbacksnapshot — kan vara inaktuell' }
+      return { ...data, source: data.source || 'Fallbacksnapshot — kan vara inaktuell', delivery: 'fallback' }
     }
   } catch {
     // The fallback is best effort; preserve the original API failure below.
@@ -166,7 +171,11 @@ export async function scanSymbols(
       headers: { 'Cache-Control': 'no-cache' },
       signal: AbortSignal.timeout(120000),
     })
-    if (res.ok) return res.json() as Promise<ScanResponse>
+    if (res.ok) {
+      const data = await res.json() as Omit<ScanResponse, 'delivery'>
+      if (!Array.isArray(data.results)) throw new Error('Ogiltigt scannersvar')
+      return { ...data, delivery: 'live' }
+    }
     const fallback = await loadFallback()
     if (fallback) return fallback
     const err = (await res.json().catch(() => ({}))) as { error?: string }

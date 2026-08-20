@@ -22,6 +22,8 @@ try {
     }
     const response = await scanSymbols(['AAPL'], 500000, 2)
     assert.equal(response.results[0].symbol, 'AAPL')
+    assert.equal(response.delivery, 'fallback')
+    assert.match(response.source, /Fallbacksnapshot/)
   }
   console.log('fallback-test: passed for 503, network failure, and timeout')
 } finally {

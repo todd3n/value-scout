@@ -37,10 +37,14 @@ function yahooApiPlugin(): Plugin {
 }
 
 export default defineConfig({
+  base: '/value-scout/',
   plugins: [react(), yahooApiPlugin()],
   server: {
     host: true,
     port: 5173,
     strictPort: false,
+  },
+  preview: {
+    allowedHosts: true,
   },
 })

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { buildEntryDecision, holdingMetrics, paperTradePnl, paperTradeReviewDates, readLocal, resolvePaperTrade, writeLocal } from '../src/lib/portfolio.ts'
+import { buildEntryDecision, formatArchivedSignalReason, holdingMetrics, paperTradePnl, paperTradeReviewDates, readLocal, resolvePaperTrade, writeLocal } from '../src/lib/portfolio.ts'
 import { isMarketOpen, marketForSymbol, marketStatus } from '../src/lib/marketHours.ts'
 
 const holding = { id: 'aapl-1', symbol: 'AAPL', type: 'stock', quantity: 10, averageCost: 100, currency: 'USD', addedAt: '2026-08-17T00:00:00.000Z' }
@@ -29,6 +29,12 @@ assert.equal(reviewDates.expiresAt, '2026-09-16T00:00:00.000Z')
 const entryDecision = buildEntryDecision({ reason: 'Färsk nedgång med källstöd.', source: 'Yahoo Finance', price: 100, targetPrice: 110, stopPrice: 95, dataQuality: 80, dataAsOf: '2026-08-17T00:00:00.000Z' })
 assert.equal(entryDecision.kind, 'entry')
 assert.equal(entryDecision.evidence.length, 4)
+const datedEntryDecision = buildEntryDecision({ reason: 'Nedgång 19 aug. (i dag)', source: 'Yahoo Finance', price: 100, targetPrice: 110, stopPrice: 95, dataQuality: 80, dataAsOf: '2026-08-20T00:00:00.000Z', signalDate: '2026-08-19T13:30:00.000Z' })
+assert.equal(datedEntryDecision.signalDate, '2026-08-19T13:30:00.000Z')
+assert.equal(datedEntryDecision.evidence.length, 5)
+const archivedReason = formatArchivedSignalReason('Nedgång 19 aug. (i dag)', '2026-08-19T13:30:00.000Z')
+assert.doesNotMatch(archivedReason, /i dag/)
+assert.match(archivedReason, /19/)
 const store = new Map()
 globalThis.localStorage = { getItem: (key) => store.get(key) ?? null, setItem: (key, value) => store.set(key, value) }
 writeLocal('holdings', [holding])

@@ -20,6 +20,8 @@ export type ScannerStatus = {
   lastUpdate: string | null
   lastSource: string | null
   nextUpdateAt: string | null
+  liveResultsInCycle: number
+  fallbackResultsInCycle: number
 }
 
 function loadCache(): Analysis[] {
@@ -99,12 +101,15 @@ export function useLiveScanner(portfolio: number, risk: number) {
     lastUpdate: null,
     lastSource: null,
     nextUpdateAt: null,
+    liveResultsInCycle: 0,
+    fallbackResultsInCycle: 0,
   })
 
   const runningRef = useRef(true)
   const portfolioRef = useRef(portfolio)
   const riskRef = useRef(risk)
   const abortRef = useRef(0)
+  const [freshSymbols, setFreshSymbols] = useState<string[]>([])
 
   useEffect(() => {
     portfolioRef.current = portfolio
@@ -149,7 +154,10 @@ export function useLiveScanner(portfolio: number, risk: number) {
           totalInCycle: symbols.length,
           lastError: null,
           nextUpdateAt: null,
+          liveResultsInCycle: 0,
+          fallbackResultsInCycle: 0,
         }))
+        setFreshSymbols([])
 
         for (let i = 0; i < symbols.length; i += BATCH) {
           if (abortRef.current !== runId) return
@@ -184,7 +192,12 @@ export function useLiveScanner(portfolio: number, risk: number) {
               lastUpdate: data.fetchedAt,
               lastSource: data.source || 'Yahoo Finance och Google News',
               lastError: null,
+              liveResultsInCycle: s.liveResultsInCycle + (data.delivery === 'live' ? data.results.length : 0),
+              fallbackResultsInCycle: s.fallbackResultsInCycle + (data.delivery === 'fallback' ? data.results.length : 0),
             }))
+            if (data.delivery === 'live') {
+              setFreshSymbols((current) => Array.from(new Set([...current, ...data.results.map((result) => result.symbol)])))
+            }
           } catch (e) {
             setStatus((s) => ({
               ...s,
@@ -216,5 +229,5 @@ export function useLiveScanner(portfolio: number, risk: number) {
     }
   }, [refreshToken])
 
-  return { results, status, setRunning, refresh, universeSize: universe.length }
+  return { results, status, freshSymbols, setRunning, refresh, universeSize: universe.length }
 }

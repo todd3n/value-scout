@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "prepare:source": "node scripts/restore-vite-entry.mjs",
+    "predev": "npm run prepare:source",
+    "prebuild": "npm run prepare:source",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",

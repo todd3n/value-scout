@@ -47,10 +47,10 @@
 - [x] Kör bevakning idempotent och spara automatiska exitbeslut med källor
 - [x] Visa senaste automatiska kontroll och bevakningsläge i Paper trading
 - [x] Testa schemalagd exit utan dubbla säljloggar
-- [ ] Spara checkpoint och begära publicering före aktivering
-- [ ] Aktivera kostnadsfri VS-bevakning under marknadstid
+- [x] Spara checkpoint och begära publicering före aktivering
+- [x] Aktivera kostnadsfri VS-bevakning under marknadstid
 
-- [ ] Verifiera automatiskt exitbeslut end-to-end efter att publicerad scheduled monitor är aktiv.
+- [x] Verifiera automatiskt exitbeslut end-to-end efter att publicerad scheduled monitor är aktiv.
 
 - [x] Ta fram ett enhetligt terminalinspirerat designsystem för hela Value Scout.
 - [x] Gör om Scanner-vyn med tydlig marknadsöversikt, filter, datakällor och rangordnade signaler.
@@ -59,7 +59,27 @@
 - [x] Förbättra navigation, tomlägen, laddning, mobil layout och tillgänglighet genom hela Value Scout.
 - [x] Verifiera full UI-regression och publicera Value Scout-makeovern till GitHub Pages.
 
-- [ ] Ta bort alla användarvända hänvisningar och beroenden till WebbAI Analys från Value Scout.
-- [ ] Märk Value Scouts datalager som en intern Value Scout-tjänst i UI och dokumentation.
-- [ ] Verifiera att Value Scout fungerar och navigerar fristående från GitHub Pages-länken.
-- [ ] Publicera frikopplad Value Scout-version till GitHub Pages.
+- [x] Ta bort alla användarvända hänvisningar och beroenden till WebbAI Analys från Value Scout.
+- [x] Märk Value Scouts datalager som en intern Value Scout-tjänst i UI och dokumentation.
+- [x] Verifiera att Value Scout fungerar och navigerar fristående från GitHub Pages-länken.
+- [x] Publicera frikopplad Value Scout-version till GitHub Pages.
+
+- [x] Rätta relative datumetiketter för kursnedgångar och handelsdagar.
+- [x] Använd marknadens datum och tidszon i stället för klientens aktuella datum vid datumformatering.
+- [x] Lägg till tester för i dag, tidigare handelsdag och helgfall.
+- [x] Publicera och liveverifiera korrigerade datumetiketter i Value Scout.
+
+- [ ] Kartlägg aktuella produktionsfel i scanner, dataladdning och paper trading.
+- [x] Förbättra felhantering och datakvalitetssignaler vid fördröjd eller ofullständig marknadsdata.
+- [x] Förbättra återkoppling, tillgänglighet och mobil användbarhet i centrala Value Scout-flöden.
+- [x] Lägg till regressionstester för identifierade stabilitetsproblem.
+- [ ] Publicera och liveverifiera kvalitetshöjningarna i Value Scout.
+
+- [x] Märk sparade scannerresultat och delvis uppdaterade listor tydligt under en pågående genomgång.
+- [x] Visa uppdateringsomfång, datakälla och eventuell fallback utan att kalla osäker data live.
+- [x] Spara absolut signaldatum i nya paper-tradingbeslut och visa det i journalen.
+- [x] Migrera visningen av äldre paper-trades så relativa datumetiketter inte misstolkas som nutida fakta.
+- [x] Säkerställ begriplig feedback för felaktiga tickers, saknade kurser och fondkoder i portföljflödet.
+- [x] Återställ den lokala Vite-ingången så produktionsbyggen alltid kan generera GitHub Pages-assets korrekt.
+- [x] Kontrollera visuellt den byggda Value Scout-klienten före GitHub Pages-publicering.
+- [x] Gör GitHub Pages-byggflödet reproducerbart så källingång och publicerade assets inte blandas ihop.

@@ -258,7 +258,8 @@ export default function App() {
   const [q, setQ] = useState('')
   const [page, setPage] = useState<Page>('scanner')
 
-  const { results, status, setRunning, refresh, universeSize } = useLiveScanner(portfolio, risk)
+  const { results, status, freshSymbols, setRunning, refresh, universeSize } = useLiveScanner(portfolio, risk)
+  const freshSymbolSet = useMemo(() => new Set(freshSymbols), [freshSymbols])
 
   const counts = useMemo(
     () => ({
@@ -392,7 +393,7 @@ export default function App() {
         <span className="nav-context">VS / {page === 'scanner' ? 'SIGNALER' : page === 'portfolio' ? 'PORTFÖLJ' : 'PAPER LAB'}</span>
       </nav>
 
-      {page === 'portfolio' ? <PortfolioPage results={results} /> : page === 'paper' ? <PaperTradingPage results={results} /> : <div className="workspace">
+      {page === 'portfolio' ? <PortfolioPage results={results} /> : page === 'paper' ? <PaperTradingPage results={results} freshSymbols={freshSymbolSet} /> : <div className="workspace">
         <aside className="sidebar">
           <p className="side-label">Kriterier</p>
           <p className="rule-box">
@@ -496,7 +497,7 @@ export default function App() {
                   ? 'Färska nedgångar med datum och orsak. Tom lista är normalt.'
                   : `${universeSize} bolag · US ${counts.usa} · UK ${counts.uk} · SE ${counts.se}`}
               </p>
-              <div className="market-tape"><span>LIVE DATA</span><strong>{status.lastUpdate ? new Date(status.lastUpdate).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : ' väntar'}</strong><em>{status.phase === 'error' ? status.lastError : status.phase === 'scanning' ? 'hämtar nya kurser' : 'senaste snapshot'}</em></div>
+              <div className="market-tape" aria-live="polite"><span>{status.fallbackResultsInCycle ? 'BLANDAD DATA' : 'LIVE DATA'}</span><strong>{status.lastUpdate ? new Date(status.lastUpdate).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : ' väntar'}</strong><em>{status.phase === 'error' ? status.lastError : status.phase === 'scanning' ? `${status.liveResultsInCycle} liveverifierade · ${Math.max(0, results.length - status.liveResultsInCycle)} sparade eller väntande` : status.fallbackResultsInCycle ? `${status.fallbackResultsInCycle} fallbacksvar — kontrollera datakällan` : 'senaste genomgång klar'}</em></div>
             </div>
             <div className="scan-summary-grid" aria-label="Sammanfattning av marknadsscannern">
               <div><span>Modellfilter</span><strong>3D DROP</strong><small>Dokumenterad orsak</small></div>
@@ -546,6 +547,7 @@ export default function App() {
                       <td>{marketOf(a.symbol)}</td>
                       <td>
                         <span className={`chip chip-${a.setup}`}>{a.setupLabel}</span>
+                        {!freshSymbolSet.has(a.symbol) && status.phase === 'scanning' && <small className="stale-result">SPARAT RESULTAT</small>}
                       </td>
                       <td className="price-cell">
                         {fmtPrice(a.price, a.currency)}
