@@ -88,3 +88,5 @@
 - [ ] Testa att publika scanbatches blir liveverifierade utan fallback.
 
 - [x] Ersätt hela äldre datumetiketten i paper-tradingjournalen så absolut datum inte dupliceras.
+
+- [x] Rätta den fullständiga svenska datumfrasen i verkliga äldre paper-tradingposter utan duplicerat datum.

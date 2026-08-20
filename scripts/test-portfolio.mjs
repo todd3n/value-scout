@@ -36,6 +36,10 @@ const archivedReason = formatArchivedSignalReason('Nedgång 19 aug. (i dag)', '2
 assert.doesNotMatch(archivedReason, /i dag/)
 assert.match(archivedReason, /19 aug\. 2026/)
 assert.doesNotMatch(archivedReason, /\(19 aug\. 2026\)/)
+const exactArchivedReason = formatArchivedSignalReason('Färsk nedgång som fortfarande håller: -6,0 % 19 aug. (i dag).', '2026-08-19T13:30:00.000Z')
+assert.equal(exactArchivedReason, 'Färsk nedgång som fortfarande håller: -6,0 % 19 aug. 2026.')
+const legacyDuplicatedReason = formatArchivedSignalReason('Färsk nedgång som fortfarande håller: -6,0 % 19 aug. (19 aug. 2026).', '2026-08-19T13:30:00.000Z')
+assert.equal(legacyDuplicatedReason, 'Färsk nedgång som fortfarande håller: -6,0 % 19 aug. 2026.')
 const store = new Map()
 globalThis.localStorage = { getItem: (key) => store.get(key) ?? null, setItem: (key, value) => store.set(key, value) }
 writeLocal('holdings', [holding])

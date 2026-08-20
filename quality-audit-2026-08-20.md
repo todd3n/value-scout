@@ -28,3 +28,11 @@ GitHub Pages-konfigurationen använder `main`, inte `gh-pages`. Därför synkron
 En direkt kontroll från samma publika webborigin mot scan-API:t returnerade HTTP 200 och analysdata för NKE, UNP och RTX. Detta betyder att API:t är nåbart och att den tydliga fallbackmärkningen fungerar som skydd mot en osäker batch. Nästa sidaomladdning och genomgång kontrolleras för att säkerställa att klienten därefter räknar dessa svar som liveverifierade.
 
 Efter att den onödiga `Cache-Control`-headern togs bort svarade den publika scannern med **3 liveverifierade** resultat i den första batchen. Paper trading visar även att en sparad signal måste liveverifieras innan den kan användas för en ny order. Äldre journalposter visar nu absolut datum, men en gammal etikett renderades som `19 aug. (19 aug. 2026)`; den sista formateringsrättningen ska ersätta hela kombinationen i stället för att enbart ersätta den relativa parentesen.
+
+Efter publicering av den första regexrättningen kvarstod den duplicerade etiketten i den verkliga äldre LRCX-posten. Den faktiska strängen skiljer sig från det förenklade testfallet, så datumformatet behöver hanteras med en rakare regex som täcker den kompletta svenska frasen med datum och relativ parentes.
+
+En teckenkodskontroll av den renderade texten bekräftade vanliga ASCII-mellanslag och vanliga svenska bokstäver; problemet beror alltså inte på osynliga Unicode-tecken. Nästa kontroll läser den råa lagrade orderorsaken för att skilja en kvarvarande klientcache från en formateringsregel som inte träffar rätt data.
+
+Den råa lokala LRCX-historiken innehåller fortfarande den ursprungliga formuleringen med `(i dag)`, vilket är förväntat för en äldre order. Webbläsarens resurslogg visade dock att sessionen fortfarande körde föregående hash `index-Dzno924N.js`, medan GitHub Pages-indexet redan refererade den nya hashade filen `index-l8GZBjiH.js`. En ren webbläsarsession krävs därför för slutverifiering av den senaste journalformateringen.
+
+En ren webbläsarsession laddade därefter `index-l8GZBjiH.js` och visade fortsatt 3 liveverifierade scannerresultat, men den äldre LRCX-frasen innehöll fortfarande dubbelt datum. Detta bekräftar att det återstående problemet ligger i den renderade paper-tradingvägen och inte i distributionscache eller scanflöde.

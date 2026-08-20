@@ -119,9 +119,12 @@ export function formatSignalDate(iso?: string) {
 export function formatArchivedSignalReason(reason: string, signalDate?: string, recordedAt?: string) {
   const absoluteDate = formatSignalDate(signalDate || recordedAt)
   const relative = '(?:i dag|i går|för \\d+ handelsdagar sedan)'
-  const datedLabel = new RegExp(`\\b\\d{1,2}\\s+[a-zåäö]+\\.?\\s+\\(${relative}\\)`, 'i')
+  const dayMonth = '\\d{1,2}\\s+[a-zåäö]+\\.?'
+  const datedLabel = new RegExp(`\\b${dayMonth}\\s+\\(${relative}\\)`, 'i')
+  const duplicatedDate = new RegExp(`\\b${dayMonth}\\s+\\(${dayMonth}\\s+\\d{4}\\)`, 'i')
   return reason
     .replace(datedLabel, absoluteDate)
+    .replace(duplicatedDate, absoluteDate)
     .replace(new RegExp(`\\(${relative}\\)`, 'i'), `(${absoluteDate})`)
 }
 
