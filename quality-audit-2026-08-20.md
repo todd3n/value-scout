@@ -18,3 +18,7 @@ Portföljvyn har ett tydligt tomläge och de centrala fälten är tillgängliga.
 Den lokala källfilen `index.html` hade tidigare ersatts av referenser till en gammal byggartefakt, vilket gjorde att en ny Vite-build inte kunde köras. Ingången har återställts till `src/main.tsx`, byggkonfigurationen har låsts till GitHub Pages-sökvägen `/value-scout/`, och den temporära Vite Preview-domänen har tillåtits för visuell kontroll. Detta påverkar inte den publika applikationens säkerhetsmodell utan endast den lokala förhandsvisningen.
 
 Den byggda klienten laddar nu korrekt från `/value-scout/` och visar den nya liveverifieringsräknaren. Den tillfälliga förhandsvisningsdomänen kan inte hämta publika marknadsdata eftersom datatjänstens CORS-regler endast tillåter den riktiga GitHub Pages-domänen. Det är avsiktligt och bevarar API-skyddet; slutlig dataverifiering ska därför göras efter GitHub Pages-publiceringen.
+
+## GitHub Pages-publicering
+
+Kvalitetsrundan publicerades till `gh-pages` i commit `ab8f996`. Den första kontrollen från den publika adressen visade att den föregående klientversionen fortfarande serverades medan den nya genomgången hade börjat. Nästa kontroll ska bekräfta GitHub Pages-källgren och distributionsstatus innan uppgiften markeras som liveverifierad.
