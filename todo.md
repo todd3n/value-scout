@@ -86,3 +86,5 @@
 
 - [x] Ta bort den onödiga Cache-Control-begäran som utlöser en blockerad CORS-preflight i live-scannern.
 - [ ] Testa att publika scanbatches blir liveverifierade utan fallback.
+
+- [x] Ersätt hela äldre datumetiketten i paper-tradingjournalen så absolut datum inte dupliceras.

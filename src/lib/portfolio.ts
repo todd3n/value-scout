@@ -118,7 +118,11 @@ export function formatSignalDate(iso?: string) {
  * journal entries cannot become misleading when read on a later day. */
 export function formatArchivedSignalReason(reason: string, signalDate?: string, recordedAt?: string) {
   const absoluteDate = formatSignalDate(signalDate || recordedAt)
-  return reason.replace(/\((?:i dag|i går|för \d+ handelsdagar sedan)\)/i, `(${absoluteDate})`)
+  const relative = '(?:i dag|i går|för \\d+ handelsdagar sedan)'
+  const datedLabel = new RegExp(`\\b\\d{1,2}\\s+[a-zåäö]+\\.?\\s+\\(${relative}\\)`, 'i')
+  return reason
+    .replace(datedLabel, absoluteDate)
+    .replace(new RegExp(`\\(${relative}\\)`, 'i'), `(${absoluteDate})`)
 }
 
 export function fundQuoteWarning(symbol: string, hasQuote: boolean) {
