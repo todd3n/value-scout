@@ -1003,6 +1003,13 @@
 .monitor-strip em { margin-left: auto; color: #5a705f; font-size: .69rem; font-style: normal; text-align: right; }
 .monitor-led { width: 8px; height: 8px; border-radius: 50%; background: #a3874a; flex: 0 0 auto; }
 .monitor-led.active { background: #299b67; box-shadow: 0 0 0 4px rgba(41,155,103,.12); }
+.auto-entry-strip { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(160px, .9fr) auto; align-items: center; gap: .65rem; margin: -.15rem 0 .85rem; padding: .65rem .75rem; background: #172936; border: 1px solid #3d6576; color: #d5ebed; }
+.auto-entry-strip.active { border-color: #3d8c78; background: linear-gradient(90deg, #0d2e31, #102936); }
+.auto-entry-strip strong { display: block; font-family: var(--mono); font-size: .68rem; letter-spacing: .05em; }
+.auto-entry-strip small { display: block; margin-top: .18rem; color: #a4c8cf; font-size: .72rem; }
+.auto-entry-strip em { color: #9fc4b8; font-size: .69rem; font-style: normal; text-align: right; }
+.auto-entry-strip .secondary-btn { white-space: nowrap; }
+.auto-entry-error { grid-column: 2 / -1; color: #ffc2b8 !important; }
 @media (max-width: 900px) {
   .topbar { grid-template-columns: 1fr auto; }
   .live-pill { grid-column: 1 / -1; grid-row: 2; }
@@ -1099,6 +1106,9 @@ body { background: #061018; color: #e9f0f4; }
 .order-status { border-color: #3f897b; background: rgba(31,116,96,.16); }
 .monitor-strip { background: #0d2932; border-color: #2c635d; color: #d5f0e6; }
 .monitor-strip small, .monitor-strip em { color: #9fc4b8; }
+.auto-entry-strip { background: #0b2531; border-color: #315d70; }
+.auto-entry-strip.active { background: linear-gradient(90deg, #0c2c2f, #0b2330); border-color: #377d70; }
+.auto-entry-strip small, .auto-entry-strip em { color: #a5c6ca; }
 .signal-row { background: #0c2230; border-color: #234555; }
 .decision-card { background: #0b202d; border-color: #284b5c; }
 .decision-card strong, .decision-card p { color: #e2eef1; }
@@ -1131,4 +1141,5 @@ body { background: #061018; color: #e9f0f4; }
 .paper-page .decision-journal { border-top: 2px solid #7198d1; }
 .paper-page .feature-grid > .panel { min-height: 220px; }
 .paper-page .method-list { color: #b3c8d0; }
+@media (max-width: 720px) { .auto-entry-strip { grid-template-columns: auto minmax(0, 1fr); } .auto-entry-strip em { grid-column: 2; text-align: left; } .auto-entry-strip .secondary-btn { grid-column: 2; justify-self: start; } }
 @media (max-width: 640px) { .portfolio-tape { display: grid; grid-template-columns: 1fr 1fr; gap: .25rem .55rem; } .portfolio-tape span { font-size: .52rem; } .portfolio-tape strong { font-size: .56rem; } }

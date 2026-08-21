@@ -94,6 +94,7 @@ export type ScanResponse = {
 }
 export type PaperHistory = { trades: PaperTrade[]; events: TradeEvent[]; updatedAt?: string | null }
 export type PaperMonitorStatus = { enabled: boolean; intervalMinutes: number; lastRunAt: string | null; lastSummary: string }
+export type PaperAutoEntryStatus = { enabled: boolean; maxOpenPositions: number; lastRunAt: string | null; lastSummary: string }
 
 const PAPER_INSTALLATION_KEY = 'value-scout-installation-v1'
 
@@ -134,6 +135,33 @@ export async function loadPaperMonitorStatus(): Promise<PaperMonitorStatus | nul
     const res = await fetch(`${VALUE_SCOUT_DATA_SERVICE}/api/value-scout/monitor-status?refresh=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(10000) })
     if (!res.ok) return null
     return await res.json() as PaperMonitorStatus
+  } catch {
+    return null
+  }
+}
+
+export async function loadPaperAutoEntryStatus(): Promise<PaperAutoEntryStatus | null> {
+  try {
+    const installationId = getPaperInstallationId()
+    const res = await fetch(`${VALUE_SCOUT_DATA_SERVICE}/api/value-scout/auto-entry-config?installationId=${encodeURIComponent(installationId)}&refresh=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(10000) })
+    if (!res.ok) return null
+    return await res.json() as PaperAutoEntryStatus
+  } catch {
+    return null
+  }
+}
+
+export async function savePaperAutoEntryStatus(enabled: boolean, maxOpenPositions = 3): Promise<PaperAutoEntryStatus | null> {
+  try {
+    const res = await fetch(`${VALUE_SCOUT_DATA_SERVICE}/api/value-scout/auto-entry-config`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ installationId: getPaperInstallationId(), enabled, maxOpenPositions }),
+      signal: AbortSignal.timeout(10000),
+    })
+    if (!res.ok) return null
+    const data = await res.json() as { enabled: boolean; maxOpenPositions: number }
+    return { ...data, lastRunAt: null, lastSummary: data.enabled ? 'Väntar på nästa marknadsöppna automatiska kontroll.' : 'Automatiska paper-köp är avstängda.' }
   } catch {
     return null
   }

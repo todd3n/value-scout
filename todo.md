@@ -90,3 +90,15 @@
 - [x] Ersätt hela äldre datumetiketten i paper-tradingjournalen så absolut datum inte dupliceras.
 
 - [x] Rätta den fullständiga svenska datumfrasen i verkliga äldre paper-tradingposter utan duplicerat datum.
+
+- [x] Fastställ konservativa regler för automatisk paper-entry, positionsstorlek och samtidiga positioner.
+- [ ] Låt den befintliga bakgrundsbevakningen öppna berättigade paper-orders under aktiv marknad.
+- [ ] Spara automatiska entrybeslut med order-ID, pris, signaldata, källor och riskgränser.
+- [ ] Skydda mot dubblettorder, stängd marknad, låg datakvalitet och endast sparade scannerresultat.
+- [x] Visa automatisk entrypolicy, senaste körning och orderutfall i Paper trading.
+- [x] Lägg till regressionstester för automatisk entry, idempotens och marknadsstängning.
+- [ ] Publicera och liveverifiera en automatisk paper-entry utan riktiga pengar.
+
+- [ ] Begränsa automatisk paper-entry till högst tre samtidiga öppna positioner enligt val B.
+- [ ] Rangordna samtidigt berättigade signaler transparent före automatiska paper-orders.
+- [x] Spara val B och dess högsta positionsantal per Value Scout-installation i backenddatabasen.
