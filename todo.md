@@ -112,7 +112,7 @@
 - [x] Testa helgformattering för USA, UK och Sverige.
 - [x] Publicera och liveverifiera datumrättningen i Value Scout.
 
-- [ ] Liveverifiera att publika scanner-rader visar korrekt handelsdagsålder i stället för gammalt sparat "i går"-resultat.
-- [ ] Verifiera att raden för senaste dagliga marknadsdatum visas i den publika klienten efter en färsk livebatch.
+- [x] Liveverifiera att publika scanner-rader visar korrekt handelsdagsålder i stället för gammalt sparat "i går"-resultat.
+- [x] Verifiera att raden för senaste dagliga marknadsdatum visas i den publika klienten efter en färsk livebatch.
 
 - [x] Normalisera äldre relativa datumetiketter i sparade scannerresultat under helg och mellan livebatchar.
