@@ -106,3 +106,8 @@
 - [x] Säkerställ att automatiska entryurvalet inkluderar aktuella liveverifierade köplägen från Value Scouts huvudscanner.
 
 - [x] Ersätt den fastnade schemalagda paper-monitoren med en ny aktiv 15-minuterskörning utan dubbla orderrisker.
+
+- [x] Visa senaste marknadsdatum tydligt när scannerdata hämtas under helg eller utanför relevant börsdag.
+- [x] Ersätt missvisande "i går" med korrekt antal handelsdagar eller exakt datum när kalenderdagen är en helg.
+- [x] Testa helgformattering för USA, UK och Sverige.
+- [ ] Publicera och liveverifiera datumrättningen i Value Scout.

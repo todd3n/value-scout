@@ -41,6 +41,8 @@ export type Analysis = {
   dayChangePct: number | null
   maxDayDropPct: number | null
   maxDayDropDate: string | null
+  marketDataAsOf?: string | null
+  marketDataLabel?: string | null
   dropAgeTradingDays: number | null
   dropWhenLabel: string | null
   weekDrawdownPct: number | null

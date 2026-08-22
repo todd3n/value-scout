@@ -999,6 +999,7 @@
 .decision-kind.sell { background: #9a4d3e; }
 .monitor-strip { display: flex; align-items: center; gap: .65rem; margin: -.1rem 0 .85rem; padding: .55rem .75rem; background: #eef3f0; border: 1px solid #bfd0c5; color: #173e2e; }
 .monitor-strip strong { display: block; font-family: var(--mono); font-size: .68rem; letter-spacing: .05em; }
+.market-data-line { display: block; margin-top: .12rem; color: #9fc4b8; font-family: var(--mono); font-size: .61rem; line-height: 1.3; }
 .monitor-strip small { display: block; margin-top: .18rem; color: #486253; font-size: .72rem; }
 .monitor-strip em { margin-left: auto; color: #5a705f; font-size: .69rem; font-style: normal; text-align: right; }
 .monitor-led { width: 8px; height: 8px; border-radius: 50%; background: #a3874a; flex: 0 0 auto; }
@@ -1106,6 +1107,7 @@ body { background: #061018; color: #e9f0f4; }
 .order-status { border-color: #3f897b; background: rgba(31,116,96,.16); }
 .monitor-strip { background: #0d2932; border-color: #2c635d; color: #d5f0e6; }
 .monitor-strip small, .monitor-strip em { color: #9fc4b8; }
+.market-data-line { color: #8db7c1; }
 .auto-entry-strip { background: #0b2531; border-color: #315d70; }
 .auto-entry-strip.active { background: linear-gradient(90deg, #0c2c2f, #0b2330); border-color: #377d70; }
 .auto-entry-strip small, .auto-entry-strip em { color: #a5c6ca; }

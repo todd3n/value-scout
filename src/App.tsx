@@ -260,6 +260,12 @@ export default function App() {
 
   const { results, status, freshSymbols, setRunning, refresh, universeSize } = useLiveScanner(portfolio, risk)
   const freshSymbolSet = useMemo(() => new Set(freshSymbols), [freshSymbols])
+  const marketDataLine = useMemo(() => {
+    const dates = Array.from(new Set(results.map((item) => item.marketDataLabel).filter(Boolean)))
+    if (!dates.length) return null
+    const weekend = [0, 6].includes(new Date().getDay())
+    return `Senaste dagliga börsdata: ${dates.slice(0, 4).join(' · ')}${dates.length > 4 ? ' …' : ''}${weekend ? ' · helg, nästa dagliga börsdata kommer nästa handelsdag' : ''}`
+  }, [results])
 
   const counts = useMemo(
     () => ({
@@ -337,9 +343,10 @@ export default function App() {
             </strong>
             <span>{liveLabel}</span>
             <small className="freshness-line">
-              {status.phase === 'scanning' ? 'Hämtar färsk data…' : status.lastUpdate ? `Data ${new Date(status.lastUpdate).toLocaleString('sv-SE')}` : 'Ingen färsk hämtning ännu'}
+              {status.phase === 'scanning' ? 'Hämtar färsk data…' : status.lastUpdate ? `Hämtat ${new Date(status.lastUpdate).toLocaleString('sv-SE')}` : 'Ingen färsk hämtning ännu'}
               {status.phase !== 'scanning' && status.lastSource ? ` · ${status.lastSource}` : ''}
             </small>
+            {marketDataLine && <small className="market-data-line">{marketDataLine}</small>}
           </div>
         </div>
 
