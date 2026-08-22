@@ -110,4 +110,9 @@
 - [x] Visa senaste marknadsdatum tydligt när scannerdata hämtas under helg eller utanför relevant börsdag.
 - [x] Ersätt missvisande "i går" med korrekt antal handelsdagar eller exakt datum när kalenderdagen är en helg.
 - [x] Testa helgformattering för USA, UK och Sverige.
-- [ ] Publicera och liveverifiera datumrättningen i Value Scout.
+- [x] Publicera och liveverifiera datumrättningen i Value Scout.
+
+- [ ] Liveverifiera att publika scanner-rader visar korrekt handelsdagsålder i stället för gammalt sparat "i går"-resultat.
+- [ ] Verifiera att raden för senaste dagliga marknadsdatum visas i den publika klienten efter en färsk livebatch.
+
+- [x] Normalisera äldre relativa datumetiketter i sparade scannerresultat under helg och mellan livebatchar.

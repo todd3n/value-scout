@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { scanSymbols, type Analysis } from '../api/client'
 import { resolveWatchlist } from '../data/watchlists'
+import { normalizeScannerDropLabel } from '../lib/scannerDate'
 
 const BATCH = 3
 const PAUSE_BETWEEN_BATCH_MS = 1200
@@ -29,7 +30,7 @@ function loadCache(): Analysis[] {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return []
     const parsed = JSON.parse(raw) as { results?: Analysis[] }
-    return Array.isArray(parsed.results) ? parsed.results : []
+    return Array.isArray(parsed.results) ? parsed.results.map((result) => normalizeScannerDropLabel(result)) : []
   } catch {
     return []
   }
@@ -81,7 +82,7 @@ function finalize(results: Analysis[]): Analysis[] {
 function mergeResults(prev: Analysis[], incoming: Analysis[]): Analysis[] {
   const map = new Map(prev.map((a) => [a.symbol, a]))
   for (const a of incoming) map.set(a.symbol, a)
-  return finalize([...map.values()])
+  return finalize([...map.values()].map((result) => normalizeScannerDropLabel(result)))
 }
 
 export function useLiveScanner(portfolio: number, risk: number) {
