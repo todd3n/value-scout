@@ -323,9 +323,9 @@ export default function App() {
         <div className="brand-block">
           <span className="mark" aria-hidden />
           <div>
-            <span className="brand-kicker">Research terminal</span>
+            <span className="brand-kicker">MARKNADSÖVERSIKT</span>
             <strong>Value Scout</strong>
-            <span>Marknadsbevakning · Paper validation</span>
+            <span>Analys, bevakning och simulering</span>
           </div>
         </div>
 
@@ -343,7 +343,7 @@ export default function App() {
             </strong>
             <span>{liveLabel}</span>
             <small className="freshness-line">
-              {status.phase === 'scanning' ? 'Hämtar färsk data…' : status.lastUpdate ? `Hämtat ${new Date(status.lastUpdate).toLocaleString('sv-SE')}` : 'Ingen färsk hämtning ännu'}
+              {status.phase === 'scanning' ? 'Uppdaterar marknadsdata…' : status.lastUpdate ? `Hämtat ${new Date(status.lastUpdate).toLocaleString('sv-SE')}` : 'Ingen färsk hämtning ännu'}
               {status.phase !== 'scanning' && status.lastSource ? ` · ${status.lastSource}` : ''}
             </small>
             {marketDataLine && <small className="market-data-line">{marketDataLine}</small>}
@@ -495,7 +495,7 @@ export default function App() {
         <main className="main">
           <div className="main-head">
             <div>
-              <p className="terminal-kicker">Signal intelligence / {market === 'all' ? 'global coverage' : `${market} market`}</p>
+              <p className="terminal-kicker">Marknadsöversikt / {market === 'all' ? 'global coverage' : `${market} market`}</p>
               <h1>
                 {tab === 'sniper' ? 'Köplägen' : tab === 'watch' ? 'Bevakning' : 'Alla bolag'}
               </h1>
@@ -504,7 +504,7 @@ export default function App() {
                   ? 'Färska nedgångar med datum och orsak. Tom lista är normalt.'
                   : `${universeSize} bolag · US ${counts.usa} · UK ${counts.uk} · SE ${counts.se}`}
               </p>
-              <div className="market-tape" aria-live="polite"><span>{status.fallbackResultsInCycle ? 'BLANDAD DATA' : 'LIVE DATA'}</span><strong>{status.lastUpdate ? new Date(status.lastUpdate).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : ' väntar'}</strong><em>{status.phase === 'error' ? status.lastError : status.phase === 'scanning' ? `${status.liveResultsInCycle} liveverifierade · ${Math.max(0, results.length - status.liveResultsInCycle)} sparade eller väntande` : status.fallbackResultsInCycle ? `${status.fallbackResultsInCycle} fallbacksvar — kontrollera datakällan` : 'senaste genomgång klar'}</em></div>
+              <div className="market-tape" aria-live="polite"><span>{status.fallbackResultsInCycle ? 'BLANDAD DATA' : 'AKTUELL DATA'}</span><strong>{status.lastUpdate ? new Date(status.lastUpdate).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : ' väntar'}</strong><em>{status.phase === 'error' ? status.lastError : status.phase === 'scanning' ? `${status.liveResultsInCycle} liveverifierade · ${Math.max(0, results.length - status.liveResultsInCycle)} sparade eller väntande` : status.fallbackResultsInCycle ? `${status.fallbackResultsInCycle} fallbacksvar — kontrollera datakällan` : 'senaste genomgång klar'}</em></div>
             </div>
             <div className="scan-summary-grid" aria-label="Sammanfattning av marknadsscannern">
               <div><span>Modellfilter</span><strong>3D DROP</strong><small>Dokumenterad orsak</small></div>
