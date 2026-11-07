@@ -1145,3 +1145,70 @@ body { background: #061018; color: #e9f0f4; }
 .paper-page .method-list { color: #b3c8d0; }
 @media (max-width: 720px) { .auto-entry-strip { grid-template-columns: auto minmax(0, 1fr); } .auto-entry-strip em { grid-column: 2; text-align: left; } .auto-entry-strip .secondary-btn { grid-column: 2; justify-self: start; } }
 @media (max-width: 640px) { .portfolio-tape { display: grid; grid-template-columns: 1fr 1fr; gap: .25rem .55rem; } .portfolio-tape span { font-size: .52rem; } .portfolio-tape strong { font-size: .56rem; } }
+
+
+/* Product-design refinement: quieter surfaces, clearer hierarchy, less terminal chrome. */
+:root {
+  --vs-ink: #17231f;
+  --vs-muted: #68766f;
+  --vs-line: #e2e9e4;
+  --vs-paper: #f7f9f7;
+  --vs-card: #ffffff;
+  --vs-green: #176b4b;
+}
+body { background: var(--vs-paper); color: var(--vs-ink); }
+.shell { background: var(--vs-paper); }
+.topbar, .sidebar, .detail, .main, .page-nav {
+  border-color: var(--vs-line);
+}
+.topbar {
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 1px 2px rgba(20,40,30,.04);
+}
+.brand-kicker, .terminal-kicker, .side-label, .nav-context {
+  letter-spacing: .09em;
+  color: var(--vs-muted);
+}
+.mark { background: var(--vs-green); box-shadow: none; }
+.page-nav { background: #fff; }
+.page-nav button, .seg button, .side-nav button {
+  border-radius: 8px;
+  transition: background .16s ease, color .16s ease, border-color .16s ease;
+}
+.page-nav button.on, .seg button.on, .side-nav button.on {
+  background: #eaf3ed;
+  color: #14583f;
+  border-color: #cfe2d5;
+}
+button { font-family: inherit; }
+.bar-btn, .refresh-action {
+  border-radius: 8px;
+  box-shadow: none;
+}
+.bar-btn:hover, .refresh-action:hover { transform: translateY(-1px); }
+.panel, .card, .detail-block, .scan-summary-grid > div, .stat-card {
+  box-shadow: 0 1px 3px rgba(20,40,30,.045);
+}
+input, select, textarea {
+  border-radius: 8px;
+  border-color: var(--vs-line);
+}
+input:focus, select:focus, textarea:focus {
+  outline: 3px solid rgba(23,107,75,.12);
+  border-color: #78a98f;
+}
+table { border-collapse: separate; border-spacing: 0; }
+th {
+  color: var(--vs-muted);
+  font-weight: 600;
+  letter-spacing: .055em;
+}
+tbody tr:hover { background: #f3f7f4; }
+.chip { border-radius: 999px; font-weight: 600; }
+.empty { border: 1px dashed #ccd8d0; border-radius: 12px; background: #fff; }
+a { text-underline-offset: 3px; }
+@media (max-width: 760px) {
+  .topbar { gap: 14px; }
+  .bar-actions { width: 100%; }
+  .bar-btn { flex: 1; }
+}
