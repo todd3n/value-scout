@@ -2,7 +2,7 @@
 
 Svensk sniper-desk som skannar stora bolag (USA / UK / Sverige) efter färska nedgångar (~5–10 %) med förklarad orsak och bedömda risker — inte generisk P/E-undervärdering.
 
-**Inte investeringsrådgivning.** Data kan vara felaktig eller fördröjd.
+**Inte investeringsrådgivning. (Har förlorat 100k på denna + Calude analys)** Data kan vara felaktig eller fördröjd.
 
 ## Datakällor
 
