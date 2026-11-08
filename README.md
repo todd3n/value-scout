@@ -12,7 +12,7 @@ Svensk sniper-desk som skannar stora bolag (USA / UK / Sverige) efter färska ne
 | Nyheter / katalysator & risk | Google News RSS (+ Yahoo-rubriker) |
 | Extra bolagsnyheter (valfritt) | Finnhub — sätt `FINNHUB_API_KEY` |
 
-## Kör lokalt
+## Kör lokalt v
 
 ```bash
 npm install
