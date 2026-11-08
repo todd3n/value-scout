@@ -1,35 +1,54 @@
 # Value Scout
 
-Svensk sniper-desk som skannar stora bolag (USA / UK / Sverige) efter färska nedgångar (~5–10 %) med förklarad orsak och bedömda risker — inte generisk P/E-undervärdering.
+Value Scout är ett svenskt verktyg för att bevaka större börsbolag i USA, Storbritannien och Sverige. Verktyget letar efter tydliga kursnedgångar och sammanställer möjliga orsaker, nyheter och risker.
 
-**Inte investeringsrådgivning. (Har förlorat 100k på denna + Calude analys)** Data kan vara felaktig eller fördröjd.
+> **Viktigt:** Value Scout är ett analysverktyg, inte investeringsrådgivning. Marknadsdata kan vara fördröjd, ofullständig eller felaktig. Kontrollera alltid uppgifter mot primärkällor innan du fattar investeringsbeslut.
 
-## Datakällor
+## Kom igång
 
-| Behov | Källa |
-| --- | --- |
-| Kurs, kalender, nyckeltal | Yahoo Finance (`yahoo-finance2`) |
-| Nyheter / katalysator & risk | Google News RSS (+ Yahoo-rubriker) |
-| Extra bolagsnyheter (valfritt) | Finnhub — sätt `FINNHUB_API_KEY` |
-
-## Kör lokalt v
+Kräver en aktuell version av Node.js och npm.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Öppna http://localhost:5173 — `/api/scan` körs via Vite-middleware.
+Öppna adressen som Vite skriver ut i terminalen (vanligtvis http://localhost:5173).
 
-Valfritt: `export FINNHUB_API_KEY=...` för fler US-nyheter.
+## Datakällor och konfiguration
 
-## Deploy (Vercel)
+| Data | Källa |
+| --- | --- |
+| Kurser, kalender och nyckeltal | Yahoo Finance via `yahoo-finance2` |
+| Nyheter och möjliga katalysatorer | Google News RSS och Yahoo-rubriker |
+| Extra bolagsnyheter | Finnhub (valfritt) |
 
-`api/scan.ts` är serverless-funktionen för produktion. Lägg till `FINNHUB_API_KEY` som env-variabel om du vill ha Finnhub.
+För att aktivera Finnhub-nyheter anger du en API-nyckel i miljövariabeln `FINNHUB_API_KEY`. Lägg inte API-nycklar i klientkod eller i versionshanteringen.
 
-## Stack
+Lokalt kan variabeln exempelvis sättas innan utvecklingsservern startas:
 
-- Vite + React + TypeScript
-- yahoo-finance2 (server-side)
-- Google News RSS + valfritt Finnhub
+```bash
+export FINNHUB_API_KEY="din-nyckel"
+npm run dev
+```
+
+## API och driftsättning
+
+- Lokalt hanteras `/api/scan` av Vites middleware.
+- I produktion används `api/scan.ts` som Vercel serverless-funktion.
+- Lägg till `FINNHUB_API_KEY` bland projektets miljövariabler i Vercel om du vill använda Finnhub.
+
+## Teknik
+
+- Vite, React och TypeScript
+- `yahoo-finance2` på serversidan
+- Google News RSS och valfritt Finnhub
 - Vercel Node API
+
+## Datakvalitet och risker
+
+En identifierad kursnedgång är en signal för vidare undersökning, inte ett köpbeslut. Nyhetsmatchning kan missa relevanta händelser eller koppla en rubrik till fel bolag. Kontrollera datum, valuta, bolagshändelser, rapporter och aktuell prisdata själv.
+
+## Licens
+
+Ingen licens är angiven ännu. Kontakta repository-ägaren innan du återanvänder eller distribuerar koden.
